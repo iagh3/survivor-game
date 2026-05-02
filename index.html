@@ -7,6 +7,7 @@
             content="width=device-width, initial-scale=1.0, user-scalable=no"
         />
         <title>Mini Survivors</title>
+        <script src="https://yandex.ru/games/sdk/v2"></script>
         <style>
             * {
                 margin: 0;
@@ -66,16 +67,16 @@
                 margin-bottom: 6px;
             }
             .bar-lbl {
-                font-size: 8px;
+                font-size: clamp(7px, 1.1vw, 10px);
                 color: rgba(255, 255, 255, 0.6);
                 letter-spacing: 2px;
-                width: 66px;
+                width: clamp(44px, 6vw, 72px);
                 text-transform: uppercase;
                 text-shadow: 0 1px 4px rgba(0, 0, 0, 1);
             }
             .bar-bg {
-                width: 140px;
-                height: 7px;
+                width: clamp(90px, 12vw, 160px);
+                height: clamp(5px, 0.7vw, 8px);
                 background: rgba(0, 0, 0, 0.55);
                 border-radius: 4px;
                 overflow: hidden;
@@ -103,7 +104,7 @@
                 text-align: right;
             }
             #lvlDisplay {
-                font-size: 11px;
+                font-size: clamp(9px, 1.2vw, 13px);
                 color: rgba(0, 200, 255, 0.7);
                 letter-spacing: 3px;
                 text-shadow:
@@ -112,7 +113,7 @@
                 margin-bottom: 4px;
             }
             #timeDisplay {
-                font-size: 20px;
+                font-size: clamp(14px, 2vw, 22px);
                 font-weight: 900;
                 color: #ffffff;
                 letter-spacing: 2px;
@@ -120,15 +121,15 @@
                 line-height: 1;
             }
             #killDisplay {
-                font-size: 10px;
+                font-size: clamp(8px, 1.1vw, 12px);
                 color: rgba(255, 110, 90, 0.9);
                 letter-spacing: 2px;
                 text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
                 margin-top: 3px;
             }
             #objectiveDisplay {
-                margin-top: 5px;
-                font-size: 9px;
+                margin-top: 4px;
+                font-size: clamp(7px, 1vw, 10px);
                 color: rgba(100, 200, 255, 0.55);
                 letter-spacing: 1.5px;
                 text-transform: uppercase;
@@ -185,14 +186,14 @@
                 text-shadow: 0 0 40px #ff224488;
             }
             .game-sub {
-                font-size: 11px;
+                font-size: clamp(9px, 1.6vw, 13px);
                 color: rgba(255, 255, 255, 0.25);
                 letter-spacing: 8px;
                 text-transform: uppercase;
                 margin-bottom: 14px;
             }
             .lore {
-                font-size: 10px;
+                font-size: clamp(9px, 1.4vw, 12px);
                 color: rgba(120, 220, 255, 0.65);
                 letter-spacing: 2px;
                 line-height: 1.8;
@@ -202,12 +203,17 @@
                 text-transform: uppercase;
             }
             .tips {
-                font-size: 10px;
-                color: rgba(255, 255, 255, 0.18);
-                letter-spacing: 2px;
-                line-height: 2.2;
+                font-size: clamp(8px, 1.3vw, 11px);
+                color: rgba(255, 255, 255, 0.4);
+                letter-spacing: 1.5px;
+                line-height: 2;
                 text-align: center;
-                margin-top: 28px;
+                margin-top: 18px;
+                padding: 12px 20px;
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.02);
+                max-width: min(500px, 90vw);
             }
             .menu-row {
                 display: flex;
@@ -225,14 +231,14 @@
                 margin-bottom: 12px;
             }
             .guide-title {
-                font-size: 12px;
+                font-size: clamp(10px, 1.5vw, 14px);
                 color: #7fddff;
                 letter-spacing: 2px;
                 margin-bottom: 8px;
                 text-transform: uppercase;
             }
             .guide-text {
-                font-size: 10px;
+                font-size: clamp(9px, 1.2vw, 12px);
                 color: rgba(255, 255, 255, 0.75);
                 letter-spacing: 1px;
                 line-height: 1.8;
@@ -259,12 +265,12 @@
             .btn-play {
                 background: linear-gradient(135deg, #ff2244, #ff4466);
                 color: #fff;
-                font-size: 18px;
-                padding: 18px 52px;
+                font-size: clamp(14px, 2.2vw, 20px);
+                padding: clamp(12px, 1.8vw, 20px) clamp(28px, 5vw, 56px);
                 box-shadow:
                     0 0 30px rgba(255, 34, 68, 0.5),
                     0 0 60px rgba(255, 34, 68, 0.2);
-                min-width: 220px;
+                min-width: clamp(160px, 28vw, 240px);
             }
             .btn-play:hover {
                 box-shadow:
@@ -275,8 +281,8 @@
                 background: rgba(0, 204, 255, 0.06);
                 color: #00ccff;
                 border: 1px solid rgba(0, 204, 255, 0.2);
-                font-size: 12px;
-                padding: 12px 22px;
+                font-size: clamp(10px, 1.4vw, 13px);
+                padding: clamp(9px, 1.3vw, 13px) clamp(14px, 2.2vw, 24px);
                 margin-top: 10px;
             }
             .btn-ad:hover {
@@ -287,8 +293,8 @@
                 background: transparent;
                 color: rgba(255, 255, 255, 0.25);
                 border: 1px solid rgba(255, 255, 255, 0.08);
-                font-size: 11px;
-                padding: 10px 20px;
+                font-size: clamp(9px, 1.3vw, 12px);
+                padding: clamp(8px, 1.2vw, 12px) clamp(12px, 2vw, 22px);
                 margin-top: 8px;
             }
             .btn-ghost:hover {
@@ -329,20 +335,20 @@
             .stat-box {
                 text-align: center;
                 border: 1px solid rgba(255, 255, 255, 0.08);
-                padding: 14px 22px;
+                padding: clamp(10px, 1.5vw, 16px) clamp(14px, 2.5vw, 24px);
                 border-radius: 8px;
                 background: rgba(255, 255, 255, 0.02);
-                min-width: 90px;
+                min-width: clamp(70px, 10vw, 100px);
             }
             .stat-val {
-                font-size: 28px;
+                font-size: clamp(18px, 3.5vw, 32px);
                 font-weight: 700;
                 color: #fff;
                 display: block;
                 letter-spacing: 1px;
             }
             .stat-lbl {
-                font-size: 9px;
+                font-size: clamp(7px, 1vw, 10px);
                 color: rgba(255, 255, 255, 0.3);
                 letter-spacing: 3px;
                 margin-top: 4px;
@@ -375,7 +381,7 @@
                 margin-bottom: 24px;
             }
             .revive-cd {
-                font-size: 52px;
+                font-size: clamp(36px, 7vw, 56px);
                 font-weight: 900;
                 color: #fff;
                 min-height: 60px;
@@ -479,7 +485,7 @@
                 margin-bottom: 10px;
             }
             .set-section-label {
-                font-size: 10px;
+                font-size: clamp(8px, 1.1vw, 11px);
                 color: rgba(255, 255, 255, 0.45);
                 letter-spacing: 2.5px;
                 text-transform: uppercase;
@@ -577,14 +583,14 @@
                 padding: 20px 16px 0;
             }
             .up-label {
-                font-size: 9px;
+                font-size: clamp(7px, 1vw, 10px);
                 color: rgba(255, 255, 255, 0.22);
                 letter-spacing: 6px;
                 text-transform: uppercase;
                 margin-bottom: 4px;
             }
             .up-hint {
-                font-size: 10px;
+                font-size: clamp(8px, 1.2vw, 11px);
                 color: rgba(255, 255, 255, 0.25);
                 letter-spacing: 3px;
                 margin-top: 5px;
@@ -611,8 +617,9 @@
                 background: rgba(7, 10, 18, 0.98);
                 border: 1.5px solid rgba(255, 255, 255, 0.1);
                 border-radius: 18px;
-                padding: 26px 20px 22px;
-                width: 172px;
+                padding: clamp(18px, 2.5vw, 28px) clamp(14px, 2vw, 22px)
+                    clamp(16px, 2vw, 24px);
+                width: clamp(145px, 18vw, 188px);
                 cursor: pointer;
                 transition:
                     transform 0.16s cubic-bezier(0.2, 0.8, 0.3, 1),
@@ -648,7 +655,7 @@
             }
             .up-tier {
                 display: inline-block;
-                font-size: 8px;
+                font-size: clamp(7px, 0.9vw, 9px);
                 letter-spacing: 2.5px;
                 padding: 3px 9px;
                 border-radius: 999px;
@@ -662,24 +669,24 @@
                 justify-content: center;
                 width: 56px;
                 height: 56px;
-                margin: 0 auto 14px;
-                filter: drop-shadow(0 0 8px currentColor)
-                    drop-shadow(0 0 3px rgba(255, 255, 255, 0.3));
+                margin: 0 auto 16px;
             }
             .up-icon svg {
                 width: 50px;
                 height: 50px;
-                stroke-width: 2.4px;
+                stroke-width: 2.6px;
+                filter: drop-shadow(0 0 7px currentColor);
+                overflow: visible;
             }
             .up-name {
-                font-size: 11px;
+                font-size: clamp(9px, 1.3vw, 12px);
                 font-weight: 700;
                 letter-spacing: 2px;
                 text-transform: uppercase;
                 margin-bottom: 8px;
             }
             .up-desc {
-                font-size: 10px;
+                font-size: clamp(8px, 1.2vw, 11px);
                 color: rgba(255, 255, 255, 0.58);
                 line-height: 1.65;
             }
@@ -741,15 +748,15 @@
                 pointer-events: none;
             }
             #jBase {
-                width: 110px;
-                height: 110px;
+                width: clamp(80px, 14vw, 120px);
+                height: clamp(80px, 14vw, 120px);
                 border-radius: 50%;
                 background: rgba(255, 255, 255, 0.06);
                 border: 2px solid rgba(255, 255, 255, 0.15);
             }
             #jThumb {
-                width: 48px;
-                height: 48px;
+                width: clamp(36px, 6vw, 52px);
+                height: clamp(36px, 6vw, 52px);
                 border-radius: 50%;
                 background: rgba(255, 255, 255, 0.25);
                 border: 2px solid rgba(255, 255, 255, 0.4);
@@ -762,15 +769,15 @@
             /* ── TOAST ── */
             #toast {
                 position: absolute;
-                bottom: 140px;
+                bottom: clamp(90px, 14vh, 150px);
                 left: 50%;
                 transform: translateX(-50%);
                 background: rgba(0, 204, 255, 0.12);
                 border: 1px solid rgba(0, 204, 255, 0.25);
                 color: #00ccff;
-                padding: 9px 18px;
+                padding: clamp(7px, 1vw, 10px) clamp(12px, 2vw, 20px);
                 border-radius: 5px;
-                font-size: 10px;
+                font-size: clamp(8px, 1.1vw, 11px);
                 letter-spacing: 3px;
                 z-index: 200;
                 opacity: 0;
@@ -785,7 +792,7 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                font-size: clamp(18px, 5vw, 28px);
+                font-size: clamp(14px, 3.5vw, 26px);
                 font-weight: 900;
                 color: #ff4422;
                 letter-spacing: 5px;
@@ -800,7 +807,7 @@
             /* ── SHOP ── */
             .shop-inner {
                 width: 100%;
-                max-width: min(660px, 96vw);
+                max-width: min(720px, 96vw);
                 padding: 28px 16px 40px;
                 display: flex;
                 flex-direction: column;
@@ -827,7 +834,7 @@
                 flex: 1;
             }
             .shop-credits-val {
-                font-size: 22px;
+                font-size: clamp(16px, 2.5vw, 24px);
                 font-weight: 700;
                 color: #ffcc44;
                 letter-spacing: 2px;
@@ -870,14 +877,14 @@
                 background: rgba(255, 204, 68, 0.05);
             }
             .shop-card-title {
-                font-size: 11px;
+                font-size: clamp(9px, 1.3vw, 12px);
                 font-weight: 700;
                 color: #fff;
                 letter-spacing: 2px;
                 text-transform: uppercase;
             }
             .shop-card-desc {
-                font-size: 10px;
+                font-size: clamp(8px, 1.1vw, 11px);
                 color: rgba(255, 255, 255, 0.5);
                 line-height: 1.6;
                 flex: 1;
@@ -890,7 +897,7 @@
                 gap: 8px;
             }
             .shop-card-cost {
-                font-size: 13px;
+                font-size: clamp(10px, 1.5vw, 14px);
                 font-weight: 700;
                 color: #ffcc44;
                 letter-spacing: 1px;
@@ -1007,7 +1014,7 @@
                 padding: 32px 12px 40px;
             }
             .cls-title {
-                font-size: clamp(18px, 5vw, 28px);
+                font-size: clamp(16px, 3.5vw, 26px);
                 color: #79dfff;
                 letter-spacing: 6px;
                 text-transform: uppercase;
@@ -1065,7 +1072,7 @@
                 height: 52px;
             }
             .cls-card-name {
-                font-size: 13px;
+                font-size: clamp(10px, 1.5vw, 14px);
                 font-weight: 900;
                 letter-spacing: 3px;
                 text-transform: uppercase;
@@ -1085,7 +1092,7 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 4px 8px;
-                font-size: 9px;
+                font-size: clamp(7px, 1vw, 10px);
                 color: rgba(255, 255, 255, 0.45);
                 letter-spacing: 1px;
                 text-align: left;
@@ -1097,7 +1104,7 @@
                 text-align: right;
             }
             .cls-perk-desc {
-                font-size: 9px;
+                font-size: clamp(8px, 1.1vw, 10px);
                 color: rgba(255, 255, 255, 0.38);
                 line-height: 1.65;
                 letter-spacing: 0.5px;
@@ -1150,17 +1157,19 @@
             .daily-badge {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px;
+                gap: 8px;
                 background: rgba(255, 204, 68, 0.08);
-                border: 1px solid rgba(255, 204, 68, 0.2);
-                border-radius: 6px;
-                padding: 6px 14px;
+                border: 1px solid rgba(255, 204, 68, 0.25);
+                border-radius: 8px;
+                padding: 8px 18px;
                 font-size: 9px;
                 letter-spacing: 3px;
                 color: #ffcc44;
                 text-transform: uppercase;
                 cursor: pointer;
-                transition: all 0.15s;
+                transition: all 0.18s;
+                margin-top: 16px;
+                box-shadow: 0 0 16px rgba(255, 204, 68, 0.08);
             }
             .daily-badge:hover {
                 background: rgba(255, 204, 68, 0.14);
@@ -1198,10 +1207,814 @@
                 width: 42px;
                 height: 42px;
             }
+
+            /* ════════════════════════════════════════════════════════
+               SKINS SECTION
+            ════════════════════════════════════════════════════════ */
+            .skins-section {
+                width: 100%;
+                max-width: 720px;
+                margin-top: 20px;
+                padding-bottom: 8px;
+            }
+            .skins-title {
+                font-size: 9px;
+                letter-spacing: 4px;
+                color: rgba(255, 255, 255, 0.28);
+                text-align: center;
+                margin-bottom: 16px;
+                text-transform: uppercase;
+            }
+            .skins-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                width: 100%;
+            }
+            .skin-card {
+                background: rgba(8, 12, 24, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 14px;
+                padding: 14px 12px;
+                cursor: pointer;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+                transition:
+                    border-color 0.18s,
+                    background 0.18s,
+                    box-shadow 0.18s;
+            }
+            .skin-preview-wrap {
+                flex-shrink: 0;
+                width: 72px;
+                height: 72px;
+                border-radius: 12px;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: visible;
+            }
+            .skin-preview-wrap svg {
+                width: 64px;
+                height: 64px;
+                overflow: visible;
+            }
+            .skin-card:hover {
+                border-color: var(--skin-col, rgba(0, 204, 255, 0.5));
+                background: rgba(12, 20, 38, 0.98);
+                box-shadow: 0 0 18px var(--skin-col, #00ccff) 22;
+            }
+            .skin-card--active {
+                border-color: var(--skin-col, #00ccff) !important;
+                box-shadow:
+                    0 0 0 1px var(--skin-col, #00ccff) 44,
+                    0 0 22px var(--skin-col, #00ccff) 18 !important;
+            }
+            .skin-preview {
+                flex-shrink: 0;
+                width: 64px;
+                height: 64px;
+                border-radius: 10px;
+                background: rgba(0, 0, 0, 0.4);
+            }
+            .skin-info {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .skin-name {
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                color: #fff;
+                text-transform: uppercase;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+            .skin-active {
+                font-size: 9px;
+                color: var(--skin-col, #00ccff);
+                letter-spacing: 0;
+            }
+            .skin-owned {
+                font-size: 7px;
+                letter-spacing: 2px;
+                color: #ffcc44;
+                border: 1px solid #ffcc4444;
+                padding: 1px 5px;
+                border-radius: 3px;
+            }
+            .skin-detail {
+                font-size: 8px;
+                color: rgba(255, 255, 255, 0.32);
+                letter-spacing: 1.5px;
+            }
+            .skin-btn {
+                padding: 5px 10px;
+                border-radius: 6px;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                background: rgba(255, 255, 255, 0.04);
+                color: rgba(255, 255, 255, 0.55);
+                font-family: "Courier New", monospace;
+                font-size: 8px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: all 0.14s;
+                align-self: flex-start;
+            }
+            .skin-btn:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: var(--skin-col, rgba(0, 204, 255, 0.4));
+                color: #fff;
+            }
+            .skin-btn--active {
+                background: color-mix(
+                    in srgb,
+                    var(--skin-col) 15%,
+                    transparent
+                ) !important;
+                border-color: var(--skin-col, #00ccff) !important;
+                color: var(--skin-col, #00ccff) !important;
+            }
+
+            /* ════════════════════════════════════════════════════════
+               SHOP CLOSE BUTTON — внизу
+            ════════════════════════════════════════════════════════ */
+            .shop-close-bar {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                padding: 20px 0 8px;
+                flex-shrink: 0;
+            }
+
+            /* ════════════════════════════════════════════════════════
+               LEADERBOARD
+            ════════════════════════════════════════════════════════ */
+            .lb-sec {
+                width: 100%;
+                max-width: 660px;
+                margin-top: 16px;
+                padding-bottom: 24px;
+            }
+
+            /* ════════════════════════════════════════════════════════
+               ПОЛНАЯ АДАПТИВНОСТЬ 320 → 1920px
+               Затрагивает: HUD, все экраны, магазин, апгрейды,
+               класс-экран, настройки, смерть, джойстик
+            ════════════════════════════════════════════════════════ */
+
+            /* ── 320px (very small phones) ── */
+            @media (max-width: 360px) {
+                /* Стартовый экран */
+                .game-title {
+                    font-size: 26px;
+                    letter-spacing: 4px;
+                }
+                .game-title span {
+                    font-size: 40px;
+                }
+                .lore {
+                    font-size: 8px;
+                    letter-spacing: 1px;
+                    line-height: 1.6;
+                }
+                .menu-row {
+                    gap: 5px;
+                    flex-wrap: wrap;
+                }
+                .btn-ghost {
+                    font-size: 8px;
+                    padding: 7px 10px;
+                }
+                .btn-play {
+                    font-size: 13px;
+                    padding: 12px 28px;
+                    min-width: 140px;
+                }
+                .tips {
+                    display: none;
+                }
+                /* HUD */
+                #hud-left {
+                    top: 8px;
+                    left: 8px;
+                }
+                #hud-right {
+                    top: 8px;
+                    right: 8px;
+                }
+                .bar-lbl {
+                    width: 36px;
+                    font-size: 6px;
+                    letter-spacing: 1px;
+                }
+                .bar-bg {
+                    width: 80px;
+                    height: 4px;
+                }
+                #timeDisplay {
+                    font-size: 13px;
+                }
+                #lvlDisplay {
+                    font-size: 8px;
+                }
+                #killDisplay {
+                    font-size: 7px;
+                }
+                #objectiveDisplay {
+                    display: none;
+                }
+                #hudCredits,
+                #hudCombo {
+                    font-size: 7px;
+                }
+                /* Магазин */
+                .shop-inner {
+                    padding: 12px 8px 24px;
+                }
+                .shop-grid {
+                    grid-template-columns: 1fr;
+                    gap: 8px;
+                }
+                .skins-grid {
+                    grid-template-columns: 1fr;
+                }
+                .skin-card {
+                    flex-direction: row;
+                    gap: 10px;
+                }
+                .skin-preview {
+                    width: 56px;
+                    height: 56px;
+                }
+                /* Апгрейды */
+                .card-row {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 8px;
+                }
+                .up-card {
+                    width: min(260px, 92vw);
+                    padding: 16px 12px;
+                }
+                /* Класс */
+                .cls-grid {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px;
+                }
+                .cls-card {
+                    width: min(270px, 92vw);
+                }
+                .cls-card-icon {
+                    width: 44px;
+                    height: 44px;
+                }
+                /* Смерть */
+                .death-title {
+                    letter-spacing: 4px;
+                    margin-bottom: 14px;
+                }
+                .stats-row {
+                    gap: 8px;
+                }
+                .stat-box {
+                    padding: 8px 12px;
+                    min-width: 60px;
+                }
+                /* Настройки */
+                .set-box {
+                    padding: 14px 12px;
+                }
+                /* Dash */
+                #dashIndicator {
+                    width: 30px;
+                    height: 30px;
+                    bottom: 50px;
+                    right: 8px;
+                }
+                /* Wave/toast */
+                #waveAlert {
+                    font-size: 13px;
+                    letter-spacing: 3px;
+                }
+            }
+
+            /* ── 480px (phones) ── */
+            @media (min-width: 361px) and (max-width: 540px) {
+                .menu-row {
+                    gap: 6px;
+                    flex-wrap: wrap;
+                }
+                .btn-ghost {
+                    font-size: 9px;
+                    padding: 8px 13px;
+                }
+                .shop-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .skins-grid {
+                    grid-template-columns: 1fr;
+                }
+                .skin-card {
+                    flex-direction: row;
+                }
+                .card-row {
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+                .up-card {
+                    width: min(155px, 44vw);
+                }
+                .cls-grid {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .cls-card {
+                    width: min(300px, 90vw);
+                }
+                .stat-box {
+                    padding: 10px 16px;
+                }
+                #objectiveDisplay {
+                    display: none;
+                }
+                #dashIndicator {
+                    width: 32px;
+                    height: 32px;
+                    bottom: 56px;
+                }
+            }
+
+            /* ── 768px (tablet portrait / large phones) ── */
+            @media (min-width: 541px) and (max-width: 820px) {
+                .shop-inner {
+                    max-width: 100%;
+                    padding: 20px 14px 28px;
+                }
+                .shop-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                }
+                .skins-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                }
+                .skin-card {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+                .skin-btn {
+                    align-self: center;
+                }
+                .card-row {
+                    gap: 12px;
+                }
+                .up-card {
+                    width: clamp(155px, 28vw, 195px);
+                }
+                .cls-grid {
+                    gap: 12px;
+                    flex-wrap: wrap;
+                }
+                .cls-card {
+                    width: clamp(190px, 42vw, 240px);
+                }
+                .set-box {
+                    width: min(420px, 94vw);
+                }
+                .guide-box {
+                    width: min(520px, 94vw);
+                }
+                #objectiveDisplay {
+                    font-size: 8px;
+                    letter-spacing: 1px;
+                }
+                #dashIndicator {
+                    bottom: 70px;
+                    right: 12px;
+                }
+            }
+
+            /* ── 1024px (tablet landscape / small desktop) ── */
+            @media (min-width: 821px) and (max-width: 1100px) {
+                .shop-inner {
+                    max-width: 780px;
+                }
+                .shop-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .skins-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .card-row {
+                    max-width: min(620px, 92vw);
+                    gap: 14px;
+                }
+                .up-card {
+                    width: clamp(165px, 19vw, 192px);
+                }
+                .cls-card {
+                    width: 210px;
+                }
+                .set-box {
+                    width: min(480px, 92vw);
+                }
+            }
+
+            /* ── 1280px (desktop) ── */
+            @media (min-width: 1101px) and (max-width: 1400px) {
+                .shop-inner {
+                    max-width: 860px;
+                }
+                .shop-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .skins-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .card-row {
+                    max-width: 660px;
+                    gap: 18px;
+                }
+                .up-card {
+                    width: 178px;
+                }
+                .cls-card {
+                    width: 215px;
+                }
+            }
+
+            /* ── 1440px (large desktop) ── */
+            @media (min-width: 1401px) and (max-width: 1680px) {
+                .game-title {
+                    font-size: 60px;
+                }
+                .game-title span {
+                    font-size: 92px;
+                }
+                .shop-inner {
+                    max-width: 960px;
+                }
+                .shop-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 14px;
+                }
+                .skins-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .card-row {
+                    max-width: 720px;
+                    gap: 20px;
+                }
+                .up-card {
+                    width: 195px;
+                    padding: 26px 20px 22px;
+                }
+                .cls-grid {
+                    gap: 18px;
+                }
+                .cls-card {
+                    width: 225px;
+                }
+                .bar-bg {
+                    width: 150px;
+                }
+            }
+
+            /* ── 1920px (full HD) ── */
+            @media (min-width: 1681px) {
+                .game-title {
+                    font-size: 72px;
+                }
+                .game-title span {
+                    font-size: 110px;
+                }
+                .btn-play {
+                    font-size: 20px;
+                    padding: 22px 64px;
+                }
+                .shop-inner {
+                    max-width: 1120px;
+                }
+                .shop-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 16px;
+                }
+                .skins-grid {
+                    grid-template-columns: repeat(6, 1fr);
+                }
+                .skin-card {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+                .skin-preview {
+                    width: 84px;
+                    height: 84px;
+                }
+                .skin-btn {
+                    align-self: center;
+                }
+                .card-row {
+                    max-width: 920px;
+                    gap: 22px;
+                }
+                .up-card {
+                    width: 205px;
+                    padding: 28px 22px 24px;
+                }
+                .cls-grid {
+                    gap: 22px;
+                }
+                .cls-card {
+                    width: 245px;
+                }
+                .bar-bg {
+                    width: 170px;
+                    height: 8px;
+                }
+                .bar-lbl {
+                    width: 76px;
+                    font-size: 9px;
+                }
+                #timeDisplay {
+                    font-size: 24px;
+                }
+                #lvlDisplay {
+                    font-size: 13px;
+                }
+                #killDisplay {
+                    font-size: 12px;
+                }
+                .stat-val {
+                    font-size: 34px;
+                }
+                .set-box {
+                    width: min(500px, 90vw);
+                }
+                #hud-left {
+                    top: 18px;
+                    left: 22px;
+                }
+                #hud-right {
+                    top: 18px;
+                    right: 22px;
+                }
+                #dashIndicator {
+                    width: 48px;
+                    height: 48px;
+                    bottom: 90px;
+                    right: 22px;
+                }
+                .guide-box {
+                    width: min(640px, 92vw);
+                }
+                .howto-inner {
+                    max-width: 680px;
+                }
+            }
+
+            /* ── HUD: все экраны ── */
+            @media (max-width: 600px) {
+                #hud-left {
+                    top: 8px;
+                    left: 10px;
+                }
+                #hud-right {
+                    top: 8px;
+                    right: 10px;
+                }
+                .bar-wrap {
+                    margin-bottom: 4px;
+                    gap: 5px;
+                }
+                #hudCredits,
+                #hudCombo {
+                    font-size: 8px;
+                }
+                #dashIndicator {
+                    bottom: 58px;
+                    right: 10px;
+                    width: 34px;
+                    height: 34px;
+                }
+                #btnAdBuff {
+                    font-size: 8px;
+                    padding: 4px 10px;
+                    top: 6px;
+                }
+                #adBuffHud {
+                    font-size: 8px;
+                    top: 6px;
+                }
+            }
+
+            /* ── Апгрейды: маленькие экраны ── */
+            @media (max-width: 560px) {
+                .up-header {
+                    margin-bottom: 20px;
+                    padding: 14px 12px 0;
+                }
+                .up-lvl {
+                    font-size: clamp(24px, 7vw, 38px);
+                }
+                #upgradeScreen {
+                    padding: 0 4px;
+                }
+            }
+
+            /* ── Настройки: скролл ── */
+            @media (max-width: 500px) {
+                .set-box {
+                    padding: 14px 12px;
+                }
+                .set-title {
+                    font-size: clamp(18px, 5vw, 26px);
+                    margin-bottom: 12px;
+                }
+                .diff-btn {
+                    padding: 9px 6px;
+                    font-size: 9px;
+                    letter-spacing: 1.5px;
+                }
+            }
+
+            /* ── Класс: маленькие экраны ── */
+            @media (max-width: 480px) {
+                #classScreen {
+                    padding: 20px 10px 28px;
+                }
+                .cls-title {
+                    font-size: 16px;
+                }
+                .cls-sub {
+                    font-size: 9px;
+                }
+            }
+
+            /* ── Смерть: маленькие экраны ── */
+            @media (max-width: 480px) {
+                .stats-row {
+                    gap: 8px;
+                }
+                .stat-box {
+                    min-width: 65px;
+                }
+                .death-ad-row {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+            /* ── Touch-targets: все интерактивные элементы ── */
+            @media (hover: none) and (pointer: coarse) {
+                .btn,
+                .btn-ghost,
+                .btn-play,
+                .btn-ad {
+                    min-height: 44px;
+                }
+                .skin-btn {
+                    min-height: 38px;
+                    padding: 9px 16px;
+                }
+                .shop-buy-btn {
+                    min-height: 40px;
+                }
+                .cls-select-btn {
+                    min-height: 42px;
+                }
+                .diff-btn {
+                    min-height: 44px;
+                }
+                .up-card {
+                    min-height: 200px;
+                }
+                /* Увеличиваем области касания в HUD */
+                #btnAdBuff {
+                    min-height: 36px;
+                    padding: 8px 16px;
+                }
+            }
+
+            /* ── Landscape на мобайле: компактный HUD ── */
+            @media (max-height: 500px) and (orientation: landscape) {
+                #hud::before {
+                    height: 60px;
+                }
+                .bar-bg {
+                    width: 100px;
+                    height: 4px;
+                }
+                #timeDisplay {
+                    font-size: 13px;
+                }
+                #objectiveDisplay {
+                    display: none;
+                }
+                #toast {
+                    bottom: 60px;
+                }
+                #waveAlert {
+                    font-size: 13px;
+                }
+                #dashIndicator {
+                    bottom: 8px;
+                    right: 8px;
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+
+            /* ── safe-area (notch phones) ── */
+            @supports (padding: env(safe-area-inset-bottom)) {
+                #hud-left {
+                    left: max(14px, env(safe-area-inset-left));
+                }
+                #hud-right {
+                    right: max(14px, env(safe-area-inset-right));
+                }
+                #toast {
+                    bottom: max(90px, calc(90px + env(safe-area-inset-bottom)));
+                }
+                #joystickWrap {
+                    bottom: env(safe-area-inset-bottom);
+                }
+            }
+
+            /* ── HUD bottom-left extras ── */
+            #hudCredits {
+                font-size: clamp(8px, 1.1vw, 11px);
+                color: #ffcc44;
+                letter-spacing: 2px;
+                text-shadow:
+                    0 0 8px #ffcc4466,
+                    0 1px 3px rgba(0, 0, 0, 0.9);
+            }
+            #hudCombo {
+                font-size: clamp(8px, 1.1vw, 11px);
+                color: #00ccff;
+                letter-spacing: 2px;
+                text-shadow:
+                    0 0 8px #00ccff66,
+                    0 1px 3px rgba(0, 0, 0, 0.9);
+            }
         </style>
     </head>
     <body>
         <canvas id="gc"></canvas>
+        <div
+            id="adBuffHud"
+            style="
+                position: fixed;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 9px;
+                letter-spacing: 2px;
+                color: #ffcc44;
+                opacity: 0;
+                transition: opacity 0.3s;
+                pointer-events: none;
+                text-shadow: 0 0 8px #ffcc44;
+                z-index: 50;
+                white-space: nowrap;
+            "
+        ></div>
+        <button
+            id="btnAdBuff"
+            style="
+                position: fixed;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 5px 14px;
+                border-radius: 6px;
+                border: 1px solid rgba(255, 204, 68, 0.3);
+                background: rgba(0, 0, 0, 0.7);
+                color: rgba(255, 204, 68, 0.8);
+                font-family: monospace;
+                font-size: 9px;
+                letter-spacing: 2px;
+                z-index: 50;
+                display: none;
+                cursor: pointer;
+                backdrop-filter: blur(4px);
+            "
+        >
+            ▶ BOOST (AD)
+        </button>
 
         <!-- HUD -->
         <div id="hud">
@@ -1488,8 +2301,10 @@
         </div>
 
         <div class="screen" id="reviveScreen">
-            <div class="revive-title">SECOND CHANCE</div>
-            <div class="revive-sub">WATCH AD TO CONTINUE</div>
+            <div class="revive-title" id="reviveTitle">SECOND CHANCE</div>
+            <div class="revive-sub" id="reviveSub">
+                Watch ad to restore 50% HP and continue
+            </div>
             <div class="revive-cd" id="revCD">5</div>
             <button
                 class="btn btn-ad"
@@ -1502,7 +2317,7 @@
         </div>
 
         <div class="screen" id="upgradeScreen">
-            <div class="up-label">Sync Upgrade</div>
+            <div class="up-label" id="upLabel">Sync Upgrade</div>
             <div class="up-lvl" id="upLvl">LEVEL 2</div>
             <div class="card-row" id="upCards"></div>
         </div>
@@ -1603,6 +2418,8 @@
                             startOrbitals: 0,
                         },
                         selectedClass: "antivirus",
+                        activeSkin: "default",
+                        boughtSkins: ["default"],
                         achievements: {},
                     },
                     LS.get(META_KEY, {}),
@@ -1623,44 +2440,93 @@
                 }
 
                 // ─────────────────────────────────────────────────────────────
-                // Ads mock
-                // ─────────────────────────────────────────────────────────────
-                const Ads = (() => {
-                    let deaths = 0;
-                    function sim(duration, label, done) {
-                        const simEl = document.getElementById("adSim");
-                        const timerEl = document.getElementById("adTimer");
-                        const typeEl = document.getElementById("adTypeLabel");
-                        typeEl.textContent = label;
-                        simEl.style.display = "flex";
-                        let t = duration;
-                        timerEl.textContent = `Closing in ${t}...`;
+                // ═══ ЯНДЕКС ИГРЫ SDK ══════════════════════════════════
+                let _ysdk = null,
+                    _ysdk_ready = false,
+                    _adLock = false;
+                (async () => {
+                    try {
+                        if (typeof YaGames !== "undefined") {
+                            _ysdk = await YaGames.init();
+                            _ysdk_ready = true;
+                        }
+                    } catch (e) {
+                        console.warn("[YaGames]", e);
+                    }
+                })();
+                function _adSim(dur, done) {
+                    const s = document.getElementById("adSim"),
+                        t = document.getElementById("adTimer");
+                    if (s) {
+                        s.style.display = "flex";
+                        let n = dur;
+                        t && (t.textContent = `Closing in ${n}...`);
                         const iv = setInterval(() => {
-                            t -= 1;
-                            timerEl.textContent =
-                                t > 0 ? `Closing in ${t}...` : "Done!";
-                            if (t <= 0) {
+                            n--;
+                            t &&
+                                (t.textContent =
+                                    n > 0 ? `Closing in ${n}...` : "Done!");
+                            if (n <= 0) {
                                 clearInterval(iv);
                                 setTimeout(() => {
-                                    simEl.style.display = "none";
+                                    if (s) s.style.display = "none";
                                     done?.();
                                 }, 350);
                             }
                         }, 1000);
-                    }
-                    return {
-                        showInterstitial(done) {
-                            deaths += 1;
-                            if (deaths % 2 === 1) return done?.();
-                            sim(3, "interstitial", done);
-                        },
-                        showRewarded(type, onRewarded) {
-                            sim(5, `rewarded · ${type}`, () =>
-                                onRewarded?.(type),
-                            );
-                        },
-                    };
-                })();
+                    } else setTimeout(() => done?.(), 500);
+                }
+                const Ads = {
+                    showInterstitial(done) {
+                        if (_adLock) return done?.();
+                        if (_ysdk_ready && _ysdk) {
+                            _adLock = true;
+                            _ysdk.adv.showFullscreenAdv({
+                                callbacks: {
+                                    onClose: () => {
+                                        _adLock = false;
+                                        done?.();
+                                    },
+                                    onError: (e) => {
+                                        _adLock = false;
+                                        done?.();
+                                    },
+                                },
+                            });
+                        } else _adSim(3, done);
+                    },
+                    showRewarded(type, onRewarded) {
+                        if (_adLock) return;
+                        if (_ysdk_ready && _ysdk) {
+                            _adLock = true;
+                            _ysdk.adv.showRewardedVideo({
+                                callbacks: {
+                                    onRewarded: () => {
+                                        onRewarded?.(type);
+                                    },
+                                    onClose: () => {
+                                        _adLock = false;
+                                    },
+                                    onError: () => {
+                                        _adLock = false;
+                                    },
+                                },
+                            });
+                        } else _adSim(5, () => onRewarded?.(type));
+                    },
+                    submitScore(score) {
+                        if (!_ysdk_ready || !_ysdk) return;
+                        _ysdk
+                            .getLeaderboards()
+                            .then((lb) =>
+                                lb.setLeaderboardScore(
+                                    "miniSurvivorsMain",
+                                    score,
+                                ),
+                            )
+                            .catch(() => {});
+                    },
+                };
 
                 // ─────────────────────────────────────────────────────────────
                 // Helpers
@@ -2008,6 +2874,14 @@
                                         2,
                                     );
                                 Audio.collect();
+                                if (typeof texts !== "undefined")
+                                    texts.add(
+                                        o.x,
+                                        o.y - 14,
+                                        `+${o.value}`,
+                                        "#44ffaa",
+                                        11,
+                                    );
                                 this.pool.splice(i, 1);
                             }
                         }
@@ -2234,6 +3108,324 @@
                     };
                 })();
 
+                // ═══ СКИНЫ ПЕРСОНАЖА ═════════════════════════════════════
+                // ═══ СКИНЫ ПЕРСОНАЖА — форма + эффект орбит + шлейф ═══
+                // shape: "hex"|"diamond"|"triangle"|"cross"|"star"|"ring"
+                // trail: "dots"|"spiral"|"spark"|"pulse"|"chain"
+                // orbit: "ellipse"|"square"|"triangle"|"none"
+                const SKINS = [
+                    {
+                        id: "default",
+                        name: "ANTIVIRUS",
+                        nameRu: "АНТИВИРУС",
+                        cost: 0,
+                        coreCol: "#42f5d1",
+                        glowCol: "#48ffb8",
+                        trailCol: "#00b6ff",
+                        bulletCol: "#00eeff",
+                        bulletGlow: "#00aaff",
+                        shape: "hex",
+                        trail: "dots",
+                        orbit: "ellipse",
+                    },
+
+                    {
+                        id: "crimson",
+                        name: "CRIMSON CORE",
+                        nameRu: "КРИМЗОН ЯДРО",
+                        cost: 80,
+                        coreCol: "#ff3355",
+                        glowCol: "#ff0033",
+                        trailCol: "#cc0022",
+                        bulletCol: "#ff5577",
+                        bulletGlow: "#ff0033",
+                        shape: "diamond",
+                        trail: "spark",
+                        orbit: "square",
+                        ringCol: "#ff2244",
+                    },
+
+                    {
+                        id: "phantom",
+                        name: "PHANTOM",
+                        nameRu: "ФАНТОМ",
+                        cost: 120,
+                        coreCol: "#bb66ff",
+                        glowCol: "#9933ff",
+                        trailCol: "#7700ee",
+                        bulletCol: "#dd99ff",
+                        bulletGlow: "#8800ff",
+                        shape: "triangle",
+                        trail: "spiral",
+                        orbit: "triangle",
+                        alpha: 0.88,
+                        ringCol: "#aa44ff",
+                    },
+
+                    {
+                        id: "solar",
+                        name: "SOLAR FLARE",
+                        nameRu: "СОЛНЕЧНАЯ ВСПЫШКА",
+                        cost: 150,
+                        coreCol: "#ffcc00",
+                        glowCol: "#ff8800",
+                        trailCol: "#ff5500",
+                        bulletCol: "#ffee55",
+                        bulletGlow: "#ff9900",
+                        shape: "star",
+                        trail: "pulse",
+                        orbit: "ellipse",
+                        ringCol: "#ffaa00",
+                    },
+
+                    {
+                        id: "ghost",
+                        name: "GHOST UNIT",
+                        nameRu: "ПРИЗРАК",
+                        cost: 180,
+                        coreCol: "rgba(200,240,255,0.6)",
+                        glowCol: "#aaddff",
+                        trailCol: "#88ccff",
+                        bulletCol: "#ddf4ff",
+                        bulletGlow: "#55aaff",
+                        shape: "ring",
+                        trail: "chain",
+                        orbit: "none",
+                        alpha: 0.65,
+                        ringCol: "#88ccff",
+                    },
+
+                    {
+                        id: "nova",
+                        name: "NOVA PRIME",
+                        nameRu: "НОВА ПРАЙМ",
+                        cost: 250,
+                        coreCol: "#00ff88",
+                        glowCol: "#00ee66",
+                        trailCol: "#00cc44",
+                        bulletCol: "#55ffaa",
+                        bulletGlow: "#00dd66",
+                        shape: "cross",
+                        trail: "dots",
+                        orbit: "ellipse",
+                        ringCol: "#00ff88",
+                    },
+                ];
+
+                // Применяем скин к Player.draw — переопределяем цвета
+                function getActiveSkin() {
+                    const id = META.activeSkin || "default";
+                    return SKINS.find((s) => s.id === id) || SKINS[0];
+                }
+
+                // ═══ БИОМЫ ════════════════════════════════════════════════
+                const BIOMES = [
+                    {
+                        id: "server",
+                        name: "INFECTED SERVER",
+                        nameRu: "ЗАРАЖЁННЫЙ СЕРВЕР",
+                        bg: "#030508",
+                        grid: "rgba(40,160,255,0.06)",
+                        gridFill: "rgba(80,190,255,0.16)",
+                        fogColor: "0,2,18",
+                        nodeColor: "#1144cc",
+                        ambientCol: "#05070f",
+                    },
+                    {
+                        id: "core",
+                        name: "CORE NETWORK",
+                        nameRu: "ЯДРО СЕТИ",
+                        bg: "#0a0204",
+                        grid: "rgba(255,40,80,0.12)",
+                        gridFill: "rgba(255,60,60,0.22)",
+                        fogColor: "22,0,5",
+                        nodeColor: "#dd1144",
+                        ambientCol: "#100305",
+                    },
+                    {
+                        id: "ice",
+                        name: "CRYO SECTOR",
+                        nameRu: "КРИО-СЕКТОР",
+                        bg: "#030a14",
+                        grid: "rgba(80,200,255,0.13)",
+                        gridFill: "rgba(160,220,255,0.25)",
+                        fogColor: "0,10,26",
+                        nodeColor: "#44aaee",
+                        ambientCol: "#040d18",
+                    },
+                ];
+                let currentBiome = 0;
+                let biomeT = 0; // время в текущем биоме
+                let biomeFlashT = 0; // длительность перехода
+                const BIOME_DURATION = 45;
+
+                function tickBiome(dt) {
+                    biomeT += dt;
+                    if (biomeFlashT > 0) biomeFlashT -= dt;
+                    if (biomeT >= BIOME_DURATION) {
+                        biomeT = 0;
+                        currentBiome = (currentBiome + 1) % BIOMES.length;
+                        biomeFlashT = 1.2;
+                        const b = BIOMES[currentBiome];
+                        const name = currentLang === "ru" ? b.nameRu : b.name;
+                        UI.waveAlert(`⬡ ${name}`);
+                    }
+                }
+
+                // ═══ АРТЕФАКТЫ ═══════════════════════════════════════════
+                const ARTIFACT_POOL = [
+                    {
+                        id: "speedRing",
+                        nameEn: "SPEED RING",
+                        nameRu: "КОЛЬЦО СКОРОСТИ",
+                        col: "#00ccff",
+                        icon: "⬡",
+                        apply(p) {
+                            p.spd *= 1.15;
+                        },
+                        desc: "+15% speed (60s)",
+                    },
+                    {
+                        id: "dataCore",
+                        nameEn: "DATA CORE",
+                        nameRu: "ЯДРО ДАННЫХ",
+                        col: "#44ffaa",
+                        icon: "◈",
+                        apply(p) {
+                            p.xpMult = (p.xpMult || 1) * 2;
+                            setTimeout(() => (p.xpMult /= 2), 60000);
+                        },
+                        desc: "×2 XP 60s",
+                    },
+                    {
+                        id: "chaosCore",
+                        nameEn: "CHAOS CORE",
+                        nameRu: "ЯДРО ХАОСА",
+                        col: "#ff8833",
+                        icon: "⬟",
+                        apply(p) {
+                            p.dmg *= 1.35;
+                            p.maxHp *= 0.85;
+                            p.hp = Math.min(p.hp, p.maxHp);
+                        },
+                        desc: "+35% dmg, -15% HP",
+                    },
+                    {
+                        id: "shieldNode",
+                        nameEn: "SHIELD NODE",
+                        nameRu: "УЗЕЛ ЩИТА",
+                        col: "#aaddff",
+                        icon: "⬠",
+                        apply(p) {
+                            p.passiveShield = 1;
+                            p.shieldUsed = false;
+                        },
+                        desc: "Shield restored",
+                    },
+                    {
+                        id: "critNode",
+                        nameEn: "CRIT NODE",
+                        nameRu: "КРИТ-УЗЕЛ",
+                        col: "#ff4466",
+                        icon: "★",
+                        apply(p) {
+                            p.critChance = Math.min(0.7, p.critChance + 0.2);
+                        },
+                        desc: "+20% crit",
+                    },
+                ];
+
+                class ArtifactSystem {
+                    constructor() {
+                        this.items = [];
+                        this.nextSpawnT = 45;
+                        this.spawned = 0;
+                    }
+                    reset() {
+                        this.items = [];
+                        this.nextSpawnT = 45;
+                        this.spawned = 0;
+                    }
+                    update(dt, player, parts) {
+                        this.nextSpawnT -= dt;
+                        if (this.nextSpawnT <= 0 && this.spawned < 2) {
+                            this.spawned++;
+                            this.nextSpawnT = 90;
+                            const art =
+                                ARTIFACT_POOL[
+                                    Math.floor(
+                                        Math.random() * ARTIFACT_POOL.length,
+                                    )
+                                ];
+                            const ang = Math.random() * Math.PI * 2;
+                            const r = 200 + Math.random() * 400;
+                            this.items.push({
+                                ...art,
+                                x: player.x + Math.cos(ang) * r,
+                                y: player.y + Math.sin(ang) * r,
+                                pulse: 0,
+                            });
+                        }
+                        for (let i = this.items.length - 1; i >= 0; i--) {
+                            const a = this.items[i];
+                            a.pulse += dt * 2.5;
+                            const d = Math.hypot(
+                                player.x - a.x,
+                                player.y - a.y,
+                            );
+                            if (d < player.r + 18) {
+                                a.apply(player);
+                                const name =
+                                    currentLang === "ru" ? a.nameRu : a.nameEn;
+                                UI.toast(`◈ ${name}`);
+                                if (parts)
+                                    parts.emit(a.x, a.y, 16, a.col, 7, 0.55, 3);
+                                this.items.splice(i, 1);
+                            }
+                        }
+                    }
+                    draw(ctx, cx, cy) {
+                        for (const a of this.items) {
+                            const sx = a.x - cx,
+                                sy = a.y - cy;
+                            if (
+                                sx < -60 ||
+                                sy < -60 ||
+                                sx > ctx.canvas.width + 60 ||
+                                sy > ctx.canvas.height + 60
+                            )
+                                continue;
+                            const pulse = 0.7 + 0.3 * Math.sin(a.pulse);
+                            ctx.save();
+                            ctx.shadowBlur = 18 * pulse;
+                            ctx.shadowColor = a.col;
+                            ctx.strokeStyle = a.col;
+                            ctx.lineWidth = 2;
+                            // Вращающийся ромб
+                            ctx.translate(sx, sy);
+                            ctx.rotate(a.pulse * 0.4);
+                            ctx.beginPath();
+                            ctx.moveTo(0, -16 * pulse);
+                            ctx.lineTo(11 * pulse, 0);
+                            ctx.lineTo(0, 16 * pulse);
+                            ctx.lineTo(-11 * pulse, 0);
+                            ctx.closePath();
+                            ctx.stroke();
+                            ctx.restore();
+                            // Внутренняя точка
+                            ctx.shadowBlur = 10;
+                            ctx.shadowColor = a.col;
+                            ctx.fillStyle = a.col;
+                            ctx.globalAlpha = 0.9;
+                            ctx.beginPath();
+                            ctx.arc(sx, sy, 4, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.globalAlpha = 1;
+                            ctx.shadowBlur = 0;
+                        }
+                    }
+                }
+
                 const CLASSES = {
                     antivirus: {
                         name: "ANTIVIRUS",
@@ -2343,7 +3535,11 @@
                             this.hp = 1;
                             this.iframes = 2.0;
                             this.hitFlash = 0.45;
-                            UI.toast("PASSIVE SHIELD SAVED YOU");
+                            UI.toast(
+                                currentLang === "ru"
+                                    ? "ПАССИВНЫЙ ЩИТ СПАС ВАС"
+                                    : "PASSIVE SHIELD SAVED YOU",
+                            );
                             return true;
                         }
                         const reduced = Math.round(
@@ -2394,6 +3590,42 @@
                         const dmg = this.dmg * (crit ? 2 : 1);
                         this.hitEnemy(nearest, dmg, parts, crit, enemies);
                         this.atkCd = 1 / this.atkRate;
+                        // Спавним визуальный снаряд к ближайшему врагу
+                        if (typeof playerBullets !== "undefined") {
+                            const skin =
+                                typeof META !== "undefined" && META.activeSkin
+                                    ? SKINS.find(
+                                          (s) => s.id === META.activeSkin,
+                                      ) || SKINS[0]
+                                    : SKINS[0];
+                            const pdx = nearest.x - this.x,
+                                pdy = nearest.y - this.y;
+                            const pd = Math.hypot(pdx, pdy) || 1;
+                            const bspd = (this.bulletSpd || 1) * 480;
+                            const shots = Math.min(this.multishot || 1, 5);
+                            for (let si = 0; si < shots; si++) {
+                                const spread =
+                                    shots > 1
+                                        ? (si - (shots - 1) / 2) * 0.18
+                                        : 0;
+                                const ca = Math.atan2(pdy, pdx) + spread;
+                                playerBullets.push({
+                                    x: this.x,
+                                    y: this.y,
+                                    vx: Math.cos(ca) * bspd,
+                                    vy: Math.sin(ca) * bspd,
+                                    targetId: nearest,
+                                    dmg,
+                                    crit,
+                                    life: 0.38,
+                                    r: crit ? 6 : 4,
+                                    col: skin.bulletCol || "#00eeff",
+                                    glow: skin.bulletGlow || "#00aaff",
+                                    piercing: this.piercing || 0,
+                                    pierced: [],
+                                });
+                            }
+                        }
                         return { enemy: nearest, dmg, crit };
                     }
                     hitEnemy(enemy, dmg, parts, crit, enemies) {
@@ -2591,24 +3823,85 @@
                     draw(ctx, cx, cy) {
                         const sx = this.x - cx,
                             sy = this.y - cy;
-                        for (const t of this.trail) {
-                            ctx.globalAlpha = (t.t / 0.18) * 0.24;
-                            ctx.fillStyle = "#00b6ff";
-                            ctx.beginPath();
-                            ctx.arc(
-                                t.x - cx,
-                                t.y - cy,
-                                this.r * 0.48,
-                                0,
-                                Math.PI * 2,
-                            );
-                            ctx.fill();
+                        const _skin = getActiveSkin();
+                        const _alpha = _skin.alpha || 1;
+                        const _trailType = _skin.trail || "dots";
+                        const _tc = _skin.trailCol || "#00b6ff";
+                        // Шлейф — тип зависит от скина
+                        for (let ti = 0; ti < this.trail.length; ti++) {
+                            const t = this.trail[ti];
+                            const tf = t.t / 0.18;
+                            const tsx = t.x - cx,
+                                tsy = t.y - cy;
+                            ctx.globalAlpha = tf * 0.28 * _alpha;
+                            if (_trailType === "dots") {
+                                ctx.fillStyle = _tc;
+                                ctx.beginPath();
+                                ctx.arc(
+                                    tsx,
+                                    tsy,
+                                    this.r * 0.42,
+                                    0,
+                                    Math.PI * 2,
+                                );
+                                ctx.fill();
+                            } else if (_trailType === "spark") {
+                                // Линии-искры
+                                ctx.strokeStyle = _tc;
+                                ctx.lineWidth = 1.5;
+                                const sa =
+                                    (ti / this.trail.length) * Math.PI * 2;
+                                ctx.beginPath();
+                                ctx.moveTo(tsx, tsy);
+                                ctx.lineTo(
+                                    tsx + Math.cos(sa) * this.r * 0.6 * tf,
+                                    tsy + Math.sin(sa) * this.r * 0.6 * tf,
+                                );
+                                ctx.stroke();
+                            } else if (_trailType === "spiral") {
+                                // Уменьшающиеся ромбы
+                                ctx.fillStyle = _tc;
+                                const sz = this.r * 0.38 * tf;
+                                ctx.save();
+                                ctx.translate(tsx, tsy);
+                                ctx.rotate(ti * 0.45);
+                                ctx.beginPath();
+                                ctx.moveTo(0, -sz);
+                                ctx.lineTo(sz, 0);
+                                ctx.lineTo(0, sz);
+                                ctx.lineTo(-sz, 0);
+                                ctx.closePath();
+                                ctx.fill();
+                                ctx.restore();
+                            } else if (_trailType === "pulse") {
+                                // Расширяющиеся кольца
+                                ctx.strokeStyle = _tc;
+                                ctx.lineWidth = 1.2;
+                                ctx.beginPath();
+                                ctx.arc(
+                                    tsx,
+                                    tsy,
+                                    this.r * (0.3 + (1 - tf) * 0.5),
+                                    0,
+                                    Math.PI * 2,
+                                );
+                                ctx.stroke();
+                            } else if (_trailType === "chain") {
+                                // Маленькие квадраты
+                                ctx.fillStyle = _tc;
+                                const sz = this.r * 0.28 * tf;
+                                ctx.save();
+                                ctx.translate(tsx, tsy);
+                                ctx.rotate(ti * 0.3);
+                                ctx.fillRect(-sz, -sz, sz * 2, sz * 2);
+                                ctx.restore();
+                            }
                         }
                         ctx.globalAlpha = 1;
                         const hpRatio = clamp(this.hp / this.maxHp, 0, 1);
                         const core =
                             hpRatio > 0.6
-                                ? "#42f5d1"
+                                ? _skin.coreCol || "#42f5d1"
                                 : hpRatio > 0.3
                                   ? "#48a6ff"
                                   : "#ff4b6b";
@@ -2616,32 +3909,79 @@
                             1 + Math.sin(performance.now() * 0.007) * 0.05;
                         const glow =
                             hpRatio > 0.6
-                                ? "#48ffb8"
+                                ? _skin.glowCol || "#48ffb8"
                                 : hpRatio > 0.3
                                   ? "#00b6ff"
                                   : "#ff3355";
-                        ctx.strokeStyle = "rgba(140,235,255,0.55)";
-                        ctx.lineWidth = 1.3;
-                        for (let i = 0; i < 2; i++) {
-                            ctx.save();
-                            ctx.translate(sx, sy);
-                            ctx.rotate(
-                                performance.now() * 0.0013 * (i ? -1 : 1) +
-                                    i * 1.2,
-                            );
-                            ctx.beginPath();
-                            ctx.ellipse(
-                                0,
-                                0,
-                                this.r * 1.55,
-                                this.r * 0.62,
-                                0,
-                                0,
-                                Math.PI * 2,
-                            );
-                            ctx.stroke();
-                            ctx.restore();
+                        const _t = performance.now();
+                        const _shape = _skin.shape || "hex";
+                        const _orbitStyle = _skin.orbit || "ellipse";
+                        const _ringCol = _skin.ringCol || glow;
+
+                        // ─── Орбитальные кольца (зависят от скина) ───────────
+                        if (_orbitStyle !== "none") {
+                            ctx.globalAlpha = _alpha * 0.65;
+                            ctx.strokeStyle = _ringCol + "99";
+                            ctx.lineWidth = 1.2;
+                            if (_orbitStyle === "ellipse") {
+                                for (let i = 0; i < 2; i++) {
+                                    ctx.save();
+                                    ctx.translate(sx, sy);
+                                    ctx.rotate(
+                                        _t * 0.0013 * (i ? -1 : 1) + i * 1.2,
+                                    );
+                                    ctx.beginPath();
+                                    ctx.ellipse(
+                                        0,
+                                        0,
+                                        this.r * 1.55,
+                                        this.r * 0.62,
+                                        0,
+                                        0,
+                                        Math.PI * 2,
+                                    );
+                                    ctx.stroke();
+                                    ctx.restore();
+                                }
+                            } else if (_orbitStyle === "square") {
+                                ctx.save();
+                                ctx.translate(sx, sy);
+                                ctx.rotate(_t * 0.001);
+                                const rs = this.r * 1.4;
+                                ctx.strokeRect(-rs, -rs, rs * 2, rs * 2);
+                                ctx.restore();
+                                ctx.save();
+                                ctx.translate(sx, sy);
+                                ctx.rotate(-_t * 0.0008 + Math.PI / 4);
+                                ctx.strokeRect(
+                                    -rs * 0.75,
+                                    -rs * 0.75,
+                                    rs * 1.5,
+                                    rs * 1.5,
+                                );
+                                ctx.restore();
+                            } else if (_orbitStyle === "triangle") {
+                                ctx.save();
+                                ctx.translate(sx, sy);
+                                ctx.rotate(_t * 0.0012);
+                                const rt = this.r * 1.6;
+                                ctx.beginPath();
+                                for (let i = 0; i < 3; i++) {
+                                    const a =
+                                        (i / 3) * Math.PI * 2 - Math.PI / 2;
+                                    ctx[i ? "lineTo" : "moveTo"](
+                                        Math.cos(a) * rt,
+                                        Math.sin(a) * rt,
+                                    );
+                                }
+                                ctx.closePath();
+                                ctx.stroke();
+                                ctx.restore();
+                            }
+                            ctx.globalAlpha = 1;
                         }
+
+                        // ─── Атак-радиус ─────────────────────────────────────
                         if (this.atkCd < 0.12) {
                             ctx.strokeStyle = `rgba(255,120,80,${0.22 * (1 - this.atkCd / 0.12)})`;
                             ctx.lineWidth = 1.4;
@@ -2649,34 +3989,113 @@
                             ctx.arc(sx, sy, this.atkR, 0, Math.PI * 2);
                             ctx.stroke();
                         }
-                        ctx.shadowBlur = this.hitFlash > 0 ? 28 : 20;
+
+                        // ─── Основная форма персонажа ─────────────────────────
+                        ctx.shadowBlur = this.hitFlash > 0 ? 28 : 22;
                         ctx.shadowColor = this.hitFlash > 0 ? "#ff3355" : glow;
                         ctx.fillStyle = this.hitFlash > 0 ? "#ff4d6d" : core;
+                        ctx.globalAlpha = _alpha;
                         ctx.beginPath();
-                        for (let i = 0; i < 6; i++) {
-                            const a =
-                                (i / 6) * Math.PI * 2 +
-                                this.angle +
-                                Math.PI / 6;
+                        if (_shape === "hex") {
+                            for (let i = 0; i < 6; i++) {
+                                const a =
+                                    (i / 6) * Math.PI * 2 +
+                                    this.angle +
+                                    Math.PI / 6;
+                                const rr = this.r * pulse;
+                                ctx[i ? "lineTo" : "moveTo"](
+                                    sx + Math.cos(a) * rr,
+                                    sy + Math.sin(a) * rr,
+                                );
+                            }
+                        } else if (_shape === "diamond") {
                             const rr = this.r * pulse;
-                            ctx[i ? "lineTo" : "moveTo"](
-                                sx + Math.cos(a) * rr,
-                                sy + Math.sin(a) * rr,
+                            ctx.moveTo(sx, sy - rr * 1.25);
+                            ctx.lineTo(sx + rr, sy);
+                            ctx.lineTo(sx, sy + rr * 1.25);
+                            ctx.lineTo(sx - rr, sy);
+                        } else if (_shape === "triangle") {
+                            const rr = this.r * pulse;
+                            const aBase = this.angle - Math.PI / 2;
+                            ctx.moveTo(
+                                sx + Math.cos(aBase) * rr * 1.3,
+                                sy + Math.sin(aBase) * rr * 1.3,
                             );
+                            ctx.lineTo(
+                                sx + Math.cos(aBase + 2.2) * rr,
+                                sy + Math.sin(aBase + 2.2) * rr,
+                            );
+                            ctx.lineTo(
+                                sx + Math.cos(aBase - 2.2) * rr,
+                                sy + Math.sin(aBase - 2.2) * rr,
+                            );
+                        } else if (_shape === "star") {
+                            const rOut = this.r * pulse,
+                                rIn = this.r * 0.45 * pulse;
+                            for (let i = 0; i < 10; i++) {
+                                const a =
+                                    (i / 10) * Math.PI * 2 +
+                                    this.angle -
+                                    Math.PI / 2;
+                                const r = i % 2 === 0 ? rOut : rIn;
+                                ctx[i ? "lineTo" : "moveTo"](
+                                    sx + Math.cos(a) * r,
+                                    sy + Math.sin(a) * r,
+                                );
+                            }
+                        } else if (_shape === "cross") {
+                            const rr = this.r * pulse,
+                                w = rr * 0.38;
+                            ctx.moveTo(sx - w, sy - rr);
+                            ctx.lineTo(sx + w, sy - rr);
+                            ctx.lineTo(sx + w, sy - w);
+                            ctx.lineTo(sx + rr, sy - w);
+                            ctx.lineTo(sx + rr, sy + w);
+                            ctx.lineTo(sx + w, sy + w);
+                            ctx.lineTo(sx + w, sy + rr);
+                            ctx.lineTo(sx - w, sy + rr);
+                            ctx.lineTo(sx - w, sy + w);
+                            ctx.lineTo(sx - rr, sy + w);
+                            ctx.lineTo(sx - rr, sy - w);
+                            ctx.lineTo(sx - w, sy - w);
+                        } else if (_shape === "ring") {
+                            ctx.arc(sx, sy, this.r * pulse, 0, Math.PI * 2);
+                            ctx.closePath();
+                            ctx.fill();
+                            ctx.globalAlpha = 1;
+                            ctx.fillStyle = "rgba(0,0,0,0.85)";
+                            ctx.beginPath();
+                            ctx.arc(
+                                sx,
+                                sy,
+                                this.r * pulse * 0.55,
+                                0,
+                                Math.PI * 2,
+                            );
+                        } else {
+                            ctx.arc(sx, sy, this.r * pulse, 0, Math.PI * 2);
                         }
                         ctx.closePath();
                         ctx.fill();
+                        ctx.globalAlpha = 1;
                         ctx.shadowBlur = 0;
-                        ctx.fillStyle = "#fff";
-                        ctx.beginPath();
-                        ctx.arc(
-                            sx + Math.cos(this.angle) * this.r * 0.45,
-                            sy + Math.sin(this.angle) * this.r * 0.45,
-                            4.5 + 1.2 * pulse,
-                            0,
-                            Math.PI * 2,
-                        );
-                        ctx.fill();
+
+                        // ─── Центральная точка (направление) ─────────────────
+                        if (_shape !== "ring") {
+                            ctx.fillStyle = "#fff";
+                            ctx.shadowBlur = 8;
+                            ctx.shadowColor = glow;
+                            ctx.beginPath();
+                            ctx.arc(
+                                sx + Math.cos(this.angle) * this.r * 0.42,
+                                sy + Math.sin(this.angle) * this.r * 0.42,
+                                3.8 + 1.0 * pulse,
+                                0,
+                                Math.PI * 2,
+                            );
+                            ctx.fill();
+                            ctx.shadowBlur = 0;
+                        }
                         if (this.orbitals > 0) {
                             for (let i = 0; i < this.orbitals; i++) {
                                 const a =
@@ -2693,6 +4112,30 @@
                             }
                             ctx.shadowBlur = 0;
                         }
+                        // ── Комбо-счётчик над персонажем ─────────────────────
+                        if (this.combo >= 5) {
+                            const comboCol =
+                                this.combo >= 20
+                                    ? "#ffdd55"
+                                    : this.combo >= 10
+                                      ? "#ff8833"
+                                      : "#00ccff";
+                            const comboScale =
+                                1 + Math.min(0.5, this.combo * 0.018);
+                            ctx.save();
+                            ctx.translate(sx, sy - this.r - 20);
+                            ctx.scale(comboScale, comboScale);
+                            ctx.shadowBlur = 10;
+                            ctx.shadowColor = comboCol;
+                            ctx.fillStyle = comboCol;
+                            ctx.globalAlpha = 0.9;
+                            ctx.font = `bold ${Math.floor(9 + this.combo * 0.25)}px "Courier New"`;
+                            ctx.textAlign = "center";
+                            ctx.fillText(`×${this.combo}`, 0, 0);
+                            ctx.restore();
+                            ctx.shadowBlur = 0;
+                            ctx.globalAlpha = 1;
+                        }
                     }
                 }
 
@@ -2705,7 +4148,7 @@
                         this.hp = this.maxHp;
                         this.spd = 84 + wave * 2.2;
                         this.dmg = 9 + wave * 0.3;
-                        this.xpVal = 10;
+                        this.xpVal = 12;
                         this.color = "#ff3344";
                         this.glow = "#ff0000";
                         this.angle = 0;
@@ -2823,7 +4266,7 @@
                         this.spd = (mini ? 245 : 170) + wave * 3;
                         this.dmg = mini ? 4 : 6;
                         this.r = mini ? 9 : 11;
-                        this.xpVal = mini ? 5 : 7;
+                        this.xpVal = mini ? 5 : 9;
                         this.color = mini ? "#ff7ab8" : "#cc2288";
                         this.glow = "#ff00aa";
                         this.zz = Math.random() * Math.PI * 2;
@@ -2925,7 +4368,7 @@
                         this.spd = 58;
                         this.dmg = 4;
                         this.r = 15;
-                        this.xpVal = 22;
+                        this.xpVal = 18;
                         this.color = "#1a3055";
                         this.glow = "#3388ff";
                         this.prefDist = 210 + Math.random() * 80;
@@ -3096,7 +4539,7 @@
                         this.spd = 102 + wave * 2;
                         this.dmg = 7;
                         this.r = 14;
-                        this.xpVal = 16;
+                        this.xpVal = 22;
                         this.color = "#ff9966";
                         this.glow = "#ffbb66";
                         this.split = true;
@@ -3175,7 +4618,7 @@
                         this.dmg = 10 + wave * 0.4;
                         this.color = "#8b0000";
                         this.glow = "#cc2200";
-                        this.xpVal = 35;
+                        this.xpVal = 55;
                     }
                     update(dt, player, world, enemies) {
                         if (this.deathT >= 0) {
@@ -3271,7 +4714,7 @@
                         this.dmg = 6 + wave * 0.25;
                         this.color = "#aa22ff";
                         this.glow = "#cc44ff";
-                        this.xpVal = 22;
+                        this.xpVal = 26;
                         this.dashCd = 1.5 + Math.random();
                         this.dashing = false;
                         this.dashVx = 0;
@@ -3384,7 +4827,7 @@
                         this.dmg = 7 + wave * 0.25;
                         this.color = "#ff7700";
                         this.glow = "#ff9922";
-                        this.xpVal = 24;
+                        this.xpVal = 30;
                         this.fireCd = 0.8 + Math.random();
                     }
                     update(dt, player, world, enemies, enemyBullets) {
@@ -3499,7 +4942,7 @@
                         this.spd = Math.min(108, 68 + bossNum * 5);
                         this.dmg = 11 + wave * 0.3 + bossNum * 0.9;
                         this.r = 34;
-                        this.xpVal = Math.round(120 * (1 + bossNum * 0.15));
+                        this.xpVal = Math.round(180 * (1 + bossNum * 0.2));
                         this.color = [
                             "#d95eff",
                             "#ff5d7d",
@@ -3537,7 +4980,11 @@
                             this.dmg *= 1.4;
                             this.color = "#ff2222";
                             this.glow = "#ff0000";
-                            UI.waveAlert("⚠ BOSS PHASE 2");
+                            UI.waveAlert(
+                                currentLang === "ru"
+                                    ? "⚠ БОСС ФАЗА 2"
+                                    : "⚠ BOSS PHASE 2",
+                            );
                             Audio.enrage();
                             // Вспышка + клоны
                             this.projs.push({
@@ -3635,7 +5082,11 @@
                                             0,
                                         ),
                                     );
-                                UI.toast("MINI-BOSS SUMMONED MINIONS");
+                                UI.toast(
+                                    currentLang === "ru"
+                                        ? "БОСС ПРИЗВАЛ МИНЬОНОВ"
+                                        : "MINI-BOSS SUMMONED MINIONS",
+                                );
                             }
                         } else if (this.variant === 3) {
                             // SNIPER: останавливается, точный залп 3 снарядов
@@ -3798,56 +5249,56 @@
                 // ═══ SVG-ИКОНКИ (монохромный sci-fi геометрик стиль) ════
                 // viewBox 0 0 48 48, stroke=currentColor, fill=none
                 const ICONS = {
-                    dmg: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    dmg: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="8" y1="40" x2="32" y2="8"/><line x1="32" y1="8" x2="40" y2="16"/>
                         <line x1="40" y1="16" x2="28" y2="12"/><line x1="32" y1="8" x2="36" y2="20"/>
                         <line x1="8" y1="40" x2="16" y2="32"/><circle cx="10" cy="38" r="3" fill="currentColor" stroke="none"/>
                         <line x1="14" y1="34" x2="22" y2="26"/>
                     </svg>`,
-                    spd: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    spd: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <polyline points="6,16 20,16 14,24 28,24 20,32 36,32"/>
                         <polyline points="32,12 42,24 32,36"/>
                         <line x1="36" y1="24" x2="42" y2="24"/>
                     </svg>`,
-                    rate: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    rate: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <polyline points="4,28 10,28 14,14 18,34 22,20 26,30 30,24 34,28 44,28"/>
                         <line x1="24" y1="8" x2="24" y2="12"/>
                         <line x1="24" y1="36" x2="24" y2="40"/>
                     </svg>`,
-                    hp: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    hp: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <line x1="24" y1="8" x2="24" y2="40"/>
                         <line x1="8" y1="24" x2="40" y2="24"/>
                         <circle cx="24" cy="24" r="14" stroke-dasharray="6 4"/>
                         <circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>
                     </svg>`,
-                    reach: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    reach: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="6"/>
                         <line x1="24" y1="4" x2="24" y2="14"/><line x1="24" y1="34" x2="24" y2="44"/>
                         <line x1="4" y1="24" x2="14" y2="24"/><line x1="34" y1="24" x2="44" y2="24"/>
                         <line x1="24" y1="24" x2="36" y2="12" stroke-dasharray="3 3"/>
                     </svg>`,
-                    crit: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    crit: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <polygon points="24,6 30,18 44,18 33,27 37,41 24,32 11,41 15,27 4,18 18,18"/>
                         <circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>
                     </svg>`,
-                    leech: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    leech: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <path d="M24 8 C24 8 10 18 10 28 C10 36 16 42 24 42 C32 42 38 36 38 28 C38 18 24 8 24 8Z"/>
                         <line x1="24" y1="18" x2="24" y2="34"/><polyline points="17,27 24,34 31,27"/>
                     </svg>`,
-                    nova: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    nova: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <circle cx="24" cy="24" r="8"/>
                         <line x1="24" y1="6" x2="24" y2="14"/><line x1="24" y1="34" x2="24" y2="42"/>
                         <line x1="6" y1="24" x2="14" y2="24"/><line x1="34" y1="24" x2="42" y2="24"/>
                         <line x1="11" y1="11" x2="17" y2="17"/><line x1="31" y1="31" x2="37" y2="37"/>
                         <line x1="37" y1="11" x2="31" y2="17"/><line x1="11" y1="37" x2="17" y2="31"/>
                     </svg>`,
-                    orbitals: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    orbitals: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <circle cx="24" cy="24" r="5" fill="currentColor" stroke="none"/>
                         <ellipse cx="24" cy="24" rx="18" ry="8" transform="rotate(-30 24 24)"/>
                         <ellipse cx="24" cy="24" rx="18" ry="8" transform="rotate(30 24 24)"/>
                         <circle cx="36" cy="16" r="3" fill="currentColor" stroke="none"/>
                     </svg>`,
-                    orbitMore: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    orbitMore: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>
                         <ellipse cx="24" cy="24" rx="16" ry="7"/>
                         <ellipse cx="24" cy="24" rx="16" ry="7" transform="rotate(60 24 24)"/>
@@ -3855,7 +5306,7 @@
                         <circle cx="38" cy="19" r="2.5" fill="currentColor" stroke="none"/>
                         <circle cx="10" cy="19" r="2.5" fill="currentColor" stroke="none"/>
                     </svg>`,
-                    aura: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    aura: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <circle cx="24" cy="24" r="6" fill="currentColor" stroke="none"/>
                         <circle cx="24" cy="24" r="11" stroke-dasharray="5 3"/>
                         <circle cx="24" cy="24" r="17" stroke-dasharray="4 5"/>
@@ -3866,11 +5317,11 @@
                         <line x1="8" y1="10" x2="16" y2="10"/><line x1="32" y1="10" x2="40" y2="10"/>
                         <line x1="12" y1="38" x2="12" y2="42"/><line x1="36" y1="38" x2="36" y2="42"/>
                     </svg>`,
-                    shield: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    shield: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <path d="M24 6 L40 12 L40 26 C40 35 32 42 24 44 C16 42 8 35 8 26 L8 12 Z"/>
                         <polyline points="16,24 21,29 32,18"/>
                     </svg>`,
-                    chain: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    chain: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
                         <circle cx="12" cy="36" r="5"/><circle cx="24" cy="24" r="5"/><circle cx="36" cy="12" r="5"/>
                         <line x1="16" y1="32" x2="20" y2="28"/>
                         <line x1="28" y1="20" x2="32" y2="16"/>
@@ -3887,6 +5338,7 @@
                         id: "dmg",
                         icon: "dmg",
                         name: "OVERCLOCK",
+                        nameRu: "РАЗГОН",
                         desc: "+35% damage",
                         tier: "red",
                         apply(p) {
@@ -3897,6 +5349,7 @@
                         id: "spd",
                         icon: "spd",
                         name: "PHASE DRIVE",
+                        nameRu: "ФАЗОВЫЙ ПРИВОД",
                         desc: "+25% speed",
                         tier: "blue",
                         apply(p) {
@@ -3907,6 +5360,7 @@
                         id: "rate",
                         icon: "rate",
                         name: "PULSE LOOP",
+                        nameRu: "ПУЛЬС-ПЕТЛЯ",
                         desc: "+40% attack speed",
                         tier: "violet",
                         apply(p) {
@@ -3917,6 +5371,7 @@
                         id: "hp",
                         icon: "hp",
                         name: "INTEGRITY PATCH",
+                        nameRu: "ЗАПЛАТКА HP",
                         desc: "+40 max HP and heal",
                         tier: "green",
                         apply(p) {
@@ -3928,6 +5383,7 @@
                         id: "reach",
                         icon: "reach",
                         name: "TARGET MATRIX",
+                        nameRu: "МАТРИЦА ЦЕЛИ",
                         desc: "+30% attack range",
                         tier: "cyan",
                         apply(p) {
@@ -3938,6 +5394,7 @@
                         id: "crit",
                         icon: "crit",
                         name: "CRITICAL CORE",
+                        nameRu: "КРИТ-ЯДРО",
                         desc: "Critical hits enabled",
                         tier: "red",
                         apply(p) {
@@ -3950,6 +5407,7 @@
                         id: "leech",
                         icon: "leech",
                         name: "BLOOD LINK",
+                        nameRu: "КРОВНАЯ СВЯЗЬ",
                         desc: "+6% lifesteal",
                         tier: "violet",
                         apply(p) {
@@ -3960,6 +5418,7 @@
                         id: "nova",
                         icon: "nova",
                         name: "NOVA LATTICE",
+                        nameRu: "НОВА-СЕТЬ",
                         desc: "+35% overheat gain",
                         tier: "blue",
                         apply(p) {
@@ -3970,6 +5429,7 @@
                         id: "orbitals",
                         icon: "orbitals",
                         name: "ORBITAL WEAPON",
+                        nameRu: "ОРБИТАЛЬНОЕ ОРУ",
                         desc: "Unlock orbiting satellites",
                         tier: "cyan",
                         apply(p) {
@@ -3981,6 +5441,7 @@
                         id: "orbitMore",
                         icon: "orbitMore",
                         name: "ORBITAL ARRAY",
+                        nameRu: "ОРБИТАЛЬНЫЙ МАС",
                         desc: "+1 orbit and more damage",
                         tier: "cyan",
                         apply(p) {
@@ -3992,6 +5453,7 @@
                         id: "aura",
                         icon: "aura",
                         name: "AURA FIELD",
+                        nameRu: "ПОЛЕ АУРЫ",
                         desc: "Passive damage aura",
                         tier: "green",
                         apply(p) {
@@ -4002,6 +5464,7 @@
                         id: "magnet",
                         icon: "magnet",
                         name: "DATA MAGNET",
+                        nameRu: "МАГНИТ ДАННЫХ",
                         desc: "XP pickup range expands",
                         tier: "blue",
                         apply(p) {
@@ -4012,6 +5475,7 @@
                         id: "shield",
                         icon: "shield",
                         name: "SECOND SKIN",
+                        nameRu: "ВТОРАЯ КОЖА",
                         desc: "One death shield",
                         tier: "green",
                         apply(p) {
@@ -4022,6 +5486,7 @@
                         id: "chain",
                         icon: "chain",
                         name: "CHAIN LIGHTNING",
+                        nameRu: "ЦЕПНАЯ МОЛНИЯ",
                         desc: "Jump attacks to 2–3 enemies",
                         tier: "red",
                         apply(p) {
@@ -4038,7 +5503,9 @@
                         tier: "red",
                         icon: "dmg",
                         name: "MULTISHOT",
+                        nameRu: "МУЛЬТИВЫСТРЕЛ",
                         descFn: (s) => `Fire ${1 + s} bullets per attack`,
+                        descFnRu: (s) => `Выпускает ${1 + s} пули за атаку`,
                         apply(p, s) {
                             p.multishot = 1 + s;
                         },
@@ -4048,8 +5515,11 @@
                         tier: "red",
                         icon: "chain",
                         name: "PIERCING",
+                        nameRu: "ПРОБОЙ",
                         descFn: (s) =>
                             `Bullets pierce ${s} enem${s > 1 ? "ies" : "y"}`,
+                        descFnRu: (s) =>
+                            `Пули пробивают ${s} враг${s > 1 ? "ов" : "а"}`,
                         apply(p, s) {
                             p.piercing = s;
                         },
@@ -4059,7 +5529,9 @@
                         tier: "red",
                         icon: "crit",
                         name: "CRIT CORE",
+                        nameRu: "КРИТ ЯДРО",
                         descFn: (s) => `+${[18, 12, 8][s - 1]}% crit chance`,
+                        descFnRu: (s) => `+${[18, 12, 8][s - 1]}% шанс крита`,
                         apply(p, s) {
                             p.critChance =
                                 (p.critChance || 0) + [0.18, 0.12, 0.08][s - 1];
@@ -4070,7 +5542,10 @@
                         tier: "violet",
                         icon: "leech",
                         name: "LIFESTEAL",
+                        nameRu: "ВАМПИРИЗМ",
                         descFn: (s) => `+${[6, 4, 3][s - 1]}% lifesteal on hit`,
+                        descFnRu: (s) =>
+                            `+${[6, 4, 3][s - 1]}% вампиризм за удар`,
                         apply(p, s) {
                             p.lifeSteal =
                                 (p.lifeSteal || 0) + [0.06, 0.04, 0.03][s - 1];
@@ -4081,7 +5556,10 @@
                         tier: "violet",
                         icon: "nova",
                         name: "OVERCHARGE",
+                        nameRu: "ПЕРЕЗАРЯД",
                         descFn: (s) => `+${[35, 22, 14][s - 1]}% overheat gain`,
+                        descFnRu: (s) =>
+                            `+${[35, 22, 14][s - 1]}% заряд оверхита`,
                         apply(p, s) {
                             p.overheatGain *= 1 + [0.35, 0.22, 0.14][s - 1];
                         },
@@ -4091,8 +5569,11 @@
                         tier: "violet",
                         icon: "rate",
                         name: "BERSERKER",
+                        nameRu: "БЕРСЕРК",
                         descFn: (s) =>
                             `+${[30, 20, 12][s - 1]}% atk spd, -${[8, 5, 3][s - 1]}% maxHP`,
+                        descFnRu: (s) =>
+                            `+${[30, 20, 12][s - 1]}% скорость атаки, -${[8, 5, 3][s - 1]}% макс HP`,
                         apply(p, s) {
                             p.atkRate *= 1 + [0.3, 0.2, 0.12][s - 1];
                             p.maxHp *= 1 - [0.08, 0.05, 0.03][s - 1];
@@ -4104,7 +5585,10 @@
                         tier: "blue",
                         icon: "spd",
                         name: "SPEED MATRIX",
+                        nameRu: "МАТРИЦА СКОРОСТИ",
                         descFn: (s) => `+${[22, 14, 9][s - 1]}% move speed`,
+                        descFnRu: (s) =>
+                            `+${[22, 14, 9][s - 1]}% скорость движения`,
                         apply(p, s) {
                             p.spd *= 1 + [0.22, 0.14, 0.09][s - 1];
                         },
@@ -4114,8 +5598,11 @@
                         tier: "blue",
                         icon: "magnet",
                         name: "MAGNET FIELD",
+                        nameRu: "МАГНИТНОЕ ПОЛЕ",
                         descFn: (s) =>
                             `XP radius ×${[1.4, 1.25, 1.15][s - 1].toFixed(2)}`,
+                        descFnRu: (s) =>
+                            `Радиус XP ×${[1.4, 1.25, 1.15][s - 1].toFixed(2)}`,
                         apply(p, s) {
                             p.passiveMagnet =
                                 (p.passiveMagnet || 1) *
@@ -4127,7 +5614,10 @@
                         tier: "blue",
                         icon: "reach",
                         name: "CDR",
+                        nameRu: "СНИЖЕНИЕ КД",
                         descFn: (s) => `Atk cooldown -${[25, 16, 10][s - 1]}%`,
+                        descFnRu: (s) =>
+                            `Перезарядка атаки -${[25, 16, 10][s - 1]}%`,
                         apply(p, s) {
                             p.atkRate *= 1 + [0.25, 0.16, 0.1][s - 1];
                         },
@@ -4137,7 +5627,10 @@
                         tier: "cyan",
                         icon: "reach",
                         name: "TARGET MATRIX",
+                        nameRu: "МАТРИЦА ПРИЦЕЛА",
                         descFn: (s) => `+${[30, 20, 12][s - 1]}% attack range`,
+                        descFnRu: (s) =>
+                            `+${[30, 20, 12][s - 1]}% радиус атаки`,
                         apply(p, s) {
                             p.atkR *= 1 + [0.3, 0.2, 0.12][s - 1];
                         },
@@ -4147,7 +5640,10 @@
                         tier: "cyan",
                         icon: "orbitals",
                         name: "XP AMP",
+                        nameRu: "УСИЛИТЕЛЬ ДАННЫХ",
                         descFn: (s) => `+${[40, 26, 16][s - 1]}% XP gain`,
+                        descFnRu: (s) =>
+                            `+${[40, 26, 16][s - 1]}% получение данных`,
                         apply(p, s) {
                             p.xpMult =
                                 (p.xpMult || 1) *
@@ -4159,7 +5655,10 @@
                         tier: "cyan",
                         icon: "nova",
                         name: "RANGE BOOST",
+                        nameRu: "УСКОРИТЕЛЬ",
                         descFn: (s) => `+${[20, 13, 8][s - 1]}% bullet speed`,
+                        descFnRu: (s) =>
+                            `+${[20, 13, 8][s - 1]}% скорость снарядов`,
                         apply(p, s) {
                             p.bulletSpd =
                                 (p.bulletSpd || 1) *
@@ -4171,7 +5670,10 @@
                         tier: "green",
                         icon: "hp",
                         name: "HP CORE",
+                        nameRu: "ЯДРО ЗДОРОВЬЯ",
                         descFn: (s) => `+${[50, 35, 20][s - 1]} max HP & heal`,
+                        descFnRu: (s) =>
+                            `+${[50, 35, 20][s - 1]} макс HP и лечение`,
                         apply(p, s) {
                             const g = [50, 35, 20][s - 1];
                             p.maxHp += g;
@@ -4183,8 +5685,11 @@
                         tier: "green",
                         icon: "aura",
                         name: "REGEN",
+                        nameRu: "РЕГЕНЕРАЦИЯ",
                         descFn: (s) =>
                             `+${[2, 1.3, 0.8][s - 1].toFixed(1)} HP/sec regen`,
+                        descFnRu: (s) =>
+                            `+${[2, 1.3, 0.8][s - 1].toFixed(1)} HP/сек регенерация`,
                         apply(p, s) {
                             p.regenRate =
                                 (p.regenRate || 0) + [2.0, 1.3, 0.8][s - 1];
@@ -4195,7 +5700,10 @@
                         tier: "green",
                         icon: "shield",
                         name: "ARMOR",
+                        nameRu: "БРОНЯ",
                         descFn: (s) => `Reduce dmg by ${[12, 8, 5][s - 1]}%`,
+                        descFnRu: (s) =>
+                            `Снижает урон на ${[12, 8, 5][s - 1]}%`,
                         apply(p, s) {
                             p.armor =
                                 (p.armor || 0) + [0.12, 0.08, 0.05][s - 1];
@@ -4225,11 +5733,16 @@
                     return picks.map((sk) => {
                         const cur = taken[sk.id] || 0;
                         const nxt = cur + 1;
+                        const isRu = currentLang === "ru";
                         return {
                             ...sk,
                             currentStack: cur,
                             nextStack: nxt,
-                            desc: sk.descFn(nxt),
+                            name: isRu && sk.nameRu ? sk.nameRu : sk.name,
+                            desc:
+                                isRu && sk.descFnRu
+                                    ? sk.descFnRu(nxt)
+                                    : sk.descFn(nxt),
                         };
                     });
                 }
@@ -4272,7 +5785,13 @@
                     const used = pool.filter((u) => owned[u.id]);
                     fresh.sort(() => Math.random() - 0.5);
                     used.sort(() => Math.random() - 0.5);
-                    return [...fresh, ...used].slice(0, 3);
+                    return [...fresh, ...used].slice(0, 3).map((u) => {
+                        const isRu = currentLang === "ru";
+                        return {
+                            ...u,
+                            name: isRu && u.nameRu ? u.nameRu : u.name,
+                        };
+                    });
                 }
 
                 // ─────────────────────────────────────────────────────────────
@@ -4512,7 +6031,10 @@
                         if (upLvl) upLvl.textContent = `SYNC LVL ${lvl}`;
                         const upHint = $("upHint");
                         if (upHint)
-                            upHint.textContent = "— choose one upgrade —";
+                            upHint.textContent =
+                                currentLang === "ru"
+                                    ? "— выберите улучшение —"
+                                    : "— choose one upgrade —";
                         const c = $("upCards");
                         c.innerHTML = "";
                         const tierColors = {
@@ -4538,9 +6060,9 @@
                             d.className = "up-card";
                             d.style.cssText = `border-color:${col}55;box-shadow:0 10px 40px rgba(0,0,0,0.85),0 0 0 1px ${col}22`;
                             d.innerHTML = `
-                                        <div class="up-tier" style="background:${col}18;color:${col};border:1px solid ${col}44">${o.tier}</div>
+                                        <div class="up-tier" style="background:${col}18;color:${col};border:1px solid ${col}44">${currentLang === "ru" ? { red: "КР.", violet: "ФИО.", blue: "СИН.", cyan: "ГОЛ.", green: "ЗЕЛ." }[o.tier] || o.tier : o.tier}</div>
                                         ${stack}
-                                        <div class="up-icon">${ICONS[o.icon] || o.icon}</div>
+                                        <div class="up-icon" style="color:${col}">${ICONS[o.icon] || o.icon}</div>
                                         <div class="up-name" style="color:${col};text-shadow:0 0 16px ${col}99">${o.name}</div>
                                         <div class="up-desc">${o.desc}</div>`;
                             d.onmouseenter = () => {
@@ -4585,7 +6107,8 @@
                 // Background
                 // ─────────────────────────────────────────────────────────────
                 function drawBg(ctx, cw, ch, cx, cy, elapsed) {
-                    ctx.fillStyle = "#030508";
+                    const _biome = BIOMES[currentBiome] || BIOMES[0];
+                    ctx.fillStyle = _biome.bg || "#030508";
                     ctx.fillRect(0, 0, cw, ch);
                     for (let i = 0; i < 72; i++) {
                         const sx =
@@ -4610,8 +6133,8 @@
                         h = G * 0.86,
                         ox = ((-cx % G) + G) % G,
                         oy = ((-cy % h) + h) % h;
-                    ctx.strokeStyle = "rgba(40,160,255,0.06)";
-                    ctx.fillStyle = "rgba(80,190,255,0.16)";
+                    ctx.strokeStyle = _biome.grid || "rgba(40,160,255,0.06)";
+                    ctx.fillStyle = _biome.gridFill || "rgba(80,190,255,0.16)";
                     ctx.lineWidth = 1;
                     for (let y = oy - h; y < ch + h; y += h) {
                         const row = Math.floor((y - oy) / h);
@@ -4650,7 +6173,7 @@
                         const pulse =
                             0.35 + 0.25 * Math.sin(elapsed * 1.4 + i * 0.55);
                         ctx.globalAlpha = pulse;
-                        ctx.fillStyle = "#1144cc";
+                        ctx.fillStyle = _biome.nodeColor || "#1144cc";
                         ctx.beginPath();
                         ctx.arc(nx, ny, 3, 0, Math.PI * 2);
                         ctx.fill();
@@ -4735,7 +6258,6 @@
                   <span class="shop-credits-icon">◈</span>
                 </div>
                 <div id="shopGrid" class="shop-grid"></div>
-                <div class="menu-row"><button class="btn btn-ghost" id="btnShopClose">${tr("close")}</button></div>
               </div>
             `;
                     document.body.appendChild(div);
@@ -4749,7 +6271,9 @@
                         id: "startHp",
                         icon: "hp",
                         title: "+20 START HP",
+                        titleRu: "+20 НАЧАЛЬНЫЙ HP",
                         desc: "Permanent. Up to 5×.",
+                        descRu: "Постоянно. До 5× стеков.",
                         baseCost: 22,
                         stackable: true,
                         max: 5,
@@ -4761,7 +6285,9 @@
                         id: "startDmg",
                         icon: "dmg",
                         title: "+3 START DMG",
+                        titleRu: "+3 НАЧАЛЬНЫЙ УРОН",
                         desc: "Permanent. Up to 4×.",
+                        descRu: "Постоянно. До 4× стеков.",
                         baseCost: 26,
                         stackable: true,
                         max: 4,
@@ -4773,7 +6299,9 @@
                         id: "startSpd",
                         icon: "spd",
                         title: "+12 START SPD",
+                        titleRu: "+12 НАЧАЛЬНАЯ СКОРОСТЬ",
                         desc: "Permanent. Up to 4×.",
+                        descRu: "Постоянно. До 4× стеков.",
                         baseCost: 22,
                         stackable: true,
                         max: 4,
@@ -4785,7 +6313,9 @@
                         id: "startOrbitals",
                         icon: "orbitals",
                         title: "+1 ORBITAL START",
+                        titleRu: "+1 СТАРТОВЫЙ ОРБИТАЛ",
                         desc: "Begin run with an orbital. Up to 3×.",
+                        descRu: "Начинаешь забег с орбиталом. До 3×.",
                         baseCost: 75,
                         stackable: true,
                         max: 3,
@@ -4799,7 +6329,9 @@
                         id: "orbitals",
                         icon: "nova",
                         title: "UNLOCK ORBITALS",
+                        titleRu: "ОТКРЫТЬ ОРБИТАЛЫ",
                         desc: "Adds Orbital upgrades to the upgrade pool.",
+                        descRu: "Добавляет орбитальные апгрейды в пул.",
                         baseCost: 45,
                         stackable: false,
                         apply() {
@@ -4810,7 +6342,9 @@
                         id: "chain",
                         icon: "chain",
                         title: "UNLOCK CHAIN",
+                        titleRu: "ОТКРЫТЬ ЦЕПНУЮ МОЛНИЮ",
                         desc: "Adds Chain Lightning upgrades.",
+                        descRu: "Добавляет апгрейды цепной молнии.",
                         baseCost: 55,
                         stackable: false,
                         apply() {
@@ -4821,7 +6355,9 @@
                         id: "aura",
                         icon: "aura",
                         title: "UNLOCK AURA",
+                        titleRu: "ОТКРЫТЬ АУРУ",
                         desc: "Adds passive damage Aura upgrades.",
+                        descRu: "Добавляет пассивную ауру урона.",
                         baseCost: 52,
                         stackable: false,
                         apply() {
@@ -4832,7 +6368,9 @@
                         id: "magnet",
                         icon: "magnet",
                         title: "UNLOCK MAGNET",
+                        titleRu: "ОТКРЫТЬ МАГНИТ",
                         desc: "Adds Magnet — widens XP pickup radius.",
+                        descRu: "Расширяет радиус сбора XP.",
                         baseCost: 40,
                         stackable: false,
                         apply() {
@@ -4843,7 +6381,9 @@
                         id: "shield",
                         icon: "shield",
                         title: "UNLOCK SHIELD",
+                        titleRu: "ОТКРЫТЬ ЩИТ",
                         desc: "Adds Shield — survive one lethal hit per run.",
+                        descRu: "Щит от одного смертельного удара за забег.",
                         baseCost: 60,
                         stackable: false,
                         apply() {
@@ -4851,6 +6391,245 @@
                         },
                     },
                 ];
+
+                // ─── Рендер секции скинов в магазине ────────────────────
+                // Рисует Canvas-превью скина
+                // ═══ SVG-превью скинов (статический, без canvas) ════════
+                function makeSkinSvg(skin) {
+                    const col = skin.coreCol.startsWith("rgba")
+                        ? skin.coreCol
+                        : skin.coreCol;
+                    const glow = skin.glowCol;
+                    const ring = skin.ringCol || glow;
+                    const trail = skin.trailCol;
+                    const al = skin.alpha || 1;
+                    const sid = skin.id;
+                    const S = skin.shape || "hex";
+                    const sz = 80; // viewBox
+                    const cx = sz / 2,
+                        cy = sz / 2,
+                        r = 20;
+
+                    // ── Форма ──────────────────────────────────────────────
+                    let shapeTag = "";
+                    if (S === "hex") {
+                        const pts = Array.from({ length: 6 }, (_, i) => {
+                            const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
+                            return `${cx + Math.cos(a) * r},${cy + Math.sin(a) * r}`;
+                        }).join(" ");
+                        shapeTag = `<polygon points="${pts}" fill="${col}" opacity="${al}"/>`;
+                    } else if (S === "diamond") {
+                        shapeTag = `<polygon points="${cx},${cy - r * 1.25} ${cx + r},${cy} ${cx},${cy + r * 1.25} ${cx - r},${cy}" fill="${col}" opacity="${al}"/>`;
+                    } else if (S === "triangle") {
+                        const pts = Array.from({ length: 3 }, (_, i) => {
+                            const a = (i / 3) * Math.PI * 2 - Math.PI / 2;
+                            return `${cx + Math.cos(a) * r * 1.3},${cy + Math.sin(a) * r * 1.3}`;
+                        }).join(" ");
+                        shapeTag = `<polygon points="${pts}" fill="${col}" opacity="${al}"/>`;
+                    } else if (S === "star") {
+                        const pts = Array.from({ length: 10 }, (_, i) => {
+                            const a = (i / 10) * Math.PI * 2 - Math.PI / 2;
+                            const rr = i % 2 === 0 ? r : r * 0.42;
+                            return `${cx + Math.cos(a) * rr},${cy + Math.sin(a) * rr}`;
+                        }).join(" ");
+                        shapeTag = `<polygon points="${pts}" fill="${col}" opacity="${al}"/>`;
+                    } else if (S === "cross") {
+                        const w = r * 0.36;
+                        const pts = `${cx - w},${cy - r} ${cx + w},${cy - r} ${cx + w},${cy - w} ${cx + r},${cy - w} ${cx + r},${cy + w} ${cx + w},${cy + w} ${cx + w},${cy + r} ${cx - w},${cy + r} ${cx - w},${cy + w} ${cx - r},${cy + w} ${cx - r},${cy - w} ${cx - w},${cy - w}`;
+                        shapeTag = `<polygon points="${pts}" fill="${col}" opacity="${al}"/>`;
+                    } else if (S === "ring") {
+                        shapeTag = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="6" opacity="${al}"/>`;
+                    } else {
+                        shapeTag = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${col}" opacity="${al}"/>`;
+                    }
+
+                    return `<svg viewBox="0 0 ${sz} ${sz}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+  <defs>
+    <filter id="gf${sid}" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="gl${sid}" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Trail hints -->
+  <circle cx="${cx - r * 0.75}" cy="${cy + r * 0.1}"  r="${r * 0.22}" fill="${trail}" opacity="0.28"/>
+  <circle cx="${cx - r * 1.15}" cy="${cy + r * 0.18}" r="${r * 0.13}" fill="${trail}" opacity="0.15"/>
+  <circle cx="${cx - r * 1.45}" cy="${cy + r * 0.25}" r="${r * 0.07}" fill="${trail}" opacity="0.07"/>
+  <!-- Orbit ring -->
+  <ellipse cx="${cx}" cy="${cy}" rx="${r * 1.62}" ry="${r * 0.58}" fill="none" stroke="${ring}" stroke-width="1.2" opacity="0.45" transform="rotate(-18 ${cx} ${cy})"/>
+  <!-- Glow layer -->
+  <g filter="url(#gl${sid})" opacity="0.5">${shapeTag}</g>
+  <!-- Main shape -->
+  <g filter="url(#gf${sid})">${shapeTag}</g>
+  <!-- Center dot -->
+  ${S !== "ring" ? `<circle cx="${cx + r * 0.38}" cy="${cy}" r="3.2" fill="white" opacity="0.92"/>` : ""}
+</svg>`;
+                }
+
+                function renderSkinsSection(container) {
+                    const sec = document.createElement("div");
+                    sec.className = "skins-section";
+                    const titleEl = document.createElement("div");
+                    titleEl.className = "skins-title";
+                    titleEl.textContent =
+                        currentLang === "ru"
+                            ? "— СКИНЫ ПЕРСОНАЖА —"
+                            : "— CHARACTER SKINS —";
+                    sec.appendChild(titleEl);
+                    const grid = document.createElement("div");
+                    grid.className = "skins-grid";
+                    for (const skin of SKINS) {
+                        const owned =
+                            (META.boughtSkins || []).includes(skin.id) ||
+                            skin.cost === 0;
+                        const active = META.activeSkin === skin.id;
+                        const card = document.createElement("div");
+                        card.className =
+                            "skin-card" + (active ? " skin-card--active" : "");
+                        card.style.setProperty("--skin-col", skin.glowCol);
+                        const nameStr =
+                            currentLang === "ru" ? skin.nameRu : skin.name;
+                        const trailMap = {
+                            dots: "Точки",
+                            spark: "Искры",
+                            spiral: "Спираль",
+                            pulse: "Пульс",
+                            chain: "Цепи",
+                        };
+                        const shapeMap = {
+                            hex: "Шестиугольник",
+                            diamond: "Ромб",
+                            triangle: "Треугольник",
+                            star: "Звезда",
+                            cross: "Крест",
+                            ring: "Кольцо",
+                        };
+                        const detail =
+                            currentLang === "ru"
+                                ? `${shapeMap[skin.shape] || skin.shape} · ${trailMap[skin.trail] || skin.trail}`
+                                : `${skin.shape} · ${skin.trail}`;
+                        const owned_badge =
+                            owned && !active
+                                ? `<span class="skin-owned">${currentLang === "ru" ? "ЕСТЬ" : "OWNED"}</span>`
+                                : "";
+                        const active_badge = active
+                            ? `<span class="skin-active">✓</span>`
+                            : "";
+                        const btnLabel = active
+                            ? currentLang === "ru"
+                                ? "✓ АКТИВЕН"
+                                : "✓ ACTIVE"
+                            : owned
+                              ? currentLang === "ru"
+                                  ? "ВЫБРАТЬ"
+                                  : "SELECT"
+                              : `◈ ${skin.cost}`;
+                        card.innerHTML = `
+                            <div class="skin-preview-wrap" style="color:${skin.glowCol}">
+                                ${makeSkinSvg(skin)}
+                            </div>
+                            <div class="skin-info">
+                                <div class="skin-name">${nameStr}${active_badge}${owned_badge}</div>
+                                <div class="skin-detail">${detail}</div>
+                                <button class="skin-btn${active ? " skin-btn--active" : ""}" style="--skin-col:${skin.glowCol}">
+                                    ${btnLabel}
+                                </button>
+                            </div>`;
+                        card.querySelector(".skin-btn").onclick = (e) => {
+                            e.stopPropagation();
+                            if (active) return;
+                            if (owned) {
+                                META.activeSkin = skin.id;
+                                saveMeta();
+                                openShop();
+                            } else if (META.credits >= skin.cost) {
+                                META.credits -= skin.cost;
+                                if (!META.boughtSkins)
+                                    META.boughtSkins = ["default"];
+                                META.boughtSkins.push(skin.id);
+                                META.activeSkin = skin.id;
+                                saveMeta();
+                                UI.toast(
+                                    currentLang === "ru"
+                                        ? `СКИН "${skin.nameRu}" АКТИВИРОВАН`
+                                        : `SKIN "${skin.name}" ACTIVATED`,
+                                );
+                                openShop();
+                            } else {
+                                UI.toast(
+                                    currentLang === "ru"
+                                        ? "НЕДОСТАТОЧНО КРЕДИТОВ"
+                                        : "NOT ENOUGH CREDITS",
+                                );
+                            }
+                        };
+                        grid.appendChild(card);
+                    }
+                    sec.appendChild(grid);
+                    container.appendChild(sec);
+                }
+
+                function renderLeaderboard(container) {
+                    const RUNS_KEY = "mini_survivors_runs_v1";
+                    const runs = LS.get(RUNS_KEY, []);
+                    const sec = document.createElement("div");
+                    sec.style.cssText =
+                        "width:100%;max-width:660px;margin-top:16px;";
+                    const title = document.createElement("div");
+                    title.style.cssText =
+                        "font-size:10px;letter-spacing:4px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:12px;text-transform:uppercase;";
+                    title.textContent =
+                        currentLang === "ru"
+                            ? "— ЛИЧНЫЕ РЕКОРДЫ —"
+                            : "— PERSONAL RECORDS —";
+                    sec.appendChild(title);
+                    if (runs.length === 0) {
+                        const empty = document.createElement("div");
+                        empty.style.cssText =
+                            "text-align:center;font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:2px;padding:16px;";
+                        empty.textContent =
+                            currentLang === "ru"
+                                ? "НЕТ РЕКОРДОВ"
+                                : "NO RECORDS YET";
+                        sec.appendChild(empty);
+                    } else {
+                        const table = document.createElement("div");
+                        table.style.cssText =
+                            "display:grid;grid-template-columns:24px 1fr 60px 50px 50px;gap:4px 10px;font-size:9px;letter-spacing:1px;width:100%;";
+                        const hdrs =
+                            currentLang === "ru"
+                                ? ["#", "КЛАСС", "ВРЕМЯ", "LVL", "УБИЙСТВА"]
+                                : ["#", "CLASS", "TIME", "LVL", "KILLS"];
+                        for (const h of hdrs) {
+                            const el = document.createElement("div");
+                            el.style.cssText =
+                                "color:rgba(255,255,255,0.28);letter-spacing:2px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);";
+                            el.textContent = h;
+                            table.appendChild(el);
+                        }
+                        runs.slice(0, 5).forEach((r, i) => {
+                            const cols = [
+                                `<span style="color:${i === 0 ? "#ffcc44" : i === 1 ? "#aaaaaa" : i === 2 ? "#cc8844" : "rgba(255,255,255,0.3)"}">${i + 1}</span>`,
+                                `<span style="color:#00ccff">${r.classId || "?"}</span>`,
+                                `<span style="color:rgba(255,255,255,0.7)">${fmtTime(r.time || 0)}</span>`,
+                                `<span style="color:rgba(255,255,255,0.6)">${r.lvl || 0}</span>`,
+                                `<span style="color:rgba(255,255,255,0.6)">${r.kills || 0}</span>`,
+                            ];
+                            for (const c of cols) {
+                                const el = document.createElement("div");
+                                el.style.cssText =
+                                    "padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);";
+                                el.innerHTML = c;
+                                table.appendChild(el);
+                            }
+                        });
+                        sec.appendChild(table);
+                    }
+                    container.appendChild(sec);
+                }
 
                 function getItemStack(item) {
                     if (!item.stackable) return 0;
@@ -4934,8 +6713,8 @@
                     <span class="shop-card-icon" style="color:${shopIconColor};filter:drop-shadow(0 0 6px ${shopIconColor}88)">${ICONS[item.icon] || item.icon}</span>
                     ${badge}
                   </div>
-                  <div class="shop-card-title">${item.title}</div>
-                  <div class="shop-card-desc">${item.desc}</div>
+                  <div class="shop-card-title">${currentLang === "ru" && item.titleRu ? item.titleRu : item.title}</div>
+                  <div class="shop-card-desc">${currentLang === "ru" && item.descRu ? item.descRu : item.desc}</div>
                   ${stackBar}
                   <div class="shop-card-footer">
                     <span class="shop-card-cost ${costClass}">${costLabel}</span>
@@ -4948,15 +6727,49 @@
                             META.credits -= cost;
                             item.apply();
                             saveMeta();
+                            const iTitle =
+                                currentLang === "ru" && item.titleRu
+                                    ? item.titleRu
+                                    : item.title;
                             const msg = item.stackable
-                                ? `${item.title} → STACK ${getItemStack(item)}`
-                                : `${item.title} UNLOCKED`;
+                                ? `${iTitle} → ${currentLang === "ru" ? "СТЕК" : "STACK"} ${getItemStack(item)}`
+                                : `${iTitle} ${currentLang === "ru" ? "ОТКРЫТО" : "UNLOCKED"}`;
                             UI.toast(msg);
                             openShop();
                         };
                         grid.appendChild(card);
                     }
-                    $("btnShopClose").onclick = () => hide("shopScreen");
+                    // Секция скинов под основным магазином
+                    const shopInner = grid.parentElement;
+                    const existingSkinSec =
+                        shopInner?.querySelector(".skins-sec");
+                    if (existingSkinSec) existingSkinSec.remove();
+                    const skinSecWrap = document.createElement("div");
+                    skinSecWrap.className = "skins-sec";
+                    renderSkinsSection(skinSecWrap);
+                    shopInner?.appendChild(skinSecWrap);
+                    // Таблица рекордов
+                    const existingLB = shopInner?.querySelector(".lb-sec");
+                    if (existingLB) existingLB.remove();
+                    const lbWrap = document.createElement("div");
+                    lbWrap.className = "lb-sec";
+                    renderLeaderboard(lbWrap);
+                    shopInner?.appendChild(lbWrap);
+                    // Кнопка закрыть — всегда внизу
+                    const existingCloseBar =
+                        shopInner?.querySelector(".shop-close-bar");
+                    if (existingCloseBar) existingCloseBar.remove();
+                    const closeBar = document.createElement("div");
+                    closeBar.className = "shop-close-bar";
+                    const closeBtn = document.createElement("button");
+                    closeBtn.className = "btn btn-ghost";
+                    closeBtn.id = "btnShopClose";
+                    closeBtn.textContent =
+                        currentLang === "ru" ? "ЗАКРЫТЬ" : "CLOSE";
+                    closeBtn.onclick = () => hide("shopScreen");
+                    closeBar.appendChild(closeBtn);
+                    shopInner?.appendChild(closeBar);
+                    // btnShopClose привязан динамически в openShop
                     show("shopScreen");
                 }
 
@@ -4982,6 +6795,8 @@
                     let state = "menu";
                     let player, enemies, parts, texts, orbs;
                     let enemyBullets = [];
+                    let playerBullets = []; // снаряды игрока
+                    let artifacts = new ArtifactSystem();
                     let elapsed = 0,
                         kills = 0,
                         runCredits = 0,
@@ -5006,13 +6821,25 @@
                         pendingBuff = false;
                     let comboFlash = 0;
                     let lastThreshold = 0;
-                    let surgeWindow = 0; // активная шторм-волна (секунды отсчёта)
+                    let surgeWindow = 0;
+                    let adBuffT = 0; // оставшееся время баффа от рекламы
+                    let adBuffType = null; // "xp" | "speed" | "shield"
+                    // активная шторм-волна (секунды отсчёта)
                     let currentClass = META.selectedClass || "antivirus";
                     let runSeed = hashString(world.dailyKey);
 
+                    // CSS-размеры для расчёта камеры (не зависят от DPR)
+                    let viewW = innerWidth,
+                        viewH = innerHeight;
                     function resize() {
-                        canvas.width = innerWidth;
-                        canvas.height = innerHeight;
+                        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                        viewW = innerWidth;
+                        viewH = innerHeight;
+                        canvas.width = Math.round(innerWidth * dpr);
+                        canvas.height = Math.round(innerHeight * dpr);
+                        canvas.style.width = innerWidth + "px";
+                        canvas.style.height = innerHeight + "px";
+                        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
                     }
                     addEventListener("resize", resize);
                     resize();
@@ -5135,7 +6962,7 @@
                     }
                     function spawnBoss() {
                         spawnEnemy("boss");
-                        const bossNames = [
+                        const bossNamesEn = [
                             "PULSAR",
                             "BERSERKER",
                             "SUMMONER",
@@ -5143,8 +6970,18 @@
                             "VORTEX",
                             "GHOST",
                         ];
+                        const bossNamesRu = [
+                            "ПУЛЬСАР",
+                            "БЕРСЕРК",
+                            "ПРИЗЫВАТЕЛЬ",
+                            "СНАЙПЕР",
+                            "ВИХРЬ",
+                            "ПРИЗРАК",
+                        ];
+                        const bossLoc =
+                            currentLang === "ru" ? bossNamesRu : bossNamesEn;
                         UI.waveAlert(
-                            `⚠ ${bossNames[(world.bossIndex - 1) % 6]} ONLINE`,
+                            `⚠ ${bossLoc[(world.bossIndex - 1) % 6]} ${currentLang === "ru" ? "ОНЛАЙН" : "ONLINE"}`,
                         );
                         Audio.boss();
                         world.nextBossAt += 60;
@@ -5271,7 +7108,11 @@
                                 ) {
                                     player.vampireCoreDone = true;
                                     player.lifeSteal *= 1.5;
-                                    UI.toast("SYNERGY: VAMPIRE CORE ★");
+                                    UI.toast(
+                                        currentLang === "ru"
+                                            ? "СИНЕРГИЯ: ВАМПИР-ЯДРО ★"
+                                            : "SYNERGY: VAMPIRE CORE ★",
+                                    );
                                 }
                                 // Iron Berserker: Berserker + Armor → HP штраф отменяется
                                 if (
@@ -5287,7 +7128,11 @@
                                         player.maxHp,
                                         player.hp + 40,
                                     );
-                                    UI.toast("SYNERGY: IRON BERSERKER ★");
+                                    UI.toast(
+                                        currentLang === "ru"
+                                            ? "СИНЕРГИЯ: ЖЕЛЕЗНЫЙ БЕРСЕРК ★"
+                                            : "SYNERGY: IRON BERSERKER ★",
+                                    );
                                 }
                                 // Railgun: Multishot + Piercing → piercing ×2
                                 if (
@@ -5298,7 +7143,11 @@
                                     player.railgunDone = true;
                                     player.piercing =
                                         (player.piercing || 1) * 2;
-                                    UI.toast("SYNERGY: RAILGUN MODE ★");
+                                    UI.toast(
+                                        currentLang === "ru"
+                                            ? "СИНЕРГИЯ: РЕЖИМ РЕЙЛГАНА ★"
+                                            : "SYNERGY: RAILGUN MODE ★",
+                                    );
                                 }
                                 // Phase Runner: SpeedMatrix + dash active → dash CD -1.5с
                                 if (
@@ -5308,7 +7157,11 @@
                                 ) {
                                     player.phaseRunnerDone = true;
                                     player.dashCdMax = 2.0; // будем использовать при следующем даше
-                                    UI.toast("SYNERGY: PHASE RUNNER ★");
+                                    UI.toast(
+                                        currentLang === "ru"
+                                            ? "СИНЕРГИЯ: ФАЗОВЫЙ БЕГУН ★"
+                                            : "SYNERGY: PHASE RUNNER ★",
+                                    );
                                 }
                             } else {
                                 player.takenUpgrades[upg.id] =
@@ -5369,6 +7222,20 @@
                         );
                         META.credits += creditsGain;
                         saveMeta();
+                        // Сохраняем забег в историю рекордов
+                        const RUNS_KEY2 = "mini_survivors_runs_v1";
+                        const prevRuns = LS.get(RUNS_KEY2, []);
+                        prevRuns.unshift({
+                            time: elapsed,
+                            lvl: player.lvl,
+                            kills,
+                            classId: player.classId,
+                            score: Math.floor(
+                                elapsed * 10 + kills * 20 + player.lvl * 100,
+                            ),
+                        });
+                        prevRuns.sort((a, b) => b.score - a.score);
+                        LS.set(RUNS_KEY2, prevRuns.slice(0, 10));
                         const daily = world.dailyKey;
                         const dailyBest = LS.get(DAILY_KEY, {});
                         const prev = dailyBest[daily] || 0;
@@ -5392,6 +7259,32 @@
                         );
                         if (deaths <= 3 || deaths % 2 === 0)
                             setTimeout(() => Ads.showInterstitial(), 600);
+                        // Лидерборд Яндекса
+                        Ads.submitScore(score);
+                        // Ежедневный вызов
+                        try {
+                            const { objectives: dO, reward: dR } =
+                                getDailyObjectives();
+                            const DK = "mini_surv_daily_done_v1";
+                            const dD = LS.get(DK, {});
+                            const d2 = world.dailyKey;
+                            if (
+                                !dD[d2] &&
+                                dO.every((o) =>
+                                    o.check(elapsed, kills, player.lvl),
+                                )
+                            ) {
+                                dD[d2] = true;
+                                LS.set(DK, dD);
+                                META.credits += dR;
+                                saveMeta();
+                                UI.toast(
+                                    currentLang === "ru"
+                                        ? `🏆 ВЫЗОВ ВЫПОЛНЕН! +${dR} КР.`
+                                        : `🏆 CHALLENGE DONE! +${dR} CR.`,
+                                );
+                            }
+                        } catch (e) {}
                     }
                     function skipRevive() {
                         clearInterval(revCdTimer);
@@ -5427,6 +7320,8 @@
                             );
                         enemies = [];
                         enemyBullets = [];
+                        playerBullets = [];
+                        artifacts.reset();
                         parts = new Particles();
                         texts = new FloatingText();
                         orbs = new XpOrbs();
@@ -5444,6 +7339,11 @@
                         comboFlash = 0;
                         lastThreshold = 0;
                         surgeWindow = 0;
+                        adBuffT = 0;
+                        currentBiome = 0;
+                        biomeT = 0;
+                        biomeFlashT = 0;
+                        adBuffType = null;
                         state = "playing";
                         lastTs = performance.now();
                         raf = requestAnimationFrame(loop);
@@ -5470,6 +7370,8 @@
                             return;
                         }
                         elapsed += dt;
+                        tickBiome(dt);
+                        artifacts.update(dt, player, parts);
                         // Пассивная регенерация HP
                         if ((player.regenRate || 0) > 0)
                             player.hp = Math.min(
@@ -5533,8 +7435,8 @@
                             hitStop = 0.045 * settings.hitStop;
                         }
                         player.combo = Math.max(player.combo, 0); // explicit
-                        camX = player.x - canvas.width / 2;
-                        camY = player.y - canvas.height / 2;
+                        camX = player.x - viewW / 2;
+                        camY = player.y - viewH / 2;
 
                         // ─── Граница мира: мягкий сдвиг + визуальный отклик ───
                         const WORLD_R = 1200;
@@ -5671,7 +7573,13 @@
                                           0.25,
                             parts,
                         );
-                        if (gain > 0 && player.addXP(gain, 1)) {
+                        if (
+                            gain > 0 &&
+                            player.addXP(
+                                gain * (adBuffType === "xp" ? 2 : 1),
+                                1,
+                            )
+                        ) {
                             UI.waveAlert(tr("syncUp"));
                             Audio.levelUp();
                             parts.emit(
@@ -5689,6 +7597,35 @@
                         if (player.overheat >= player.overheatMax)
                             triggerUltimate();
                         parts.update(dt);
+
+                        // ── Ad buff tick ──────────────────────────────────────
+                        if (adBuffT > 0) {
+                            adBuffT -= dt;
+                            const hudEl = $("adBuffHud");
+                            if (hudEl) {
+                                hudEl.style.opacity = "1";
+                                const bufName =
+                                    adBuffType === "xp"
+                                        ? currentLang === "ru"
+                                            ? "×2 ДАННЫЕ"
+                                            : "×2 XP"
+                                        : adBuffType === "speed"
+                                          ? currentLang === "ru"
+                                              ? "УСКОРЕНИЕ"
+                                              : "SPEED BOOST"
+                                          : currentLang === "ru"
+                                            ? "ЩИТ"
+                                            : "AD SHIELD";
+                                hudEl.textContent = `${bufName} ${Math.ceil(adBuffT)}s`;
+                            }
+                            if (adBuffT <= 0) {
+                                adBuffType = null;
+                                if ($("adBuffHud"))
+                                    $("adBuffHud").style.opacity = "0";
+                                if (adBuffType === "speed" && player)
+                                    player.spd /= 1.5;
+                            }
+                        }
                         // ── Enemy bullets (Gunner снаряды) ──────────────────
                         for (let i = enemyBullets.length - 1; i >= 0; i--) {
                             const b = enemyBullets[i];
@@ -5707,6 +7644,17 @@
                                 player.damage(b.dmg);
                                 parts.emit(b.x, b.y, 5, "#ff9933", 4, 0.28, 2);
                                 enemyBullets.splice(i, 1);
+                            }
+                        }
+                        // ── Player bullets update ──────────────────────────
+                        for (let i = playerBullets.length - 1; i >= 0; i--) {
+                            const b = playerBullets[i];
+                            b.x += b.vx * dt;
+                            b.y += b.vy * dt;
+                            b.life -= dt;
+                            if (b.life <= 0) {
+                                playerBullets.splice(i, 1);
+                                continue;
                             }
                         }
                         texts.update(dt);
@@ -5793,15 +7741,8 @@
                     }
 
                     function drawFrame() {
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        drawBg(
-                            ctx,
-                            canvas.width,
-                            canvas.height,
-                            camX,
-                            camY,
-                            elapsed,
-                        );
+                        ctx.clearRect(0, 0, viewW, viewH);
+                        drawBg(ctx, viewW, viewH, camX, camY, elapsed);
                         orbs.draw(ctx, camX, camY, elapsed);
                         // ── Рендер снарядов Gunner ─────────────────────────
                         for (const b of enemyBullets) {
@@ -5824,6 +7765,35 @@
                         ctx.shadowBlur = 0;
                         parts.draw(ctx, camX, camY);
                         for (const e of enemies) e.draw(ctx, camX, camY);
+                        // Артефакты
+                        artifacts.draw(ctx, camX, camY);
+                        // ── Рендер снарядов игрока ────────────────────────
+                        for (const b of playerBullets) {
+                            const bsx = b.x - camX,
+                                bsy = b.y - camY;
+                            if (
+                                bsx < -30 ||
+                                bsy < -30 ||
+                                bsx > canvas.width + 30 ||
+                                bsy > canvas.height + 30
+                            )
+                                continue;
+                            ctx.shadowBlur = b.crit ? 18 : 10;
+                            ctx.shadowColor = b.glow;
+                            ctx.fillStyle = b.crit ? "#ffffff" : b.col;
+                            ctx.beginPath();
+                            ctx.arc(bsx, bsy, b.r, 0, Math.PI * 2);
+                            ctx.fill();
+                            // Крит: кольцо
+                            if (b.crit) {
+                                ctx.strokeStyle = b.col;
+                                ctx.lineWidth = 1.5;
+                                ctx.beginPath();
+                                ctx.arc(bsx, bsy, b.r + 4, 0, Math.PI * 2);
+                                ctx.stroke();
+                            }
+                        }
+                        ctx.shadowBlur = 0;
                         player.draw(ctx, camX, camY);
                         texts.draw(ctx, camX, camY);
                         if (ultVfx > 0) {
@@ -5839,7 +7809,7 @@
                         }
                         if (flashT > 0) {
                             ctx.fillStyle = `rgba(200,240,255,${flashT * 0.25})`;
-                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            ctx.fillRect(0, 0, viewW, viewH);
                         }
                         // ─── Туман границы мира (оверлей поверх всех объектов) ───
                         // Центр мира (0,0) в экранных координатах
@@ -5859,22 +7829,28 @@
                             fog.addColorStop(0.55, "rgba(0,2,18,0.35)");
                             fog.addColorStop(1, "rgba(0,2,18,0.92)");
                             ctx.fillStyle = fog;
-                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            ctx.fillRect(0, 0, viewW, viewH);
                         }
                         if (comboFlash > 0) {
                             ctx.fillStyle = `rgba(0,204,255,${comboFlash * 0.18})`;
+                            ctx.fillRect(0, 0, viewW, viewH);
+                        }
+                        // Биом-переход flash
+                        if (biomeFlashT > 0.6) {
+                            const bf = (biomeFlashT - 0.6) / 0.6;
+                            ctx.fillStyle = `rgba(255,255,255,${bf * 0.12})`;
                             ctx.fillRect(0, 0, canvas.width, canvas.height);
                         }
                         const hpRatio = player.hp / player.maxHp;
                         if (hpRatio <= 0.25) {
                             const p = (0.25 - hpRatio) / 0.25;
                             const vig = ctx.createRadialGradient(
-                                canvas.width / 2,
-                                canvas.height / 2,
-                                canvas.width * 0.24,
-                                canvas.width / 2,
-                                canvas.height / 2,
-                                canvas.width * 0.72,
+                                viewW / 2,
+                                viewH / 2,
+                                viewW * 0.24,
+                                viewW / 2,
+                                viewH / 2,
+                                viewW * 0.72,
                             );
                             vig.addColorStop(0, "rgba(0,0,0,0)");
                             vig.addColorStop(
@@ -5882,7 +7858,7 @@
                                 `rgba(255,20,30,${0.2 + p * 0.4})`,
                             );
                             ctx.fillStyle = vig;
-                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            ctx.fillRect(0, 0, viewW, viewH);
                         }
                         if (debugOn) {
                             ctx.globalAlpha = 1;
@@ -5937,6 +7913,29 @@
                         upd();
                     }
 
+                    function applyReviveStrings() {
+                        const isRu = currentLang === "ru";
+                        const t = $("reviveTitle");
+                        if (t)
+                            t.textContent = isRu
+                                ? "ВТОРОЙ ШАНС"
+                                : "SECOND CHANCE";
+                        const s = $("reviveSub");
+                        if (s)
+                            s.textContent = isRu
+                                ? "Посмотри рекламу — восстанови 50% HP"
+                                : "Watch ad to restore 50% HP and continue";
+                        const skip = $("btnSkipRevive");
+                        if (skip)
+                            skip.textContent = isRu
+                                ? "НЕТ, СПАСИБО"
+                                : "NO THANKS";
+                        const rv = $("btnRevive");
+                        if (rv)
+                            rv.innerHTML = isRu
+                                ? "📺 РЕКЛАМА → ВОЗРОДИТЬСЯ"
+                                : "📺 WATCH AD → REVIVE";
+                    }
                     function applyLanguage() {
                         $("lblIntegrity").textContent = tr("integrity");
                         $("lblData").textContent = tr("data");
@@ -5981,6 +7980,12 @@
                             `${tr("classLabel")}: ${CLASSES[currentClass].name}`;
                         if (typeof showDailyScore === "function")
                             showDailyScore();
+                        const upLabel = $("upLabel");
+                        if (upLabel)
+                            upLabel.textContent =
+                                currentLang === "ru"
+                                    ? "Синхро Апгрейд"
+                                    : "Sync Upgrade";
                         $("btnShop").textContent =
                             `${tr("shop")} (${META.credits})`;
                         $("dBestTimeLbl").textContent = tr("bestTime");
@@ -6066,6 +8071,53 @@
 
                     // Buttons
 
+                    function getDailyObjectives() {
+                        const rng = mulberry32(hashString(todayKey()));
+                        const pool = [
+                            {
+                                en: "Survive 3 minutes",
+                                ru: "Выживи 3 минуты",
+                                check: (e, k, l) => e >= 180,
+                            },
+                            {
+                                en: "Reach Level 8",
+                                ru: "Достигни уровня 8",
+                                check: (e, k, l) => l >= 8,
+                            },
+                            {
+                                en: "Kill 50 enemies",
+                                ru: "Убей 50 врагов",
+                                check: (e, k, l) => k >= 50,
+                            },
+                            {
+                                en: "Kill 100 enemies",
+                                ru: "Убей 100 врагов",
+                                check: (e, k, l) => k >= 100,
+                            },
+                            {
+                                en: "Survive 5 minutes",
+                                ru: "Выживи 5 минут",
+                                check: (e, k, l) => e >= 300,
+                            },
+                            {
+                                en: "Survive 2 minutes",
+                                ru: "Выживи 2 минуты",
+                                check: (e, k, l) => e >= 120,
+                            },
+                            {
+                                en: "Kill 25 enemies",
+                                ru: "Убей 25 врагов",
+                                check: (e, k, l) => k >= 25,
+                            },
+                        ];
+                        const rewards = [40, 60, 80, 50, 70, 90];
+                        const shuffled = [...pool]
+                            .sort(() => rng() - 0.5)
+                            .slice(0, 3);
+                        const reward =
+                            rewards[Math.floor(rng() * rewards.length)];
+                        return { objectives: shuffled, reward };
+                    }
                     function showDailyScore() {
                         const dailyBest = LS.get(DAILY_KEY, {});
                         const today = todayKey();
@@ -6077,12 +8129,52 @@
                                 : "NO SCORE YET";
                     }
 
-                    $("btnDaily") &&
-                        ($("btnDaily").onclick = () => {
-                            // Просто запуск — уже работает на дневном сиде
-                            showDailyScore();
+                    function openDailyModal() {
+                        const isRu = currentLang === "ru";
+                        const today = todayKey();
+                        const dl = $("dailyDateLabel");
+                        if (dl) dl.textContent = today;
+                        const ml = $("dailyChallengeModalLabel");
+                        if (ml)
+                            ml.textContent = isRu
+                                ? "ЕЖЕДНЕВНЫЙ ВЫЗОВ"
+                                : "DAILY CHALLENGE";
+                        const otl = $("dailyObjTitle");
+                        if (otl) otl.textContent = isRu ? "ЦЕЛИ" : "OBJECTIVES";
+                        const rl = $("dailyRewardLabel");
+                        if (rl) rl.textContent = isRu ? "НАГРАДА" : "REWARD";
+                        const { objectives, reward } = getDailyObjectives();
+                        ["①", "②", "③"].forEach((m, i) => {
+                            const el = $("dailyObj" + (i + 1));
+                            if (el)
+                                el.textContent = `${m} ${isRu ? objectives[i].ru : objectives[i].en}`;
+                        });
+                        const rEl = $("dailyReward");
+                        if (rEl)
+                            rEl.textContent = `+${reward} ${isRu ? "КРЕДИТОВ" : "CREDITS"}`;
+                        const best = LS.get(DAILY_KEY, {})[today] || 0;
+                        const bEl = $("dailyBestLine");
+                        if (bEl)
+                            bEl.textContent = best
+                                ? `${isRu ? "РЕКОРД" : "BEST"}: ${best}`
+                                : isRu
+                                  ? "ЕЩЁ НЕТ РЕКОРДА"
+                                  : "NO RECORD YET";
+                        const modal = $("dailyModal");
+                        if (modal) modal.style.display = "flex";
+                    }
+                    $("btnDaily") && ($("btnDaily").onclick = openDailyModal);
+                    $("btnDailyPlay") &&
+                        ($("btnDailyPlay").onclick = () => {
+                            const m = $("dailyModal");
+                            if (m) m.style.display = "none";
                             hide("startScreen");
                             doRestart();
+                        });
+                    $("btnDailyClose") &&
+                        ($("btnDailyClose").onclick = () => {
+                            const m = $("dailyModal");
+                            if (m) m.style.display = "none";
                         });
 
                     $("btnStart").onclick = () => {
@@ -6110,6 +8202,32 @@
                         show("startScreen");
                     };
                     $("btnClass").onclick = openClassScreen;
+
+                    const btnAdBuff = $("btnAdBuff");
+                    if (btnAdBuff) {
+                        btnAdBuff.style.display = "block";
+                        btnAdBuff.onclick = () => {
+                            if (state !== "playing") return;
+                            const types = ["xp", "speed", "shield"];
+                            adBuffType =
+                                types[Math.floor(Math.random() * types.length)];
+                            adBuffT = 60;
+                            if (adBuffType === "speed" && player)
+                                player.spd *= 1.5;
+                            if (adBuffType === "shield" && player)
+                                player.passiveShield = 1;
+                            UI.toast(
+                                currentLang === "ru"
+                                    ? "БУСТ АКТИВИРОВАН! 60с"
+                                    : "BOOST ACTIVE! 60s",
+                            );
+                            btnAdBuff.style.display = "none";
+                            setTimeout(() => {
+                                if (btnAdBuff)
+                                    btnAdBuff.style.display = "block";
+                            }, 120000);
+                        };
+                    }
 
                     $("btnBackFromClass").onclick = () => {
                         hide("classScreen");
@@ -6149,6 +8267,11 @@
                             state = "playing";
                             lastTs = performance.now();
                             raf = requestAnimationFrame(loop);
+                            UI.toast(
+                                currentLang === "ru"
+                                    ? "ВОЗРОЖДЕНИЕ! 50% HP"
+                                    : "REVIVED! 50% HP",
+                            );
                         });
                     $("btnSkipRevive").onclick = skipRevive;
                     $("btnXP").onclick = () =>
@@ -6245,5 +8368,189 @@
         </script>
 
         <!-- inject script удалён: создавал второй canvas и конфликтующий loop() -->
+
+        <!-- Daily Modal -->
+        <div
+            id="dailyModal"
+            style="
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.92);
+                z-index: 200;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            "
+        >
+            <div
+                style="
+                    background: rgba(8, 12, 24, 0.98);
+                    border: 1px solid rgba(255, 204, 68, 0.3);
+                    border-radius: 18px;
+                    padding: 32px 28px;
+                    max-width: 420px;
+                    width: 92%;
+                    text-align: center;
+                "
+            >
+                <div
+                    id="dailyChallengeModalLabel"
+                    style="
+                        font-size: 9px;
+                        letter-spacing: 4px;
+                        color: rgba(255, 204, 68, 0.5);
+                        margin-bottom: 8px;
+                    "
+                >
+                    DAILY CHALLENGE
+                </div>
+                <div
+                    id="dailyDateLabel"
+                    style="
+                        font-size: 18px;
+                        font-weight: 900;
+                        color: #ffcc44;
+                        letter-spacing: 3px;
+                        margin-bottom: 20px;
+                    "
+                ></div>
+                <div
+                    style="
+                        background: rgba(255, 204, 68, 0.06);
+                        border: 1px solid rgba(255, 204, 68, 0.15);
+                        border-radius: 12px;
+                        padding: 16px;
+                        margin-bottom: 14px;
+                    "
+                >
+                    <div
+                        id="dailyObjTitle"
+                        style="
+                            font-size: 9px;
+                            letter-spacing: 3px;
+                            color: rgba(255, 255, 255, 0.35);
+                            margin-bottom: 12px;
+                        "
+                    >
+                        OBJECTIVES
+                    </div>
+                    <div
+                        id="dailyObj1"
+                        style="
+                            font-size: 11px;
+                            color: #fff;
+                            letter-spacing: 1px;
+                            margin-bottom: 8px;
+                            line-height: 1.6;
+                        "
+                    ></div>
+                    <div
+                        id="dailyObj2"
+                        style="
+                            font-size: 11px;
+                            color: #fff;
+                            letter-spacing: 1px;
+                            margin-bottom: 8px;
+                            line-height: 1.6;
+                        "
+                    ></div>
+                    <div
+                        id="dailyObj3"
+                        style="
+                            font-size: 11px;
+                            color: #fff;
+                            letter-spacing: 1px;
+                            line-height: 1.6;
+                        "
+                    ></div>
+                </div>
+                <div
+                    style="
+                        background: rgba(0, 204, 255, 0.06);
+                        border: 1px solid rgba(0, 204, 255, 0.15);
+                        border-radius: 10px;
+                        padding: 10px;
+                        margin-bottom: 14px;
+                    "
+                >
+                    <div
+                        id="dailyRewardLabel"
+                        style="
+                            font-size: 9px;
+                            letter-spacing: 3px;
+                            color: rgba(255, 255, 255, 0.35);
+                            margin-bottom: 5px;
+                        "
+                    >
+                        REWARD
+                    </div>
+                    <div
+                        id="dailyReward"
+                        style="
+                            font-size: 13px;
+                            font-weight: 700;
+                            color: #00ccff;
+                            letter-spacing: 2px;
+                        "
+                    ></div>
+                </div>
+                <div
+                    id="dailyBestLine"
+                    style="
+                        font-size: 10px;
+                        color: rgba(255, 204, 68, 0.6);
+                        letter-spacing: 2px;
+                        margin-bottom: 16px;
+                    "
+                ></div>
+                <div
+                    style="
+                        display: flex;
+                        gap: 10px;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                    "
+                >
+                    <button
+                        id="btnDailyPlay"
+                        style="
+                            padding: 12px 28px;
+                            border-radius: 8px;
+                            border: none;
+                            background: linear-gradient(
+                                135deg,
+                                #ff2244,
+                                #ff4466
+                            );
+                            color: #fff;
+                            font-family: monospace;
+                            font-size: 12px;
+                            font-weight: 700;
+                            letter-spacing: 3px;
+                            cursor: pointer;
+                        "
+                    >
+                        ▶ PLAY
+                    </button>
+                    <button
+                        id="btnDailyClose"
+                        style="
+                            padding: 12px 20px;
+                            border-radius: 8px;
+                            border: 1px solid rgba(255, 255, 255, 0.12);
+                            background: transparent;
+                            color: rgba(255, 255, 255, 0.4);
+                            font-family: monospace;
+                            font-size: 10px;
+                            letter-spacing: 2px;
+                            cursor: pointer;
+                        "
+                    >
+                        CLOSE
+                    </button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
