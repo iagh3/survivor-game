@@ -8,12 +8,12 @@
         />
         <title>Mini Survivors</title>
         <script>
-if (location.protocol === 'https:') {
-  const s = document.createElement('script');
-  s.src = 'https://yandex.ru/games/sdk/v2';
-  document.head.appendChild(s);
-}
-</script>
+            if (location.protocol === "https:") {
+                const s = document.createElement("script");
+                s.src = "https://yandex.ru/games/sdk/v2";
+                document.head.appendChild(s);
+            }
+        </script>
         <style>
             * {
                 margin: 0;
@@ -3170,7 +3170,7 @@ if (location.protocol === 'https:') {
                 cursor: pointer;
                 pointer-events: all;
                 transition: all 0.15s;
-                z-index: 20;
+                z-index: 60;
                 backdrop-filter: blur(4px);
             }
             #btnPause:hover {
@@ -4292,10 +4292,10 @@ if (location.protocol === 'https:') {
             style="
                 display: none;
                 position: fixed;
-                right: clamp(18px, 4vw, 32px);
-                bottom: clamp(90px, 14vh, 140px);
-                width: clamp(56px, 8vw, 72px);
-                height: clamp(56px, 8vw, 72px);
+                right: clamp(12px, 3vw, 24px);
+                bottom: clamp(70px, 10vh, 120px);
+                width: clamp(48px, 6vw, 64px);
+                height: clamp(48px, 6vw, 64px);
                 border-radius: 50%;
                 background: rgba(0, 200, 100, 0.12);
                 border: 2px solid rgba(0, 200, 100, 0.45);
@@ -4313,8 +4313,7 @@ if (location.protocol === 'https:') {
                     background 0.1s,
                     border-color 0.1s;
             "
-        >
-        </button>
+        ></button>
 
         <div id="waveAlert"></div>
         <div id="toast"></div>
