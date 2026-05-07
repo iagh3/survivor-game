@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check \"C:\\\\Users\\\\skrem\\\\Desktop\\\\mini_survivors\\\\index.html\")",
+      "Bash(node *)",
+      "Bash(grep *)",
+      "Bash(awk -F: '$2 > 5115 && $2 < 5130 {print}')",
+      "Bash(awk -F: '$2 > 4940 && $2 < 5030 {print}')",
+      "Bash(awk 'NR>=4754 && NR<=4880 && /^                \\\\}/' /c/Users/skrem/Desktop/mini_survivors/index.html)",
+      "Bash(awk -F: '$2 > 4750 && $2 < 4880 {print}')",
+      "Bash(awk -F: '$2 >= 4754 && $2 <= 4880 {print}')",
+      "Bash(awk 'NR>=4754 && NR<=4880 {if \\($0 ~ /^[ ]+}$/\\) print NR\": \"$0}' /c/Users/skrem/Desktop/mini_survivors/index.html)",
+      "Read(//c/Users/skrem/Desktop/**)",
+      "Read(//c/Users/skrem/**)",
+      "Bash(ffmpeg -i \"/c/Users/skrem/Desktop/mini_survivors/animation_bg.mp4\" -vf \"fps=1\" -frames:v 3 \"/c/Users/skrem/Desktop/mini_survivors/frame_%02d.png\" -y)",
+      "Bash(del check_temp.js)",
+      "WebSearch",
+      "WebFetch(domain:pixabay.com)",
+      "WebFetch(domain:mixkit.co)",
+      "WebFetch(domain:inaudio.org)",
+      "WebFetch(domain:www.free-stock-music.com)",
+      "WebFetch(domain:soundimage.org)",
+      "WebFetch(domain:freetouse.com)",
+      "WebFetch(domain:www.bensound.com)",
+      "WebFetch(domain:audio.com)",
+      "WebFetch(domain:archive.org)",
+      "WebFetch(domain:stocktune.com)",
+      "WebFetch(domain:ncs.io)",
+      "Bash(del _check_tmp.js)"
+    ]
+  }
+}

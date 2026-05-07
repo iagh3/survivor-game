@@ -1,530 +1,381 @@
-# CLAUDE.md — Mini Survivors: Справочник для ИИ и разработчиков
+# CLAUDE.md — Mini Survivors: Системный справочник (актуально)
 
-## Обзор проекта
-
-Браузерный top-down авто-шутер в одном файле `index.html` (~6,600 строк), без сборщика и зависимостей. Единственный внешний скрипт — Яндекс Игры SDK v2. Все системы завёрнуты в один IIFE.
-
-**Цель:** Короткие забеги 3–7 минут с нарастающей сложностью, мета-прогрессия через магазин кредитов, rewarded-реклама Яндекса, полная локализация RU/EN.
+> Файл: `index.html` — ~8,050 строк, один IIFE, без сборщика, без зависимостей.
+> Единственный внешний скрипт — Яндекс Игры SDK v2.
 
 ---
 
-## Архитектура
-
-### Структура файла
+## Структура файла
 
 ```
 index.html
 ├── <head>
-│   ├── Яндекс SDK: <script src="https://yandex.ru/games/sdk/v2">
-│   └── CSS (~1,500 строк): все стили включая 7 медиа-брейкпоинтов
+│   ├── <script src="https://yandex.ru/games/sdk/v2">
+│   └── <style> — весь CSS (~1,800 строк)
+│       ├── Базовые стили, экраны, HUD, кнопки
+│       ├── Upgrade/Class/Shop/Death/Revive/Settings экраны
+│       ├── Location carousel (ls-*)
+│       ├── Pause overlay (pause-*)
+│       └── Media queries: 320/480/768/1024/1280/1440/1920px
 ├── <body>
 │   ├── canvas#gc
-│   ├── DOM-экраны: #hud, #startScreen, #upgradeScreen, #shopScreen,
-│   │               #deathScreen, #reviveScreen, #settingsScreen,
-│   │               #classScreen, #dailyModal
-│   └── Fixed-элементы: #adBuffHud, #btnAdBuff, #dashIndicator
-└── <script> — единый IIFE
-    ├── Константы: SKINS, BIOMES, ARTIFACT_POOL, CLASSES,
-    │              UPGRADES, SKILLS, SHOP_ITEMS, ICONS
-    ├── Утилиты: LS, $, clamp, dist, fmtTime, todayKey,
-    │            mulberry32, hashString, lineBurst
-    ├── Яндекс SDK: _ysdk, _adLock, Ads{showInterstitial,
-    │              showRewarded, submitScore}, _adSim
-    ├── Audio: процедурный Web Audio API
-    ├── Input IIFE: K[], mouse, touch, dashPressed()
-    ├── Particles, FloatingText, XpOrbs
-    ├── Player class
-    ├── Enemy → Fast, Ranged, Splitter, Tank, Dasher, Gunner, MiniBoss
-    ├── upgradeChoices(), SKILLS, buildSkillChoices(), applySkill()
-    ├── I18N, tr()
-    ├── UI{update, showDeath, showRevive, waveAlert, toast}
-    ├── drawBg()
-    ├── Shop: openShop(), renderSkinsSection(), renderLeaderboard(),
-    │          makeSkinSvg(), getDailyObjectives(), openDailyModal()
-    ├── Game IIFE (const Game = (() => { ... })())
-    │   ├── Переменные состояния
-    │   ├── Spawn: getSpawnInterval(), classWaveBoost(), spawnEnemy()
-    │   ├── loop(), drawFrame(), triggerUltimate(), offerUpgrade()
-    │   ├── onDie(), showDeath(), skipRevive(), doRestart()
-    │   └── init() + привязка кнопок
-    └── applyLanguage()
+│   ├── #hud (opacity:0 по умолчанию, .hud-visible во время игры)
+│   │   ├── #btnPause (⏸, по центру сверху)
+│   │   ├── #hud-left (HP/XP/Overheat бары)
+│   │   ├── #hud-right (время, уровень, убийства, цель)
+│   │   └── #hudCredits, #hudCombo (статические элементы)
+│   ├── #adBuffHud, #btnAdBuff (position:fixed на body, z-index:50)
+│   ├── Все .screen оверлеи (show/hide через classList.add/remove "active")
+│   ├── #dailyModal, #locationScreen  ← ОБЯЗАНЫ быть ДО <script>
+│   ├── #pauseOverlay (position:fixed, z-index:500)
+│   └── <script> — единый IIFE
+│       ├── Константы: SKINS, LOCATIONS, CLASSES, UPGRADES, SKILLS, SHOP_ITEMS, ICONS
+│       ├── Утилиты: LS, $, clamp, dist, fmtTime, todayKey, mulberry32, hashString
+│       ├── Яндекс SDK: _ysdk, _adLock, Ads{showInterstitial, showRewarded, submitScore}
+│       ├── Audio: masterGain, osc(), noise(), 10 звуков + setVolume()
+│       ├── Input IIFE: K[], mouse, touch joystick, dashPressed()
+│       ├── Particles, FloatingText, XpOrbs, ArtifactSystem
+│       ├── Bg state: _fireBuf, _voroSeeds, _voroCache, _flowParticles
+│       ├── drawBg() + drawTiles() внутри
+│       ├── Player, Enemy, Fast, Ranged, Splitter, Tank, Dasher, Gunner, MiniBoss
+│       ├── upgradeChoices(), buildSkillChoices(), applySkill()
+│       ├── I18N, tr(), show/hide, hudShow/hudHide, UI{}
+│       ├── Shop, Daily, Location carousel, Skin preview (SVG)
+│       ├── Game IIFE: loop, drawFrame, onDie, doRestart, openPause, closePause
+│       └── Game.applyLanguage()  ← вызов снаружи
 ```
 
 ---
 
 ## Игровой цикл (`loop(ts)`)
 
-Выполняется через `requestAnimationFrame`. Заблокирован при `state !== "playing"`. Порядок шагов:
+Порядок шагов (только при `state === "playing"`):
 
 1. `dt` (кэп 0.05с)
-2. `hitStop` → ранний выход без обновлений
-3. `elapsed += dt`, `tickBiome(dt)`, `artifacts.update()`
-4. Пассивная регенерация (`player.regenRate`)
-5. Проверка surge-окна + таймер спавна
-6. Проверка спавна босса (`elapsed >= world.nextBossAt`)
-7. `player.update()` → результат атаки
-8. Камера: `camX = player.x - viewW/2`, `camY = player.y - viewH/2`
-9. Граница мира r=1200: зажим позиции + shake + частицы при ударе
-10. Обновление screen shake
-11. Цикл врагов: `e.update()`, текст урона, обработка смерти
-12. `enemyBullets` (снаряды Gunner)
-13. `playerBullets` (только визуал)
-14. `orbs.update()` → XP → `player.addXP()` → `offerUpgrade()` при левел-апе
-15. Проверка overheat → `triggerUltimate()`
-16. `parts.update()`, `texts.update()`
-17. Тик ad-баффа (`adBuffT`)
-18. `UI.update()`
-19. Триггеры wave-алертов (10s, 25s, 45s, 60s, 90s, 120s, 180s, 240s, 300s)
-20. Surge-алерты
-21. Проверка HP → `onDie()`
-22. `drawFrame()`
+2. `hitStop` → ранний return
+3. `elapsed += dt`; `artifacts.update()`
+4. Пассивная регенерация
+5. Опасности локации (`hazard:"fire"` → урон 8 каждые 15с; `"freeze"` → `player._freezeT=3`)
+6. Surge-окно + таймер спавна → `spawnEnemy()`
+7. Проверка босса → `spawnBoss()`
+8. `player.update()` → результат атаки
+9. Камера: `camX = player.x - viewW/2`, `camY = player.y - viewH/2`
+10. Граница мира r=1200 + shake
+11. Цикл врагов: `e.update()`, текст урона, смерть
+12. `enemyBullets` (Gunner), `playerBullets` (визуал)
+13. `orbs.update()` → XP → `offerUpgrade()` при level-up
+14. Overheat → `triggerUltimate()`
+15. `parts.update()`, `texts.update()`, ad-бафф тик
+16. `UI.update()`
+17. Wave-алерты (10/25/45/60/90/120/180/240/300с)
+18. HP < 0 → `onDie()`
+19. `drawFrame()`
 
 ---
 
-## Рендеринг Canvas
+## Рендеринг (`drawFrame()`)
 
-`drawFrame()` — порядок отрисовки (back to front):
+Back-to-front:
+1. `clearRect(0, 0, viewW, viewH)`
+2. `drawBg()` — тайлы + процедурный паттерн
+3. Орбы XP
+4. `enemyBullets`, `artifacts.draw()`, `playerBullets`
+5. `parts.draw()`
+6. Враги, игрок (скин/форма/шлейф/орбиталы/комбо-счётчик)
+7. `texts.draw()`
+8. Ult vfx, flash overlay, туман мира, panic vignette
 
-1. `ctx.clearRect(0, 0, viewW, viewH)`
-2. `drawBg()` — фон, hex-сетка, узлы границы мира
-3. `orbs.draw()` — XP-орбы
-4. Снаряды врагов (`enemyBullets`)
-5. Артефакты (`artifacts.draw()`)
-6. Снаряды игрока (`playerBullets`, визуал)
-7. Частицы (`parts.draw()`)
-8. Враги (`e.draw()`)
-9. Игрок: скин, форма, шлейф, орбиталы, комбо-счётчик
-10. Плавающие числа (`texts.draw()`)
-11. Ult vfx ring
-12. Flash overlay
-13. Туман мира
-14. Комбо flash overlay
-15. Panic vignette (HP < 25%)
-
-### КРИТИЧЕСКИ ВАЖНО: Canvas DPR
+### КРИТИЧНО: Canvas DPR
 
 ```js
-// В resize():
-viewW = innerWidth;
-viewH = innerHeight;
-canvas.width = Math.round(innerWidth * dpr);
+// resize():
+viewW = innerWidth; viewH = innerHeight;
+canvas.width  = Math.round(innerWidth  * dpr);
 canvas.height = Math.round(innerHeight * dpr);
-canvas.style.width = innerWidth + "px";
-canvas.style.height = innerHeight + "px";
 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 ```
 
-**Никогда** не используйте `canvas.width / 2` для расчёта камеры.  
-`canvas.width` — буферный размер (= innerWidth × DPR).  
-Для координат игры всегда используйте `viewW` / `viewH`.
+**Никогда** `canvas.width/2` для камеры. Только `viewW/viewH`.
 
 ---
 
-## Система ввода
+## Фоны (`drawBg`)
 
-`Input` IIFE предоставляет:
-
-- `dir()` → `{dx, dy}` нормализованный вектор движения
-- `aim()` → `{dx, dy, active}` направление мыши
-- `dashPressed()` → потребляет Space (K["Space"] = false после чтения)
-- Touch-джойстик: `tdx`, `tdy` из touch-событий
-- `isMobile` — флаг по userAgent
-
----
-
-## Класс Player
-
-Ключевые свойства:
+### `drawTiles(tW, tH, baseCol, gridCol, accentCol, style)`
 
 ```js
-// Dash (только Scanner)
-hasDash, dashCd, dashActive, dashT, dashVx, dashVy;
-dashCdMax; // уменьшается при синергии Phase Runner
+// ПРАВИЛЬНО — float offset, round только при рисовании:
+const ox = ((-cx % tW) + tW) % tW;     // float, плавный скролл
+const tx = Math.round(gx * tW - ox);   // round ЗДЕСЬ
+ctx.rect(tx + 0.5, ty + 0.5, tW-1, tH-1); // +0.5 = чёткие 1px линии
 
-// Навыки
-skillStacks; // { skillId: N } — новая система SKILLS
-takenUpgrades; // { id: N } — legacy для UPGRADES
-
-// Боевые множители
-armor; // снижение урона, кэп 60% в damage()
-regenRate; // HP/сек, применяется каждый тик
-xpMult; // множитель XP-дропа
-bulletSpd; // множитель скорости playerBullets
-multishot; // количество визуальных снарядов за атаку
-piercing; // визуальное пробитие врагов
-
-// Overheat
-overheatGain; // множитель заряда (базовый 0.65)
-overheatMax; // максимум заряда (базовый 100, Firewall 140)
+// НЕПРАВИЛЬНО (создаёт 1px рывки):
+const icx = Math.round(cx);  // НЕ ДЕЛАТЬ
+const ox = ((-icx % tW) + tW) % tW;
 ```
 
-**`damage(amount, withIframes=true)`:** проверяет щит → применяет `armor` → устанавливает hitFlash → сбрасывает комбо.
+| Стиль | Локация |
+|-------|---------|
+| `metal` | Server — инсет + болты |
+| `lava` | Core — трещины + мерцание |
+| `ice` | Cryo — glint |
+| `void` | Void — чередование + точки |
 
-**`attack(enemies, parts, aim)`:** ищет ближайшего врага в `atkR`, наносит урон мгновенно, спавнит `playerBullets` (визуал), устанавливает `atkCd`.
+### Процедурные паттерны
 
----
+| Локация | Паттерн | State |
+|---------|---------|-------|
+| Server | PCB-трассы 224px + бегущие пакеты | нет |
+| Core | Клеточный автомат огня | `_fireBuf` 120×70 Float32Array |
+| Cryo | Voronoi живые кристаллы | `_voroSeeds[12]`, `_voroCache` ImageData |
+| Void | Flow field частицы | `_flowParticles[320]` |
 
-## Иерархия врагов
-
-Все враги наследуют `Enemy`. Общие методы:
-
-- `hit(dmg, parts, player, enemies)` → returns killed bool
-- `moveToward(player, dt, accel)`
-- `drawHpBar(ctx, sx, sy)`
-
-### Таблица типов врагов
-
-| Тип      | Форма          | r   | Спавн | xpVal | Особенность                 |
-| -------- | -------------- | --- | ----- | ----- | --------------------------- |
-| Enemy    | Шестиугольник  | 16  | 0с    | 12    | Базовый                     |
-| Fast     | Треугольник    | 11  | 0с    | 9     | Быстрый                     |
-| Ranged   | Ромб           | 14  | 20с   | 18    | Дистанционные снаряды       |
-| Splitter | Восьмиугольник | 14  | 50с   | 22    | Делится на 2                |
-| Tank     | Шестиугольник  | 28  | 60с   | 55    | HP×4, взрыв r=200           |
-| Dasher   | Ромб           | 13  | 80с   | 26    | Рывок каждые 2.5с           |
-| Gunner   | Треугольник    | 16  | 100с  | 30    | 3 снаряда, держит дистанцию |
-| MiniBoss | Уникальная     | 34  | 60с   | 180×  | 6 вариантов, Phase 2        |
+Все мировые координаты → экранные через `Math.round(wx - cx)`.  
+При смене локации: `_bgReset(locId)` сбрасывает state.
 
 ---
 
-## MiniBoss
+## Система локаций
 
-6 вариантов (bossNum % 6). Конструктор: `(x, y, wave, variant, bossNum)`.
+### 4 локации
+
+| ID | Разблокировка | HP врагов | SPD врагов | XP | Кредиты | Хазард |
+|----|--------------|-----------|------------|-----|---------|--------|
+| `server` | Сразу | ×1.0 | ×1.0 | ×1.0 | ×1.0 | нет |
+| `core` | Выжить 3 мин | ×1.25 | ×1.15 | ×1.3 | ×1.25 | огонь 15с |
+| `cryo` | Level 10 | ×1.5 | ×0.75 | ×1.5 | ×1.4 | заморозка 20с |
+| `void` | 200 убийств | ×1.8 | ×1.3 | ×2.0 | ×1.8 | нет |
+
+Модификаторы применяются в `spawnEnemy()` после создания врага.  
+`xpMul` — при дропе орба. `creditMul` — при подсчёте кредитов после смерти.  
+`checkLocationUnlocks()` вызывается после каждого забега.
+
+### Карусель
+
+- `_lsIdx` — текущий индекс, бесконечный: `(_lsIdx ± 1 + N) % N`
+- `_lsRender()` — полная перерисовка всех слайдов + dots
+- `_lsUpdate()` — translateX трека, цвет dots, фон экрана
+- Стрелки вешаются в `openLocationScreen()` каждый раз заново
+
+**DOM:** `#locationScreen` и `#dailyModal` — строго **до** `<script>`.
+
+---
+
+## HUD
+
+```css
+#hud { opacity: 0; pointer-events: none; }
+#hud.hud-visible { opacity: 1; pointer-events: auto; }
+```
+
+| Событие | Вызов |
+|---------|-------|
+| `init()` | `hudHide()` |
+| `doRestart()` | `hudShow()` |
+| `onDie()` | `hudHide()` |
+
+`#hudCredits`, `#hudCombo` — статические в `#hud`, обновляются в `UI.update()`.  
+`#adBuffHud`, `#btnAdBuff` — `position:fixed` в `<body>`, **не в `#hud`**.
+
+---
+
+## Пауза
 
 ```js
-// HP
-Math.round((350 + wave * 30) * (1 + Math.min(3.2, bossNum * 0.3)));
-
-// Скорость (enrage ×1.5, кэп 160)
-Math.min(108, 68 + bossNum * 5);
-
-// Урон (enrage ×1.4)
-11 + wave * 0.3 + bossNum * 0.9;
+let isPaused = false;
+function openPause()  { state = "paused"; cancelAnimationFrame(raf); }
+function closePause() { state = "playing"; lastTs = performance.now(); raf = rAF(loop); }
 ```
 
-**Phase 2** срабатывает при `!this.enraged && this.hp <= this.maxHp * 0.5`.
-
-**`this.projs`** — пул снарядов босса. Обновляется и проверяет коллизию в `MiniBoss.update()`.  
-**Не использовать** глобальный `enemyBullets` для снарядов босса.
+ESC → toggle. `lastTs = performance.now()` при closePause — нет прыжка dt.  
+`#pauseOverlay`: `position:fixed; z-index:500; backdrop-filter:blur(8px)`.
 
 ---
 
-## Система навыков (SKILLS)
+## Audio
 
 ```js
-const SKILLS = [
-    /* 15 записей */
-];
-// Каждая запись: { id, tier, icon, name, nameRu, descFn, descFnRu, apply(player, stackN) }
+// Цепочка: osc/noise → gain → compressor → _master → destination
+actx._master = actx.createGain(); // создаётся при первом вызове ac()
+Audio.setVolume(0..1);  // masterGain.value
 ```
 
-### `buildSkillChoices(player)`
+Слайдер `#setVolume` (0-100) в настройках → Apply → `Audio.setVolume(val/100)`.  
+**Никогда** не вызывать Audio в `drawFrame()`.
 
-1. Фильтр: только навыки с `(skillStacks[id] || 0) < 3`
-2. 1 гарантированный high-tier (red/violet)
-3. 2 случайных из остатка
-4. Возвращает объекты с `currentStack`, `nextStack`, `name`, `desc` (с учётом `currentLang`)
+---
 
-### `applySkill(player, skill)`
-
-Инкрементирует `player.skillStacks[skill.id]`, вызывает `skill.apply(player, nextStack)`.
-
-**Синергии** проверяются в `offerUpgrade()` после `applySkill()`:
+## Скины
 
 ```js
-const sk = player.skillStacks || {};
-if ((sk.critCore||0)>=1 && (sk.lifesteal||0)>=1 && !player.vampireCoreDone) { ... }
+// shape: hex | diamond | triangle | star | cross | ring
+// trail: dots | spark | spiral | pulse | chain
+// orbit: ellipse | square | triangle | none
 ```
+
+`makeSkinSvg(skin)` → статичный inline SVG (без rAF, без canvas). Используется в магазине.  
+`getActiveSkin()` → `SKINS.find(s => s.id === META.activeSkin)`.
 
 ---
 
-## Экономика
+## Контактный урон (contactCd)
+
+| Тип | КД | Урон | `withIframes` |
+|-----|-----|------|--------------|
+| Enemy | 0.28с | dmg × 1.0 | true (0.4с защиты) |
+| Fast | 0.22с | dmg × 0.9 | true |
+| Tank | 0.38с | dmg × 1.2 | true |
+| Dasher | 0.25с | dmg × 0.9 | true |
+
+Push-back: `player.x -= nx * overlap * 0.5` — нельзя зайти внутрь врага.  
+Инициализация: `if (!this.contactCd) this.contactCd = 0;` в каждом update().
+
+---
+
+## Яндекс SDK
 
 ```js
-// Кредиты за забег
-Math.floor(
-    kills * 0.7 +
-        elapsed * 0.6 +
-        player.lvl * 4 +
-        player.comboBest * 2 +
-        (orbitals > 0 ? 6 : 0),
-);
-
-// Стоимость покупки в магазине
-Math.round(item.baseCost * Math.pow(1.5, currentStack));
+Ads.showInterstitial(done)     // fullscreen, каждая 2-я смерть
+Ads.showRewarded(type, onRew)  // revive / boost / xp
+Ads.submitScore(score)         // лидерборд "miniSurvivorsMain"
 ```
 
-Кредиты хранятся в `META.credits` → `LS.set(META_KEY, META)` после каждой транзакции.
-
-Daily Challenge: ключ `"mini_surv_daily_done_v1"` в localStorage. Один раз за `world.dailyKey` (YYYY-MM-DD).
-
----
-
-## Яндекс Игры SDK
-
-```js
-// Инициализация (async IIFE при загрузке)
-_ysdk = await YaGames.init();
-
-// Интерстишиал (экран смерти)
-_ysdk.adv.showFullscreenAdv({ callbacks: { onClose, onError } });
-
-// Rewarded (возрождение, буст, XP)
-_ysdk.adv.showRewardedVideo({ callbacks: { onRewarded, onClose, onError } });
-
-// Лидерборд
-_ysdk
-    .getLeaderboards()
-    .then((lb) => lb.setLeaderboardScore("miniSurvivorsMain", score));
-```
-
-`_adLock` предотвращает параллельные вызовы рекламы. Всегда устанавливайте `_adLock = true` перед вызовом и `_adLock = false` в **обоих** `onClose` и `onError`. Иначе реклама не будет показываться до конца сессии.
-
-Fallback для локальной разработки: `_adSim(duration, callback)`.
+`_adLock = false` **и в `onClose`, и в `onError`** — обязательно.  
+Fallback: `_adSim(dur, cb)` — для локальной разработки.
 
 ---
 
-## История критических исправлений
+## Локализация
 
-### 1. Дублирующий `<script>` (SyntaxError + сломанная игра)
+| Система | EN поля | RU поля |
+|---------|---------|---------|
+| SKILLS | `name`, `descFn` | `nameRu`, `descFnRu` |
+| SHOP_ITEMS | `title`, `desc` | `titleRu`, `descRu` |
+| UPGRADES | `name` | `nameRu` |
+| LOCATIONS | `name`, `envDescEn`, `unlockDescEn` | `nameRu`, `envDescRu`, `unlockDescRu` |
+| SKINS | `name` | `nameRu` |
 
-**Баг:** Второй `<script>` в конце файла создавал второй canvas, второй `player` и вызывал `loop()` параллельно.  
-**Исправление:** Удалён полностью.  
-**Правило:** Никогда не добавлять второй `<script>` в этот файл.
-
-### 2. Потеря `class Enemy {` (SyntaxError)
-
-**Баг:** `str_replace` захватил `class Enemy {` как часть old_str, но не включил его в new_str.  
-**Исправление:** Вставлено `class Enemy {` перед первым `constructor` класса Enemy.  
-**Правило:** При вставке кода рядом с границами класса всегда включайте объявление класса в оба str.
-
-### 3. `let artifacts` не объявлен (ReferenceError)
-
-**Баг:** `artifacts.reset()` и `artifacts.update()` вызывались, но `let artifacts` никогда не был объявлен.  
-**Исправление:** Добавлено `let artifacts = new ArtifactSystem();` в блок переменных состояния.
-
-### 4. Камера смещена при DPR-масштабировании
-
-**Баг:** `camX = player.x - canvas.width / 2` использовал буферный размер (например, 3840px на Retina). После `ctx.setTransform(dpr, 0, 0, dpr, 0, 0)` координаты игры в CSS-пикселях, но camX считался в буферных.  
-**Исправление:** Введены `let viewW = innerWidth, viewH = innerHeight`, обновляемые в `resize()`. Везде используются `viewW`/`viewH`.
-
-### 5. Overheat убивал всех мгновенно
-
-**Баг:** `triggerUltimate()` вызывал `e.hit(99999, ...)`.  
-**Исправление:** `baseDmg = player.dmg * 3.5` с falloff: `1 - (d / (blastR + e.r)) * 0.7`.
-
-### 6. `world.elapsed` в Summoner (ReferenceError)
-
-**Баг:** `Math.floor(world.elapsed / 12)` — у `world` нет свойства `elapsed`.  
-**Исправление:** Заменено на `Math.floor(elapsed / 12)` (переменная замыкания).
-
-### 7. Canvas-превью скинов не рендерились
-
-**Баг:** `requestAnimationFrame` срабатывал до добавления canvas в DOM. `document.body.contains(cvs)` возвращал `false` и рендеринг пропускался.  
-**Исправление:** Вся система canvas заменена на inline SVG через `makeSkinSvg(skin)`. rAF не нужен.
-
-### 8. `#btnAdBuff` перекрывал контент
-
-**Баг:** `#btnAdBuff` находился внутри `#hud` (z-index: 10) с `pointer-events: none`. Кнопка не работала поверх магазина.  
-**Исправление:** Перемещено в прямой дочерний элемент `<body>` с `position: fixed; z-index: 50`.
-
-### 9. Магазин на английском при RU-локали
-
-**Баг:** `SHOP_ITEMS` имел только `title`/`desc` на английском.  
-**Исправление:** Добавлены `titleRu`/`descRu` во все 9 товаров. Шаблон: `currentLang==="ru"&&item.titleRu ? item.titleRu : item.title`.
-
-### 10. Возрождение через рекламу не возобновляло игру
-
-**Баг:** Callback устанавливал `state = "playing"`, но `reviveScreen` оставался поверх canvas.  
-**Исправление:** Добавлены явный `hide("reviveScreen")`, `player.shieldUsed = false` и toast-уведомление.
+`applyLanguage()` — внутри Game IIFE, экспортируется: `return { start: doRestart, applyLanguage }`.  
+Вызов снаружи: `Game.applyLanguage()`.
 
 ---
 
-## Правила проектирования — нельзя нарушать
+## История критических багов
 
-1. **`canvas.width`/`height` ≠ CSS-размеры.** Использовать `viewW`/`viewH` для всей игровой математики координат.
-
-2. **`class Enemy {` обязан существовать** перед всеми подклассами врагов. При редактировании закрывающей скобки Player убедитесь, что объявление Enemy следует сразу.
-
-3. **`playerBullets` — только визуал.** Реальный урон наносится в `Player.attack()` мгновенно. Не добавляйте коллизию к `playerBullets` без удаления мгновенного урона.
-
-4. **`this.projs` для MiniBoss, `enemyBullets` для Gunner.** Не смешивать пулы.
-
-5. **`_adLock` обязан сниматься.** В `onClose` И в `onError`. Иначе реклама не покажется до конца сессии.
-
-6. **`offerUpgrade()` прерывает `loop()`** через `return`. Выполнение не должно продолжаться к `drawFrame()`.
-
-7. **`applyLanguage()` идемпотентна.** Можно вызвать несколько раз. Не добавлять побочные эффекты внутрь.
-
-8. **SVG-иконки используют `stroke="currentColor"`.** Цвет устанавливается через `<div style="color:${col}">`. Не хардкодить цвета в SVG.
-
-9. **`ctx.setTransform(dpr, 0, 0, dpr, 0, 0)` вместо `ctx.scale()`** в `resize()`. Это сбрасывает матрицу полностью при каждом resize.
-
-10. **Переменные состояния должны быть объявлены через `let`** в блоке состояний (~строки 5350–5370). Если объявить только в `doRestart()` — станут глобалами на `window`.
+| # | Баг | Исправление |
+|---|-----|------------|
+| 1 | Дублирующий `<script>` — второй canvas + параллельный loop | Удалён |
+| 2 | `class Enemy {` потеря при str_replace | Восстановлено вручную |
+| 3 | `let artifacts` не объявлен | Добавлен в state vars |
+| 4 | Камера смещена при DPR | `viewW/viewH` вместо `canvas.width/2` |
+| 5 | Overheat убивал всех | `dmg × 3.5` с distance falloff |
+| 6 | `world.elapsed` не существует | Заменено на closure `elapsed` |
+| 7 | Skin canvas не рендерился (timing) | Заменено на inline SVG |
+| 8 | `#btnAdBuff` не кликался | Перемещён в `<body>` как `position:fixed` |
+| 9 | Магазин на EN при RU | Добавлены `titleRu/descRu` поля |
+| 10 | Возрождение не возобновляло игру | Явный `hide("reviveScreen")` в callback |
+| 11 | `applyLanguage` не найдена снаружи | Экспортирована из Game IIFE |
+| 12 | HUD видно на всех экранах | `hudShow/hudHide` по state, CSS `opacity:0` default |
+| 13 | Нижняя плашка на экране локаций | `#dailyText/#creditText` удалены, `hudHide()` при menu |
+| 14 | Рывки фона при движении | Float `ox/oy`, `Math.round` только при draw, `+0.5` для линий |
+| 15 | `#dailyModal` кнопки не работали | HTML перемещён **до** `<script>` |
 
 ---
 
-## Руководство по модификациям
+## Правила — нельзя нарушать
 
-### Добавление нового типа врага
+1. `canvas.width/height` ≠ CSS. Для игры — только `viewW/viewH`.
+2. `class Enemy {` — перед всеми подклассами. При str_replace вблизи — включать в оба str.
+3. `playerBullets` — только визуал. Не добавлять коллизию без удаления мгновенного урона.
+4. `this.projs` для MiniBoss, `enemyBullets` для Gunner. Не смешивать.
+5. `_adLock = false` в `onClose` И `onError`.
+6. `offerUpgrade()` возвращает из `loop()`. `return` после — намеренный.
+7. `applyLanguage()` идемпотентна.
+8. SVG иконки: `stroke="currentColor"`. Цвет через обёртку `style="color:${col}"`.
+9. `ctx.setTransform(dpr,0,0,dpr,0,0)` в `resize()`. Не `ctx.scale()`.
+10. `#dailyModal` и `#locationScreen` — строго до `<script>`.
+11. Tile offset: float `ox/oy`. `Math.round(cx)` перед modulo = рывки фона.
+12. HUD — только через `hudShow/hudHide`.
+
+---
+
+## Добавление новых элементов
+
+### Враг
 
 ```js
 class MyEnemy extends Enemy {
     constructor(x, y, wave = 0) {
         super(x, y, wave);
-        this.r = 15;
-        this.maxHp = 30 + wave * 2;
-        this.hp = this.maxHp;
-        this.spd = 100 + wave * 2;
-        this.dmg = 8 + wave * 0.3;
-        this.color = "#ff0000";
-        this.glow = "#cc0000";
-        this.xpVal = 20;
+        this.r = 15; this.maxHp = 30 + wave*2; this.hp = this.maxHp;
+        this.spd = 100; this.dmg = 8; this.xpVal = 20;
+        this.color = "#ff0000"; this.glow = "#cc0000";
+        this.contactCd = 0; // обязательно
     }
     update(dt, player, world, enemies, enemyBullets) {
-        if (this.deathT >= 0) {
-            this.deathT += dt;
-            return;
-        }
+        if (this.deathT >= 0) { this.deathT += dt; return; }
         this.flash = Math.max(0, this.flash - dt);
-        // движение / атака
-    }
-    draw(ctx, cx, cy) {
-        const sx = this.x - cx,
-            sy = this.y - cy;
-        if (
-            sx < -80 ||
-            sy < -80 ||
-            sx > ctx.canvas.width + 80 ||
-            sy > ctx.canvas.height + 80
-        )
-            return;
-        // рендеринг
-        this.drawHpBar(ctx, sx, sy);
+        this.contactCd = Math.max(0, this.contactCd - dt);
+        this.moveToward(player, dt); // использует contactCd внутри
     }
 }
+// В spawnEnemy(): добавить в нужную фазу
+// В deathCol switch: цвет вспышки
 ```
 
-Затем в `spawnEnemy()` добавить в нужную фазу:
-
-```js
-else if (elapsed >= 90 && roll < 0.10) e = new MyEnemy(ex, ey, wave);
-```
-
-Добавить цвет смерти в `deathCol` и бонус в `runCredits`.
-
-### Добавление нового навыка
+### Навык
 
 ```js
 { id:"mySkill", tier:"blue", icon:"spd",
-  name:"MY SKILL",    nameRu:"МОЙ НАВЫК",
-  descFn:(s)=>`+${[22,14,9][s-1]}% что-то`,
-  descFnRu:(s)=>`+${[22,14,9][s-1]}% что-то`,
-  apply(p, s) { p.myStat *= 1 + [0.22,0.14,0.09][s-1]; } },
-```
-
-Добавить в массив `SKILLS`. Больше никакой регистрации не нужно.
-
-### Добавление синергии
-
-В `offerUpgrade()` после `applySkill()`:
-
-```js
-const sk = player.skillStacks || {};
-if (
-    (sk.mySkillA || 0) >= 1 &&
-    (sk.mySkillB || 0) >= 1 &&
-    !player.mySynergyDone
-) {
-    player.mySynergyDone = true;
-    // эффект синергии
-    UI.toast(currentLang === "ru" ? "СИНЕРГИЯ: НАЗВАНИЕ ★" : "SYNERGY: NAME ★");
+  name:"NAME", nameRu:"ИМЯ",
+  descFn:(s)=>`+${[22,14,9][s-1]}%`,
+  descFnRu:(s)=>`+${[22,14,9][s-1]}%`,
+  apply(p, s) { p.myStat *= 1 + [0.22,0.14,0.09][s-1]; }
 }
 ```
 
-### Добавление товара в магазин
+### Товар магазина
 
 ```js
-{
-    id: "myItem",
-    icon: "dmg",        // ключ из объекта ICONS
-    title: "MY ITEM",   titleRu: "МОЙ ТОВАР",
-    desc: "Desc.",      descRu: "Описание.",
-    baseCost: 60,
-    stackable: false,
-    apply() { META.unlocked.myFeature = true; },
-},
+{ id:"myItem", icon:"dmg",
+  title:"NAME", titleRu:"ИМЯ",
+  desc:"Desc.", descRu:"Описание.",
+  baseCost: 60, stackable: false,
+  apply() { META.unlocked.myFeature = true; }
+}
+// META: добавить myFeature:false в defaults
 ```
-
-Добавить `META.unlocked.myFeature: false` в дефолты META.
-
-### Добавление звука
-
-```js
-// В объекте Audio:
-mySound() {
-    osc(частота, 'square', громкость, атака, спад, конечная_частота);
-    noise(громкость, длительность, тип_фильтра, частота_фильтра);
-},
-```
-
-Вызывать `Audio.mySound()` в нужном игровом событии.  
-**Никогда** не вызывать Audio в `drawFrame()`.
-
-### Балансировка волн
-
-- **Ранняя игра (0–30с):** ветки `getSpawnInterval()` для `elapsed < 30`
-- **Средняя игра (30–120с):** брейкпоинты в `classWaveBoost()`
-- **Поздняя игра (120с+):** ветка `elapsed > 120` в `spawnEnemy()`
-- **HP/DMG врагов:** через `hpMul`/`dmgMul` после `e = new EnemyClass(...)`
-- **Частота боссов:** `world.nextBossAt += 60` в `spawnBoss()`
-
----
-
-## Частые ошибки
-
-| Ошибка                                      | Проблема                                                            |
-| ------------------------------------------- | ------------------------------------------------------------------- |
-| `canvas.width/2` в камере                   | Буферный размер ≠ CSS-размер при DPR > 1. Использовать `viewW`      |
-| `world.elapsed`                             | Не существует. Использовать `elapsed` (переменная замыкания)        |
-| `innerHTML = ""` после `appendChild`        | Очищает все добавленные узлы. Сначала innerHTML, затем appendChild  |
-| Несколько активных `show()` без `hide()`    | Экраны перекрываются. Всегда скрывать предыдущий                    |
-| Не сброшен `_adLock` в `onError`            | Реклама не показывается до конца сессии                             |
-| Изменение `player` в `drawFrame()`          | Draw вызывается каждый кадр и должен быть без побочных эффектов     |
-| rAF-цикл в функции открытия магазина        | Работает параллельно с игровым циклом. Использовать статический SVG |
-| Переменная только в `doRestart()` без `let` | Становится глобальной на `window`                                   |
 
 ---
 
 ## Чеклист перед любым изменением
 
-- [ ] `node --check` показывает отсутствие синтаксических ошибок
-- [ ] Игра запускается без ошибок в консоли
-- [ ] Игрок появляется по центру экрана (camX = 0 при спавне)
-- [ ] Dash Scanner работает (Space срабатывает один раз за нажатие)
-- [ ] MiniBoss появляется на 60с, меняет цвет в Phase 2
-- [ ] Экран апгрейдов: 3 карточки с SVG-иконками правильных цветов тира
-- [ ] Магазин открывается: товары + секция скинов + лидерборд
-- [ ] Русская локаль: все тексты магазина, навыков и боссов на русском
-- [ ] Английская локаль: нет русского текста
-- [ ] Возрождение: просмотр рекламы реально возобновляет игру
-- [ ] Daily Challenge: модал открывается, 3 цели, PLAY работает
-- [ ] Экран смерти: правильное количество заработанных кредитов
-- [ ] `doRestart()`: сбрасывает enemies, playerBullets, enemyBullets, artifacts, surgeWindow, biomeT
+- [ ] `node --check` — без синтаксических ошибок
+- [ ] Игра стартует без console ошибок
+- [ ] Игрок по центру экрана на старте
+- [ ] Dash (Space) — один раз за нажатие
+- [ ] MiniBoss спавнится на 60с, Phase 2 при 50% HP
+- [ ] Upgrade screen: 3 карточки с иконками правильного цвета тира
+- [ ] Пауза: ESC и ⏸ → overlay → Resume/Exit работают
+- [ ] Громкость: слайдер → Apply → меняет звук
+- [ ] Магазин: товары + скины + рекорды, RU локаль полная
+- [ ] Локации: карусель бесконечная, фон меняется под локацию
+- [ ] HUD: скрыт на меню/магазин/локации, виден только в игре
+- [ ] Возрождение: реклама → реально продолжает игру
+- [ ] Daily: модал, 3 цели, PLAY запускает матч
+- [ ] Фон: плавный скролл без рывков
+- [ ] `doRestart()` сбрасывает: enemies, playerBullets, enemyBullets, artifacts, surgeWindow, biomeT, adBuffT, isPaused
 
 ---
 
-## Текущие технические пробелы
+## Технические пробелы
 
-| Фича                             | Чего не хватает                                  | Сложность |
-| -------------------------------- | ------------------------------------------------ | --------- |
-| HP-полоса босса вверху           | HTML-элемент оверлея + хук в `UI.update()`       | Низкая    |
-| Прогресс Daily Challenge в матче | HUD-элемент с live-отслеживанием целей           | Низкая    |
-| Слайдер громкости                | `masterGain` в Audio + слайдер в настройках      | Низкая    |
-| Dash на мобайле                  | Двойной тап правой части → `Input.dashPressed()` | Средняя   |
-| Элитные враги                    | Prefix-система + спавн в `spawnEnemy()`          | Средняя   |
-| Эффекты биомов                   | Чтение `BIOMES[currentBiome].id` в update-циклах | Средняя   |
-| Экран достижений                 | DOM-рендер `META.achievements`                   | Низкая    |
-| Автоснижение качества            | FPS-монитор + условное `settings.vfx`            | Средняя   |
-| Спец. волновые события           | Event pool + активация в `loop()` каждые 120с    | Средняя   |
-| Мини-карта                       | Малый canvas-оверлей, позиции боссов/артефактов  | Средняя   |
+| Фича | Сложность |
+|------|----------|
+| HP-полоса босса вверху экрана | Низкая |
+| Dash на мобайле (double-tap) | Средняя |
+| Прогресс Daily в матче (live HUD) | Низкая |
+| Заморозка замедляет движение игрока | Низкая |
+| Элитные враги с prefix | Средняя |
+| Экран достижений | Низкая |
+| Auto-quality scaling (FPS < 30) | Средняя |
