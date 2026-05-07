@@ -1261,24 +1261,29 @@
 
             /* ── JOYSTICK ── */
             #joystickWrap {
-                position: absolute;
+                position: fixed;
+                bottom: 28px;
+                left: 20px;
                 z-index: 20;
                 display: none;
                 pointer-events: none;
+                width: 110px;
+                height: 110px;
             }
             #jBase {
-                width: clamp(80px, 14vw, 120px);
-                height: clamp(80px, 14vw, 120px);
+                width: 110px;
+                height: 110px;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.06);
-                border: 2px solid rgba(255, 255, 255, 0.15);
+                background: rgba(255, 255, 255, 0.07);
+                border: 2px solid rgba(255, 255, 255, 0.18);
+                position: relative;
             }
             #jThumb {
-                width: clamp(36px, 6vw, 52px);
-                height: clamp(36px, 6vw, 52px);
+                width: 46px;
+                height: 46px;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.25);
-                border: 2px solid rgba(255, 255, 255, 0.4);
+                background: rgba(255, 255, 255, 0.28);
+                border: 2px solid rgba(255, 255, 255, 0.45);
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -4988,21 +4993,19 @@
                                     jId === null
                                 ) {
                                     jId = t.identifier;
-                                    jOx = t.clientX;
-                                    jOy = t.clientY;
+                                    // Use fixed joystick center as origin
                                     const w = $("joystickWrap");
-                                    w.style.left = `${t.clientX - 55}px`;
-                                    w.style.top = `${t.clientY - 55}px`;
-                                    w.style.bottom = "auto";
-                                    w.style.display = "block";
+                                    const rect = w.getBoundingClientRect();
+                                    jOx = rect.left + rect.width / 2;
+                                    jOy = rect.top + rect.height / 2;
                                     tdx = tdy = 0;
                                     $("jThumb").style.left = "55px";
                                     $("jThumb").style.top = "55px";
-                                    e.preventDefault();
+                                    // No preventDefault — allows upgrade cards and pause button to work
                                 }
                             }
                         },
-                        { passive: false },
+                        { passive: true },
                     );
 
                     document.addEventListener(
@@ -6355,6 +6358,7 @@
                         perkRu: "Сбалансированный. Двойной шанс крита. Цепные атаки с начала.",
                         critChance: 0.12,
                         chainStart: true,
+                        hasDash: true,
                     },
                     firewall: {
                         name: "FIREWALL",
@@ -6371,6 +6375,7 @@
                         perkRu: "Танк. Пассивная аура урона. Ёмкость оверхита ×1.4.",
                         passiveAura: 9,
                         overheatMax: 140,
+                        hasDash: true,
                     },
                     scanner: {
                         name: "SCANNER",
@@ -6420,7 +6425,7 @@
                         this.atkRate = c.rate;
                         this.atkR = c.range;
                         this.xp = 0;
-                        this.xpNeeded = 45;
+                        this.xpNeeded = 100;
                         this.lvl = 1;
                         this.atkCd = 0;
                         this.iframes = 0;
@@ -6510,7 +6515,7 @@
                         this.xp += amount * bonus;
                         if (this.xp >= this.xpNeeded) {
                             this.xp -= this.xpNeeded;
-                            this.xpNeeded = Math.floor(this.xpNeeded * 1.18);
+                            this.xpNeeded = Math.floor(this.xpNeeded * 1.2);
                             this.lvl += 1;
                             return true;
                         }
@@ -13105,7 +13110,7 @@
                         const cid = player.classId || "antivirus";
 
                         if (cid === "antivirus") {
-                            // Chain Nova: hit up to 10 enemies within 320px in order of distance
+                            // Chain Nova: hit up to 10 enemies within 200px in order of distance
                             UI.toast(
                                 currentLang === "ru"
                                     ? "⚡ ЦЕПНАЯ НОВАЯ"
@@ -13117,7 +13122,7 @@
                                     (e) =>
                                         e.deathT < 0 &&
                                         dist(player.x, player.y, e.x, e.y) <=
-                                            320,
+                                            200,
                                 )
                                 .sort(
                                     (a, b) =>
@@ -13187,7 +13192,7 @@
                                     (e) =>
                                         e.deathT < 0 &&
                                         dist(player.x, player.y, e.x, e.y) <=
-                                            320,
+                                            200,
                                 )
                                 .sort(
                                     (a, b) =>
@@ -14632,18 +14637,6 @@
                         // ── Player bullets update ──────────────────────────
                         for (let i = playerBullets.length - 1; i >= 0; i--) {
                             const b = playerBullets[i];
-                            // Soft homing: steer toward live target so visual matches actual hit
-                            if (b.targetId && b.targetId.deathT < 0) {
-                                const tx = b.targetId.x - b.x;
-                                const ty = b.targetId.y - b.y;
-                                const td = Math.hypot(tx, ty);
-                                if (td > 1) {
-                                    const spd = Math.hypot(b.vx, b.vy);
-                                    const steer = Math.min(dt * 14, 1);
-                                    b.vx += ((tx / td) * spd - b.vx) * steer;
-                                    b.vy += ((ty / td) * spd - b.vy) * steer;
-                                }
-                            }
                             b.x += b.vx * dt;
                             b.y += b.vy * dt;
                             b.life -= dt;
@@ -14862,7 +14855,7 @@
                             ctx.strokeStyle = "#a8eeff";
                             ctx.lineWidth = 6 * ultVfx + 1;
                             ctx.beginPath();
-                            ctx.arc(sx, sy, (1 - ultVfx) * 320, 0, Math.PI * 2);
+                            ctx.arc(sx, sy, (1 - ultVfx) * 200, 0, Math.PI * 2);
                             ctx.stroke();
                             ctx.globalAlpha = 1;
                         }
