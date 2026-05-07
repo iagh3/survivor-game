@@ -3445,6 +3445,45 @@
                     padding-bottom: max(0px, env(safe-area-inset-bottom));
                 }
             }
+            /* ── Global Leaderboard screen ── */
+            #lbScreen {
+                background: rgba(0, 0, 0, 0.92);
+                z-index: 80;
+            }
+            .lb-row {
+                display: grid;
+                grid-template-columns: 36px 1fr 80px;
+                gap: 0 10px;
+                align-items: center;
+                padding: 9px 6px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-family: monospace;
+            }
+            .lb-row.lb-me {
+                background: rgba(255, 204, 0, 0.08);
+                border-radius: 5px;
+                border-bottom-color: rgba(255, 204, 0, 0.2);
+            }
+            .lb-rank {
+                font-size: 13px;
+                font-weight: 900;
+                text-align: center;
+            }
+            .lb-name {
+                font-size: 10px;
+                letter-spacing: 1px;
+                color: rgba(255, 255, 255, 0.75);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .lb-score {
+                font-size: 11px;
+                font-weight: 700;
+                color: #00eeff;
+                text-align: right;
+                letter-spacing: 1px;
+            }
         </style>
     </head>
     <body>
@@ -3708,6 +3747,16 @@
                     <button class="btn btn-ghost" id="btnAchieve">
                         ACHIEVEMENTS
                     </button>
+                    <button
+                        class="btn btn-ghost"
+                        id="btnLeaderboardMain"
+                        style="
+                            color: #ffcc44;
+                            border-color: rgba(255, 204, 0, 0.35);
+                        "
+                    >
+                        🏆 RATING
+                    </button>
                 </div>
             </div>
             <div class="tips" id="tipsText">
@@ -3952,6 +4001,28 @@
                 ⬆ ANTI-DDoS UPGRADES
             </button>
             <button
+                id="btnLeaderboard"
+                style="
+                    margin-top: 8px;
+                    padding: 12px 28px;
+                    border-radius: 8px;
+                    border: 1px solid rgba(255, 204, 0, 0.4);
+                    background: rgba(20, 15, 0, 0.75);
+                    color: #ffcc44;
+                    font-family: monospace;
+                    font-size: 11px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    cursor: pointer;
+                    display: block;
+                    width: fit-content;
+                    margin-left: auto;
+                    margin-right: auto;
+                "
+            >
+                🏆 LEADERBOARD
+            </button>
+            <button
                 class="btn btn-ghost"
                 id="btnLobby"
                 style="margin-top: 10px"
@@ -3973,6 +4044,61 @@
                     📺 AD → SKIP FIRST DDoS WAVE
                 </button>
             </div>
+        </div>
+
+        <!-- Global Leaderboard Screen -->
+        <div
+            class="screen"
+            id="lbScreen"
+            style="
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                justify-content: flex-start;
+                padding-top: 20px;
+            "
+        >
+            <div
+                id="lbTitle"
+                style="
+                    font-size: clamp(16px, 3.5vw, 22px);
+                    font-weight: 900;
+                    letter-spacing: 4px;
+                    color: #ffcc44;
+                    text-align: center;
+                    padding: 12px 0 4px;
+                "
+            >
+                🏆 LEADERBOARD
+            </div>
+            <div
+                id="lbSub"
+                style="
+                    font-size: 9px;
+                    letter-spacing: 3px;
+                    color: rgba(255, 255, 255, 0.28);
+                    text-align: center;
+                    margin-bottom: 16px;
+                    text-transform: uppercase;
+                "
+            >
+                miniSurvivorsMain
+            </div>
+            <div
+                id="lbTable"
+                style="
+                    width: 100%;
+                    max-width: 520px;
+                    margin: 0 auto;
+                    padding: 0 16px 8px;
+                "
+            ></div>
+            <button
+                class="btn btn-ghost"
+                id="btnLbBack"
+                style="margin-top: 12px; margin-bottom: 20px"
+            >
+                ✕ CLOSE
+            </button>
         </div>
 
         <div class="screen" id="reviveScreen">
@@ -4742,6 +4868,27 @@
                 );
                 function saveMeta() {
                     LS.set(META_KEY, META);
+                    if (_ysPlayer) {
+                        try {
+                            _ysPlayer
+                                .setData(
+                                    {
+                                        meta: META,
+                                        best: LS.get(BEST_KEY, {}),
+                                        runs: LS.get(
+                                            "mini_survivors_runs_v1",
+                                            [],
+                                        ),
+                                        totalkills: LS.get(
+                                            "mini_surv_total_kills",
+                                            0,
+                                        ),
+                                    },
+                                    true,
+                                )
+                                .catch(() => {});
+                        } catch (_) {}
+                    }
                 }
                 function getBestRun() {
                     return LS.get(BEST_KEY, {
@@ -4759,7 +4906,8 @@
                 // ═══ ЯНДЕКС ИГРЫ SDK ══════════════════════════════════
                 let _ysdk = null,
                     _ysdk_ready = false,
-                    _adLock = false;
+                    _adLock = false,
+                    _ysPlayer = null;
                 (async () => {
                     try {
                         if (typeof YaGames !== "undefined") {
@@ -4780,6 +4928,31 @@
                                     LS.set("mini_surv_lang", mapped);
                                 if (typeof Game !== "undefined")
                                     Game.applyLanguage();
+                            } catch (_) {}
+                            // Cloud saves: load player progress from Yandex
+                            try {
+                                _ysPlayer = await _ysdk.getPlayer({
+                                    scopes: false,
+                                });
+                                const cld = await _ysPlayer.getData([
+                                    "meta",
+                                    "best",
+                                    "runs",
+                                    "totalkills",
+                                ]);
+                                if (cld.meta && typeof cld.meta === "object") {
+                                    Object.assign(META, cld.meta);
+                                    LS.set(META_KEY, META);
+                                }
+                                if (cld.best && typeof cld.best === "object")
+                                    LS.set(BEST_KEY, cld.best);
+                                if (Array.isArray(cld.runs))
+                                    LS.set("mini_survivors_runs_v1", cld.runs);
+                                if (typeof cld.totalkills === "number")
+                                    LS.set(
+                                        "mini_surv_total_kills",
+                                        cld.totalkills,
+                                    );
                             } catch (_) {}
                         }
                     } catch (e) {
@@ -4881,6 +5054,20 @@
                                 ),
                             )
                             .catch(() => {});
+                    },
+                    getLeaderboard(cb) {
+                        if (!_ysdk_ready || !_ysdk) return cb(null);
+                        _ysdk
+                            .getLeaderboards()
+                            .then((lb) =>
+                                lb.getLeaderboardEntries("miniSurvivorsMain", {
+                                    includeUser: true,
+                                    quantityAround: 3,
+                                    quantityTop: 10,
+                                }),
+                            )
+                            .then((res) => cb(res))
+                            .catch(() => cb(null));
                     },
                 };
 
@@ -11345,6 +11532,82 @@
                     return Math.round(item.baseCost * Math.pow(1.5, stack));
                 }
 
+                function openLeaderboardScreen(fromScreen) {
+                    const isRu = currentLang === "ru";
+                    $("lbTitle").textContent = isRu
+                        ? "🏆 МИРОВОЙ РЕЙТИНГ"
+                        : "🏆 LEADERBOARD";
+                    $("lbSub").textContent = isRu
+                        ? "МИРОВЫЕ РЕКОРДЫ"
+                        : "GLOBAL RECORDS";
+                    $("lbTable").innerHTML =
+                        `<div style="text-align:center;color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:2px;padding:32px 0;">${isRu ? "ЗАГРУЗКА..." : "LOADING..."}</div>`;
+                    const back = $("btnLbBack");
+                    if (back) {
+                        back.textContent = isRu ? "✕ ЗАКРЫТЬ" : "✕ CLOSE";
+                        back.onclick = () => {
+                            hide("lbScreen");
+                            if (fromScreen) show(fromScreen);
+                        };
+                    }
+                    if (fromScreen) hide(fromScreen);
+                    show("lbScreen");
+                    if (!_ysdk_ready) {
+                        $("lbTable").innerHTML =
+                            `<div style="text-align:center;color:rgba(255,150,50,0.7);font-size:10px;letter-spacing:2px;padding:32px 0;">${isRu ? "ТОЛЬКО В ЯНДЕКС ИГРАХ" : "AVAILABLE ON YANDEX GAMES"}</div>`;
+                        return;
+                    }
+                    Ads.getLeaderboard((res) => {
+                        if (!res || !res.entries || res.entries.length === 0) {
+                            $("lbTable").innerHTML =
+                                `<div style="text-align:center;color:rgba(255,255,255,0.25);font-size:10px;letter-spacing:2px;padding:32px 0;">${isRu ? "ДАННЫХ ЕЩЁ НЕТ" : "NO DATA YET"}</div>`;
+                            return;
+                        }
+                        const wrap = document.createElement("div");
+                        if (res.userRank) {
+                            const ub = document.createElement("div");
+                            ub.style.cssText =
+                                "text-align:center;font-size:9px;letter-spacing:2px;color:rgba(255,204,68,0.65);margin-bottom:14px;text-transform:uppercase;";
+                            ub.textContent =
+                                (isRu ? "ВАШ РАНГ: " : "YOUR RANK: ") +
+                                "#" +
+                                res.userRank;
+                            wrap.appendChild(ub);
+                        }
+                        const myUID = _ysPlayer
+                            ? _ysPlayer.uniqueID || null
+                            : null;
+                        const rankColors = {
+                            1: "#ffcc44",
+                            2: "#bbbbbb",
+                            3: "#cc8844",
+                        };
+                        res.entries.forEach((e) => {
+                            const row = document.createElement("div");
+                            const isMe = myUID && e.player?.uniqueID === myUID;
+                            row.className = "lb-row" + (isMe ? " lb-me" : "");
+                            const rCol =
+                                rankColors[e.rank] || "rgba(255,255,255,0.35)";
+                            const rankStr =
+                                e.rank === 1
+                                    ? "🥇"
+                                    : e.rank === 2
+                                      ? "🥈"
+                                      : e.rank === 3
+                                        ? "🥉"
+                                        : "#" + e.rank;
+                            const name =
+                                e.player?.publicName ||
+                                (isRu ? "ИГРОК" : "PLAYER");
+                            const score = e.formattedScore || String(e.score);
+                            row.innerHTML = `<div class="lb-rank" style="color:${rCol}">${rankStr}</div><div class="lb-name">${name}</div><div class="lb-score">${score}</div>`;
+                            wrap.appendChild(row);
+                        });
+                        $("lbTable").innerHTML = "";
+                        $("lbTable").appendChild(wrap);
+                    });
+                }
+
                 let _shopScrollY = 0;
                 function openShop() {
                     ensureShopUI();
@@ -15660,6 +15923,18 @@
                         $("howToTitle").textContent = tr("howToTitle");
                         buildHowToGuide();
                         $("btnLobby").textContent = tr("mainMenu");
+                        const _bLbMain = $("btnLeaderboardMain");
+                        if (_bLbMain)
+                            _bLbMain.textContent =
+                                currentLang === "ru"
+                                    ? "🏆 РЕЙТИНГ"
+                                    : "🏆 RATING";
+                        const _bLbDeath = $("btnLeaderboard");
+                        if (_bLbDeath)
+                            _bLbDeath.textContent =
+                                currentLang === "ru"
+                                    ? "🏆 РЕЙТИНГ"
+                                    : "🏆 LEADERBOARD";
                         $("dTimeLbl").textContent = tr("survived");
                         $("dKillsLbl").textContent = tr("purgedLbl");
                         $("dLvlLbl").textContent = tr("syncLevelLbl");
@@ -16386,6 +16661,12 @@
                             hide("deathScreen");
                             openMetaScreen();
                         });
+                    $("btnLeaderboard") &&
+                        ($("btnLeaderboard").onclick = () =>
+                            openLeaderboardScreen("deathScreen"));
+                    $("btnLeaderboardMain") &&
+                        ($("btnLeaderboardMain").onclick = () =>
+                            openLeaderboardScreen("startScreen"));
                     $("btnMetaPlay") &&
                         ($("btnMetaPlay").onclick = () => {
                             hide("metaScreen");
