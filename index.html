@@ -20,11 +20,19 @@
                 padding: 0;
                 box-sizing: border-box;
                 -webkit-tap-highlight-color: transparent;
+                -webkit-touch-callout: none;
                 user-select: none;
+                -webkit-user-select: none;
+            }
+            html {
+                overflow: hidden;
+                overscroll-behavior: none;
+                height: 100%;
             }
             body {
                 background: #000;
                 overflow: hidden;
+                overscroll-behavior: none;
                 width: 100vw;
                 height: 100vh;
                 font-family: "Courier New", monospace;
@@ -206,7 +214,7 @@
                 overflow-y: auto;
                 overflow-x: hidden;
                 -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
+                overscroll-behavior: none;
             }
             .screen.active {
                 display: flex;
@@ -601,9 +609,9 @@
             }
             .guide-box {
                 width: min(560px, 92vw);
-                border: 1px solid rgba(255, 255, 255, 0.12);
+                border: 1px solid rgba(255, 255, 255, 0.2);
                 border-radius: 12px;
-                background: rgba(255, 255, 255, 0.03);
+                background: #0e1422;
                 padding: 18px 16px;
                 margin-bottom: 12px;
             }
@@ -818,12 +826,12 @@
                 justify-content: center;
                 font-size: clamp(9px, 1.1vw, 11px);
                 letter-spacing: 1.5px;
-                color: rgba(255, 255, 255, 0.38);
+                color: rgba(255, 255, 255, 0.72);
                 margin-bottom: 8px;
             }
             .death-run-chip {
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(255, 255, 255, 0.07);
+                background: #111826;
+                border: 1px solid rgba(255, 255, 255, 0.18);
                 border-radius: 6px;
                 padding: 5px 10px;
                 white-space: nowrap;
@@ -846,10 +854,10 @@
             }
             .stat-box {
                 text-align: center;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.18);
                 padding: clamp(10px, 1.5vw, 16px) clamp(14px, 2.5vw, 24px);
                 border-radius: 8px;
-                background: rgba(255, 255, 255, 0.02);
+                background: #111826;
                 min-width: clamp(70px, 10vw, 100px);
             }
             .stat-val {
@@ -979,9 +987,9 @@
             .set-box {
                 width: min(420px, 92vw);
                 padding: 22px 20px;
-                border: 1px solid rgba(255, 255, 255, 0.12);
+                border: 1px solid rgba(255, 255, 255, 0.18);
                 border-radius: 12px;
-                background: rgba(255, 255, 255, 0.03);
+                background: #0e1422;
                 margin-bottom: 16px;
             }
             /* Legacy set-row kept for safety */
@@ -1095,7 +1103,7 @@
             .diff-desc {
                 margin-top: 8px;
                 font-size: 9px;
-                color: rgba(255, 255, 255, 0.25);
+                color: rgba(255, 255, 255, 0.62);
                 letter-spacing: 1.5px;
                 text-align: center;
                 min-height: 14px;
@@ -1109,14 +1117,14 @@
             }
             .up-label {
                 font-size: clamp(7px, 1vw, 10px);
-                color: rgba(255, 255, 255, 0.22);
+                color: rgba(255, 255, 255, 0.55);
                 letter-spacing: 6px;
                 text-transform: uppercase;
                 margin-bottom: 4px;
             }
             .up-hint {
                 font-size: clamp(8px, 1.2vw, 11px);
-                color: rgba(255, 255, 255, 0.25);
+                color: rgba(255, 255, 255, 0.55);
                 letter-spacing: 3px;
                 margin-top: 5px;
             }
@@ -1139,8 +1147,8 @@
                 padding: 0 12px;
             }
             .up-card {
-                background: rgba(7, 10, 18, 0.98);
-                border: 1.5px solid rgba(255, 255, 255, 0.1);
+                background: #07090f;
+                border: 1.5px solid rgba(255, 255, 255, 0.22);
                 border-radius: 18px;
                 padding: clamp(18px, 2.5vw, 28px) clamp(14px, 2vw, 22px)
                     clamp(16px, 2vw, 24px);
@@ -1214,6 +1222,36 @@
                 font-size: clamp(8px, 1.2vw, 11px);
                 color: rgba(255, 255, 255, 0.58);
                 line-height: 1.65;
+            }
+            .term {
+                color: var(--term-color, #dff);
+                border-bottom: 1px dotted currentColor;
+                text-shadow: 0 0 10px color-mix(in srgb, currentColor 55%, transparent);
+                cursor: help;
+                white-space: nowrap;
+                position: relative;
+            }
+            .term[data-tip]:hover::after {
+                content: attr(data-tip);
+                position: absolute;
+                bottom: calc(100% + 8px);
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0,0,0,0.93);
+                border: 1px solid rgba(255,255,255,0.18);
+                color: #e8f4ff;
+                padding: 7px 12px;
+                border-radius: 7px;
+                font-size: clamp(9px,1.1vw,11px);
+                letter-spacing: 0.8px;
+                line-height: 1.5;
+                white-space: normal;
+                min-width: 160px;
+                max-width: 240px;
+                text-align: center;
+                z-index: 9999;
+                pointer-events: none;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.6);
             }
 
             /* ── AD SIMULATOR ── */
@@ -1383,8 +1421,8 @@
                 margin-bottom: 20px;
             }
             .shop-card {
-                background: rgba(10, 16, 28, 0.9);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: #0a101c;
+                border: 1px solid rgba(255, 255, 255, 0.22);
                 border-radius: 12px;
                 padding: 18px 16px;
                 display: flex;
@@ -1399,12 +1437,12 @@
                 background: rgba(0, 30, 60, 0.95);
             }
             .shop-card-owned {
-                border-color: rgba(255, 204, 68, 0.25);
-                background: rgba(255, 204, 68, 0.03);
+                border-color: rgba(255, 204, 68, 0.5);
+                background: #16120a;
             }
             .shop-card-owned:hover {
-                border-color: rgba(255, 204, 68, 0.35);
-                background: rgba(255, 204, 68, 0.05);
+                border-color: rgba(255, 204, 68, 0.65);
+                background: #1c1810;
             }
             .shop-card-title {
                 font-size: clamp(9px, 1.3vw, 12px);
@@ -1415,7 +1453,7 @@
             }
             .shop-card-desc {
                 font-size: clamp(8px, 1.1vw, 11px);
-                color: rgba(255, 255, 255, 0.5);
+                color: rgba(255, 255, 255, 0.72);
                 line-height: 1.6;
                 flex: 1;
             }
@@ -1650,8 +1688,8 @@
                 width: 100%;
             }
             .cls-card {
-                background: rgba(7, 10, 20, 0.98);
-                border: 1.5px solid rgba(255, 255, 255, 0.1);
+                background: #07090f;
+                border: 1.5px solid rgba(255, 255, 255, 0.22);
                 border-radius: 18px;
                 padding: 24px 18px 20px;
                 width: 190px;
@@ -1846,8 +1884,8 @@
                 width: 100%;
             }
             .skin-card {
-                background: rgba(8, 12, 24, 0.95);
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: #080c18;
+                border: 1px solid rgba(255, 255, 255, 0.2);
                 border-radius: 14px;
                 padding: 14px 12px;
                 cursor: pointer;
@@ -2665,7 +2703,7 @@
                 min-width: 140px;
                 max-width: 190px;
                 text-align: center;
-                background: rgba(0, 0, 0, 0.7);
+                background: #0a0f1a;
             }
             .mut-card:hover {
                 transform: scale(1.05);
@@ -2683,7 +2721,7 @@
             }
             .mut-desc {
                 font-size: 8.5px;
-                color: rgba(255, 255, 255, 0.5);
+                color: rgba(255, 255, 255, 0.72);
                 letter-spacing: 1px;
                 line-height: 1.45;
             }
@@ -2698,7 +2736,7 @@
                 min-width: 140px;
                 max-width: 190px;
                 text-align: center;
-                background: rgba(0, 0, 0, 0.7);
+                background: #0a0f1a;
             }
             .mkt-card:hover {
                 transform: scale(1.05);
@@ -3186,9 +3224,19 @@
                 }
             }
 
+            /* Screens without explicit backgrounds */
+            #mutationScreen,
+            #merchantScreen,
+            #classScreen,
+            #howToScreen,
+            #achieveScreen,
+            #lbScreen {
+                background: rgba(0, 0, 0, 0.95);
+            }
+
             /* ── Relic Screen ── */
             #relicScreen {
-                background: rgba(0, 0, 0, 0.9);
+                background: rgba(0, 0, 0, 0.95);
                 z-index: 80;
             }
             .relic-card {
@@ -3202,7 +3250,7 @@
                 min-width: 160px;
                 max-width: 210px;
                 text-align: center;
-                background: rgba(0, 0, 0, 0.7);
+                background: #0a0f1a;
             }
             .relic-card:hover {
                 transform: scale(1.05);
@@ -3256,12 +3304,12 @@
             }
             .dna-node.unlocked {
                 border-color: #44ff88;
-                background: rgba(0, 255, 100, 0.08);
+                background: #0b2016;
+                box-shadow: 0 0 10px rgba(68,255,136,0.12);
             }
             .dna-node.locked {
-                border-color: rgba(255, 255, 255, 0.1);
-                background: rgba(0, 0, 0, 0.3);
-                opacity: 0.55;
+                border-color: rgba(255, 255, 255, 0.22);
+                background: #0e1520;
             }
             .dna-icon {
                 width: 28px;
@@ -3282,7 +3330,7 @@
                 margin-bottom: 3px;
             }
             .dna-name.locked-name {
-                color: rgba(255, 255, 255, 0.4);
+                color: rgba(255, 255, 255, 0.75);
             }
             .dna-bonus {
                 color: #ffcc44;
@@ -3290,7 +3338,7 @@
                 letter-spacing: 1px;
             }
             .dna-req {
-                color: rgba(255, 255, 255, 0.32);
+                color: rgba(200, 220, 255, 0.62);
                 font-size: 7.5px;
                 letter-spacing: 1px;
             }
@@ -3490,6 +3538,156 @@
                 text-align: right;
                 letter-spacing: 1px;
             }
+
+            /* ── Readability pass: larger, less machine-like UI ── */
+            #hud-left {
+                top: 18px;
+                left: 18px;
+            }
+            #hud-right {
+                top: 18px;
+                right: 18px;
+            }
+            .bar-wrap {
+                gap: 10px;
+                margin-bottom: 8px;
+            }
+            .bar-lbl {
+                width: clamp(116px, 9.5vw, 148px);
+                font-size: clamp(10px, 1vw, 13px);
+                letter-spacing: 1px;
+                color: rgba(225, 242, 250, 0.82);
+                overflow: visible;
+                white-space: nowrap;
+            }
+            .bar-bg {
+                width: clamp(150px, 15vw, 230px);
+                height: clamp(8px, 0.9vw, 12px);
+            }
+            #timeDisplay {
+                font-size: clamp(20px, 2.4vw, 30px);
+            }
+            #lvlDisplay,
+            #killDisplay,
+            #objectiveDisplay {
+                font-size: clamp(11px, 1.15vw, 14px);
+            }
+            #btnPause {
+                top: 14px;
+                width: 44px;
+                height: 38px;
+                font-size: 19px;
+            }
+            .btn-play {
+                font-size: clamp(15px, 2vw, 23px);
+                padding: clamp(14px, 1.8vh, 20px) clamp(30px, 5vw, 60px);
+                min-width: clamp(170px, 28vw, 270px);
+            }
+            .btn-ghost {
+                font-size: clamp(10px, 1.15vw, 13px);
+                padding: clamp(9px, 1.2vh, 13px) clamp(16px, 2.2vw, 26px);
+            }
+            .lore {
+                font-size: clamp(10px, 1.2vw, 13px);
+                line-height: 1.85;
+            }
+            .tips {
+                max-width: min(640px, 92vw);
+                font-size: clamp(11px, 1.2vw, 14px);
+                line-height: 1.75;
+                letter-spacing: 1px;
+                text-transform: none;
+                color: rgba(180, 218, 230, 0.86);
+                padding: clamp(12px, 1.5vh, 16px) clamp(18px, 2.8vw, 28px);
+            }
+            .up-header {
+                margin-bottom: 24px;
+            }
+            .card-row {
+                max-width: min(900px, 96vw);
+                gap: 22px;
+            }
+            .up-card {
+                width: clamp(220px, 24vw, 280px);
+                min-height: 214px;
+                border-radius: 8px;
+                padding: clamp(22px, 2.6vw, 32px) clamp(18px, 2.2vw, 26px);
+            }
+            .up-card::after {
+                border-radius: 8px;
+            }
+            .up-tier,
+            .up-stack {
+                font-size: clamp(9px, 0.95vw, 11px);
+            }
+            .up-icon {
+                width: 68px;
+                height: 68px;
+                margin-bottom: 18px;
+            }
+            .up-icon svg {
+                width: 62px;
+                height: 62px;
+            }
+            .up-name {
+                font-size: clamp(12px, 1.3vw, 16px);
+                letter-spacing: 1.8px;
+            }
+            .up-desc {
+                font-size: clamp(11px, 1.1vw, 14px);
+                line-height: 1.6;
+            }
+            .guide-box {
+                width: min(760px, 94vw);
+                padding: 22px 20px;
+                border-radius: 8px;
+            }
+            .guide-title {
+                font-size: clamp(13px, 1.4vw, 17px);
+            }
+            .g-val,
+            .guide-text {
+                font-size: clamp(12px, 1.15vw, 15px);
+            }
+            .g-key,
+            .g-badge {
+                font-size: 11px;
+            }
+            .g-num {
+                width: 24px;
+                height: 24px;
+                font-size: 11px;
+            }
+            @media (max-width: 640px) {
+                #hud-left {
+                    top: 10px;
+                    left: 10px;
+                }
+                #hud-right {
+                    top: 10px;
+                    right: 10px;
+                }
+                .bar-lbl {
+                    width: 100px;
+                    font-size: 8px;
+                    letter-spacing: 0.7px;
+                }
+                .bar-bg {
+                    width: 112px;
+                }
+                #btnPause {
+                    top: 8px;
+                    width: 38px;
+                    height: 32px;
+                }
+                .card-row {
+                    gap: 12px;
+                }
+                .up-card {
+                    width: min(92vw, 330px);
+                    min-height: 184px;
+                }
+            }
         </style>
     </head>
     <body>
@@ -3561,7 +3759,7 @@
                 backdrop-filter: blur(4px);
             "
         >
-            ▶ BOOST (AD)
+            📺 РЕКЛАМА → ×2 ОПЫТ 60с
         </button>
         <button id="btnDdosHelp">📺 HALT DDoS</button>
 
@@ -3569,7 +3767,7 @@
         <div id="hud">
             <div id="hud-left">
                 <div class="bar-wrap">
-                    <span class="bar-lbl" id="lblIntegrity">HP</span>
+                    <span class="bar-lbl" id="lblIntegrity">Integrity</span>
                     <div class="bar-bg">
                         <div
                             class="bar-fill"
@@ -3589,7 +3787,7 @@
                     </div>
                 </div>
                 <div class="bar-wrap">
-                    <span class="bar-lbl" id="lblOverheat">Heat</span>
+                    <span class="bar-lbl" id="lblOverheat">Overheat</span>
                     <div class="bar-bg">
                         <div
                             class="bar-fill"
@@ -3599,7 +3797,7 @@
                     </div>
                 </div>
                 <div class="bar-wrap">
-                    <span class="bar-lbl" id="lblLoad">LOAD</span>
+                    <span class="bar-lbl" id="lblLoad">Load</span>
                     <div
                         class="bar-bg"
                         id="loadBarWrap"
@@ -4110,7 +4308,7 @@
         <div class="screen" id="reviveScreen">
             <div class="revive-title" id="reviveTitle">SECOND CHANCE</div>
             <div class="revive-sub" id="reviveSub">
-                Watch ad to restore 50% HP and continue
+                Watch ad to restore 50% integrity and continue
             </div>
             <div class="revive-cd" id="revCD">5</div>
             <button
@@ -4576,6 +4774,7 @@
                 justify-content: flex-start;
                 align-items: center;
                 padding: 0;
+                background: rgba(0,0,0,0.96);
             "
         >
             <div
@@ -5129,6 +5328,8 @@
                     viewH = innerHeight;
                 // Shared language state — accessible to both Game IIFE and menu BG IIFE
                 let _currentLang = "en";
+                const MAX_ENEMY_BULLETS = 96;
+                const MAX_PLAYER_BULLETS = 80;
 
                 // ─────────────────────────────────────────────────────────────
                 // Input
@@ -5155,8 +5356,8 @@
                                 "ArrowUp",
                                 "ArrowDown",
                                 "ArrowLeft",
-                                "ArrowRight",
-                                "Space",
+                            "ArrowRight",
+                            "Space",
                             ].includes(e.code)
                         )
                             e.preventDefault();
@@ -5173,6 +5374,10 @@
                         if (e.button === 0) hold = false;
                     });
                     addEventListener("contextmenu", (e) => e.preventDefault());
+                    // Prevent browser scroll and swipe-to-refresh during gameplay
+                    document.addEventListener("touchmove", (e) => {
+                        if (_gameActive) e.preventDefault();
+                    }, { passive: false });
 
                     document.addEventListener(
                         "touchstart",
@@ -5279,6 +5484,8 @@
                         dir() {
                             let dx = 0,
                                 dy = 0;
+                            const hasKey = K["KeyW"] || K["KeyS"] || K["KeyA"] || K["KeyD"] ||
+                                K["ArrowUp"] || K["ArrowDown"] || K["ArrowLeft"] || K["ArrowRight"];
                             if (K["KeyW"] || K["ArrowUp"]) dy -= 1;
                             if (K["KeyS"] || K["ArrowDown"]) dy += 1;
                             if (K["KeyA"] || K["ArrowLeft"]) dx -= 1;
@@ -5286,7 +5493,7 @@
                             if (jId !== null) {
                                 dx = tdx;
                                 dy = tdy;
-                            } else if (hold && !isMobile) {
+                            } else if (!hasKey && _gameActive && !isMobile) {
                                 dx = mx - innerWidth * 0.5;
                                 dy = my - innerHeight * 0.5;
                                 const d = Math.hypot(dx, dy);
@@ -5773,6 +5980,8 @@
                         getVolume() {
                             return masterVol;
                         },
+                        suspend() { if (actx && actx.state === "running") actx.suspend().catch(() => {}); },
+                        resume() { if (actx && actx.state === "suspended") actx.resume().catch(() => {}); },
                         shoot() {
                             const now = performance.now();
                             if (now - lastShoot < 55) return;
@@ -6015,6 +6224,11 @@
                             if (!el) return;
                             el.volume = VOLUME;
                             el.play().catch(() => {});
+                            // Prevent browser from creating a system media player
+                            if ("mediaSession" in navigator) {
+                                navigator.mediaSession.metadata = null;
+                                try { navigator.mediaSession.setPositionState && navigator.mediaSession.setPositionState(null); } catch(_) {}
+                            }
                         },
                         stop() {
                             const el = _el();
@@ -6415,7 +6629,7 @@
                             p.maxHp *= 0.85;
                             p.hp = Math.min(p.hp, p.maxHp);
                         },
-                        desc: "+35% dmg, -15% HP",
+                        desc: "+35% damage, -15% integrity",
                     },
                     {
                         id: "shieldNode",
@@ -6545,8 +6759,8 @@
                         color: "#2cdcff",
                         perkName: "OVERCLOCK",
                         perkNameRu: "РАЗГОН",
-                        perk: "Balanced. +2× base crit chance. Chain attacks at start.",
-                        perkRu: "Сбалансированный. Двойной шанс крита. Цепные атаки с начала.",
+                        perk: "Balanced. +2x weak point chance. Signal chains at start.",
+                        perkRu: "Сбалансированный. Двойной шанс уязвимости. Цепи сигнала с начала.",
                         critChance: 0.12,
                         chainStart: true,
                         hasDash: true,
@@ -6562,8 +6776,8 @@
                         color: "#ff8844",
                         perkName: "BULWARK",
                         perkNameRu: "ОПЛОТ",
-                        perk: "Tankier. Passive damage aura. Overheat capacity ×1.4.",
-                        perkRu: "Танк. Пассивная аура урона. Ёмкость оверхита ×1.4.",
+                        perk: "Tankier. Passive damage field. Overheat capacity x1.4.",
+                        perkRu: "Танк. Пассивное поле урона. Ёмкость перегрева x1.4.",
                         passiveAura: 9,
                         overheatMax: 140,
                         hasDash: true,
@@ -6742,6 +6956,72 @@
                         }
                         const dmg = this.dmg * (crit ? critMult : 1);
                         this.hitEnemy(nearest, dmg, parts, crit, enemies);
+                        let totalDmg = dmg;
+                        const hitTargets = new Set([nearest]);
+                        const extraSignals = Math.max(
+                            0,
+                            Math.min((this.multishot || 1) - 1, 4),
+                        );
+                        for (let si = 0; si < extraSignals; si++) {
+                            let next = null;
+                            let nextScore = Infinity;
+                            for (const e of enemies) {
+                                if (
+                                    e.dead ||
+                                    e.deathT >= 0 ||
+                                    hitTargets.has(e)
+                                )
+                                    continue;
+                                const d = dist(this.x, this.y, e.x, e.y);
+                                if (d <= this.atkR + e.r && d < nextScore) {
+                                    nextScore = d;
+                                    next = e;
+                                }
+                            }
+                            if (!next) break;
+                            hitTargets.add(next);
+                            const signalDmg = dmg * 0.72;
+                            this.hitEnemy(next, signalDmg, parts, crit, enemies);
+                            totalDmg += signalDmg;
+                        }
+                        if ((this.piercing || 0) > 0) {
+                            const baseDx = nearest.x - this.x;
+                            const baseDy = nearest.y - this.y;
+                            const baseDist = Math.hypot(baseDx, baseDy) || 1;
+                            const ux = baseDx / baseDist;
+                            const uy = baseDy / baseDist;
+                            const pierceTargets = enemies
+                                .filter((e) => {
+                                    if (
+                                        e.dead ||
+                                        e.deathT >= 0 ||
+                                        hitTargets.has(e)
+                                    )
+                                        return false;
+                                    const ex = e.x - this.x;
+                                    const ey = e.y - this.y;
+                                    const along = ex * ux + ey * uy;
+                                    if (
+                                        along <= baseDist ||
+                                        along > this.atkR + e.r + 80
+                                    )
+                                        return false;
+                                    const side = Math.abs(ex * uy - ey * ux);
+                                    return side <= 42 + e.r;
+                                })
+                                .sort(
+                                    (a, b) =>
+                                        dist(this.x, this.y, a.x, a.y) -
+                                        dist(this.x, this.y, b.x, b.y),
+                                )
+                                .slice(0, this.piercing);
+                            for (const e of pierceTargets) {
+                                hitTargets.add(e);
+                                const pierceDmg = dmg * 0.55;
+                                this.hitEnemy(e, pierceDmg, parts, crit, enemies);
+                                totalDmg += pierceDmg;
+                            }
+                        }
                         this.atkCd =
                             1 / (this.atkRate * (this._overloaded ? 0.65 : 1));
                         // Спавним визуальный снаряд к ближайшему врагу
@@ -6782,7 +7062,7 @@
                                 });
                             }
                         }
-                        return { enemy: nearest, dmg, crit };
+                        return { enemy: nearest, dmg: totalDmg, crit };
                     }
                     hitEnemy(enemy, dmg, parts, crit, enemies) {
                         const dead = enemy.hit(dmg, parts, this, enemies);
@@ -9196,7 +9476,8 @@
                         icon: "dmg",
                         name: "OVERCLOCK",
                         nameRu: "РАЗГОН",
-                        desc: "+35% damage",
+                        desc: "Purge signal damage +35%",
+                        descRu: "Урон очищающего сигнала +35%",
                         tier: "red",
                         apply(p) {
                             p.dmg *= 1.35;
@@ -9207,7 +9488,8 @@
                         icon: "spd",
                         name: "PHASE DRIVE",
                         nameRu: "ФАЗОВЫЙ ПРИВОД",
-                        desc: "+25% speed",
+                        desc: "Movement speed +25%",
+                        descRu: "Скорость движения +25%",
                         tier: "blue",
                         apply(p) {
                             p.spd *= 1.25;
@@ -9218,7 +9500,8 @@
                         icon: "rate",
                         name: "PULSE LOOP",
                         nameRu: "ПУЛЬС-ПЕТЛЯ",
-                        desc: "+40% attack speed",
+                        desc: "Pulse frequency +40%",
+                        descRu: "Частота импульсов +40%",
                         tier: "violet",
                         apply(p) {
                             p.atkRate *= 1.4;
@@ -9228,8 +9511,9 @@
                         id: "hp",
                         icon: "hp",
                         name: "INTEGRITY PATCH",
-                        nameRu: "ЗАПЛАТКА HP",
-                        desc: "+40 max HP and heal",
+                        nameRu: "ПАТЧ ЦЕЛОСТНОСТИ",
+                        desc: "Max integrity +40 and repair",
+                        descRu: "Макс. целостность +40 и ремонт",
                         tier: "green",
                         apply(p) {
                             p.maxHp += 40;
@@ -9239,9 +9523,10 @@
                     {
                         id: "reach",
                         icon: "reach",
-                        name: "TARGET MATRIX",
-                        nameRu: "МАТРИЦА ЦЕЛИ",
-                        desc: "+30% attack range",
+                        name: "SENSOR MATRIX",
+                        nameRu: "СЕНСОРНАЯ МАТРИЦА",
+                        desc: "Purge range +30%",
+                        descRu: "Радиус очищения +30%",
                         tier: "cyan",
                         apply(p) {
                             p.atkR *= 1.3;
@@ -9250,9 +9535,10 @@
                     {
                         id: "crit",
                         icon: "crit",
-                        name: "CRITICAL CORE",
-                        nameRu: "КРИТ-ЯДРО",
-                        desc: "Critical hits enabled",
+                        name: "WEAKPOINT CORE",
+                        nameRu: "ЯДРО УЯЗВИМОСТЕЙ",
+                        desc: "Weak point hits enabled",
+                        descRu: "Открывает удары по уязвимостям",
                         tier: "red",
                         apply(p) {
                             p.critChance = (p.critChance || 0) + 0.18;
@@ -9263,9 +9549,10 @@
                     {
                         id: "leech",
                         icon: "leech",
-                        name: "BLOOD LINK",
-                        nameRu: "КРОВНАЯ СВЯЗЬ",
-                        desc: "+6% lifesteal",
+                        name: "REPAIR LINK",
+                        nameRu: "РЕМОНТНЫЙ КАНАЛ",
+                        desc: "Repairs 6% of dealt damage",
+                        descRu: "Ремонтирует 6% от нанесённого урона",
                         tier: "violet",
                         apply(p) {
                             p.lifeSteal = (p.lifeSteal || 0) + 0.06;
@@ -9274,9 +9561,10 @@
                     {
                         id: "nova",
                         icon: "nova",
-                        name: "NOVA LATTICE",
-                        nameRu: "НОВА-СЕТЬ",
-                        desc: "+35% overheat gain",
+                        name: "HEAT ROUTER",
+                        nameRu: "МАРШРУТ ПЕРЕГРЕВА",
+                        desc: "Overheat charge +35%",
+                        descRu: "Заряд перегрева +35%",
                         tier: "blue",
                         apply(p) {
                             p.overheatGain *= 1.35;
@@ -9285,9 +9573,10 @@
                     {
                         id: "orbitals",
                         icon: "orbitals",
-                        name: "ORBITAL WEAPON",
-                        nameRu: "ОРБИТАЛЬНОЕ ОРУ",
-                        desc: "Unlock orbiting satellites",
+                        name: "ORBITAL SENTRY",
+                        nameRu: "ОРБИТАЛЬНЫЙ СТОРОЖ",
+                        desc: "Unlock orbiting purge modules",
+                        descRu: "Открывает орбитальные модули очистки",
                         tier: "cyan",
                         apply(p) {
                             p.orbitals = Math.max(p.orbitals, 2);
@@ -9298,8 +9587,9 @@
                         id: "orbitMore",
                         icon: "orbitMore",
                         name: "ORBITAL ARRAY",
-                        nameRu: "ОРБИТАЛЬНЫЙ МАС",
-                        desc: "+1 orbit and more damage",
+                        nameRu: "ОРБИТАЛЬНЫЙ МАССИВ",
+                        desc: "+1 orbital module and more damage",
+                        descRu: "+1 орбитальный модуль и больше урона",
                         tier: "cyan",
                         apply(p) {
                             p.orbitals += 1;
@@ -9309,9 +9599,10 @@
                     {
                         id: "aura",
                         icon: "aura",
-                        name: "AURA FIELD",
-                        nameRu: "ПОЛЕ АУРЫ",
-                        desc: "Passive damage aura",
+                        name: "QUARANTINE FIELD",
+                        nameRu: "ПОЛЕ КАРАНТИНА",
+                        desc: "Passive damage field",
+                        descRu: "Пассивное поле урона",
                         tier: "green",
                         apply(p) {
                             p.passiveAura = Math.max(p.passiveAura, 5);
@@ -9322,7 +9613,8 @@
                         icon: "magnet",
                         name: "DATA MAGNET",
                         nameRu: "МАГНИТ ДАННЫХ",
-                        desc: "XP pickup range expands",
+                        desc: "DATA pickup radius expands",
+                        descRu: "Радиус сбора DATA увеличивается",
                         tier: "blue",
                         apply(p) {
                             p.passiveMagnet = Math.max(p.passiveMagnet, 1.35);
@@ -9331,9 +9623,10 @@
                     {
                         id: "shield",
                         icon: "shield",
-                        name: "SECOND SKIN",
-                        nameRu: "ВТОРАЯ КОЖА",
-                        desc: "One death shield",
+                        name: "BACKUP SHELL",
+                        nameRu: "РЕЗЕРВНАЯ ОБОЛОЧКА",
+                        desc: "One emergency shield",
+                        descRu: "Один аварийный щит",
                         tier: "green",
                         apply(p) {
                             p.passiveShield = 1;
@@ -9342,9 +9635,10 @@
                     {
                         id: "chain",
                         icon: "chain",
-                        name: "CHAIN LIGHTNING",
-                        nameRu: "ЦЕПНАЯ МОЛНИЯ",
-                        desc: "Jump attacks to 2–3 enemies",
+                        name: "SIGNAL CHAIN",
+                        nameRu: "ЦЕПЬ СИГНАЛА",
+                        desc: "Purge signal jumps to 2-3 enemies",
+                        descRu: "Очищающий сигнал прыгает к 2-3 врагам",
                         tier: "red",
                         apply(p) {
                             p.chainLevel = Math.max(p.chainLevel, 1);
@@ -9359,10 +9653,11 @@
                         id: "multishot",
                         tier: "red",
                         icon: "dmg",
-                        name: "MULTISHOT",
-                        nameRu: "МУЛЬТИВЫСТРЕЛ",
-                        descFn: (s) => `Fire ${1 + s} bullets per attack`,
-                        descFnRu: (s) => `Выпускает ${1 + s} пули за атаку`,
+                        name: "SIGNAL SPLIT",
+                        nameRu: "РАСЩЕПЛЕНИЕ СИГНАЛА",
+                        descFn: (s) => `Send ${1 + s} purge signals per pulse`,
+                        descFnRu: (s) =>
+                            `Запускает ${1 + s} очищающих сигнала за импульс`,
                         apply(p, s) {
                             p.multishot = 1 + s;
                         },
@@ -9371,12 +9666,12 @@
                         id: "piercing",
                         tier: "red",
                         icon: "chain",
-                        name: "PIERCING",
-                        nameRu: "ПРОБОЙ",
+                        name: "PHASE SIGNAL",
+                        nameRu: "ФАЗОВЫЙ СИГНАЛ",
                         descFn: (s) =>
-                            `Bullets pierce ${s} enem${s > 1 ? "ies" : "y"}`,
+                            `Signals pass through ${s} enem${s > 1 ? "ies" : "y"}`,
                         descFnRu: (s) =>
-                            `Пули пробивают ${s} враг${s > 1 ? "ов" : "а"}`,
+                            `Сигналы проходят сквозь ${s} враг${s > 1 ? "ов" : "а"}`,
                         apply(p, s) {
                             p.piercing = s;
                         },
@@ -9385,10 +9680,12 @@
                         id: "critCore",
                         tier: "red",
                         icon: "crit",
-                        name: "CRIT CORE",
-                        nameRu: "КРИТ ЯДРО",
-                        descFn: (s) => `+${[18, 12, 8][s - 1]}% crit chance`,
-                        descFnRu: (s) => `+${[18, 12, 8][s - 1]}% шанс крита`,
+                        name: "WEAKPOINT SCANNER",
+                        nameRu: "СКАНЕР УЯЗВИМОСТЕЙ",
+                        descFn: (s) =>
+                            `+${[18, 12, 8][s - 1]}% weak point chance`,
+                        descFnRu: (s) =>
+                            `+${[18, 12, 8][s - 1]}% шанс уязвимости`,
                         apply(p, s) {
                             p.critChance =
                                 (p.critChance || 0) + [0.18, 0.12, 0.08][s - 1];
@@ -9398,11 +9695,11 @@
                         id: "lifesteal",
                         tier: "violet",
                         icon: "leech",
-                        name: "LIFESTEAL",
-                        nameRu: "ВАМПИРИЗМ",
-                        descFn: (s) => `+${[6, 4, 3][s - 1]}% lifesteal on hit`,
+                        name: "REPAIR TAP",
+                        nameRu: "РЕМОНТНЫЙ ОТКАТ",
+                        descFn: (s) => `Repair ${[6, 4, 3][s - 1]}% on hit`,
                         descFnRu: (s) =>
-                            `+${[6, 4, 3][s - 1]}% вампиризм за удар`,
+                            `Ремонт ${[6, 4, 3][s - 1]}% за удар`,
                         apply(p, s) {
                             p.lifeSteal =
                                 (p.lifeSteal || 0) + [0.06, 0.04, 0.03][s - 1];
@@ -9412,11 +9709,11 @@
                         id: "overcharge",
                         tier: "violet",
                         icon: "nova",
-                        name: "OVERCHARGE",
-                        nameRu: "ПЕРЕЗАРЯД",
-                        descFn: (s) => `+${[35, 22, 14][s - 1]}% overheat gain`,
+                        name: "HEAT ROUTER",
+                        nameRu: "МАРШРУТ ПЕРЕГРЕВА",
+                        descFn: (s) => `+${[35, 22, 14][s - 1]}% overheat charge`,
                         descFnRu: (s) =>
-                            `+${[35, 22, 14][s - 1]}% заряд оверхита`,
+                            `+${[35, 22, 14][s - 1]}% заряд перегрева`,
                         apply(p, s) {
                             p.overheatGain *= 1 + [0.35, 0.22, 0.14][s - 1];
                         },
@@ -9425,12 +9722,12 @@
                         id: "berserker",
                         tier: "violet",
                         icon: "rate",
-                        name: "BERSERKER",
-                        nameRu: "БЕРСЕРК",
+                        name: "EMERGENCY CLOCK",
+                        nameRu: "АВАРИЙНЫЙ РАЗГОН",
                         descFn: (s) =>
-                            `+${[30, 20, 12][s - 1]}% atk spd, -${[8, 5, 3][s - 1]}% maxHP`,
+                            `+${[30, 20, 12][s - 1]}% pulse rate, -${[8, 5, 3][s - 1]}% max integrity`,
                         descFnRu: (s) =>
-                            `+${[30, 20, 12][s - 1]}% скорость атаки, -${[8, 5, 3][s - 1]}% макс HP`,
+                            `+${[30, 20, 12][s - 1]}% частота импульса, -${[8, 5, 3][s - 1]}% макс. целостность`,
                         apply(p, s) {
                             p.atkRate *= 1 + [0.3, 0.2, 0.12][s - 1];
                             p.maxHp *= 1 - [0.08, 0.05, 0.03][s - 1];
@@ -9470,11 +9767,11 @@
                         id: "cdReduct",
                         tier: "blue",
                         icon: "reach",
-                        name: "CDR",
-                        nameRu: "СНИЖЕНИЕ КД",
-                        descFn: (s) => `Atk cooldown -${[25, 16, 10][s - 1]}%`,
+                        name: "PULSE CYCLE",
+                        nameRu: "ЦИКЛ ИМПУЛЬСА",
+                        descFn: (s) => `Pulse cooldown -${[25, 16, 10][s - 1]}%`,
                         descFnRu: (s) =>
-                            `Перезарядка атаки -${[25, 16, 10][s - 1]}%`,
+                            `КД импульса -${[25, 16, 10][s - 1]}%`,
                         apply(p, s) {
                             p.atkRate *= 1 + [0.25, 0.16, 0.1][s - 1];
                         },
@@ -9483,11 +9780,11 @@
                         id: "targetMx",
                         tier: "cyan",
                         icon: "reach",
-                        name: "TARGET MATRIX",
-                        nameRu: "МАТРИЦА ПРИЦЕЛА",
-                        descFn: (s) => `+${[30, 20, 12][s - 1]}% attack range`,
+                        name: "SENSOR ARRAY",
+                        nameRu: "СЕНСОРНЫЙ МАССИВ",
+                        descFn: (s) => `+${[30, 20, 12][s - 1]}% purge range`,
                         descFnRu: (s) =>
-                            `+${[30, 20, 12][s - 1]}% радиус атаки`,
+                            `+${[30, 20, 12][s - 1]}% радиус очищения`,
                         apply(p, s) {
                             p.atkR *= 1 + [0.3, 0.2, 0.12][s - 1];
                         },
@@ -9511,11 +9808,11 @@
                         id: "rangeBoost",
                         tier: "cyan",
                         icon: "nova",
-                        name: "RANGE BOOST",
-                        nameRu: "УСКОРИТЕЛЬ",
-                        descFn: (s) => `+${[20, 13, 8][s - 1]}% bullet speed`,
+                        name: "SIGNAL BOOST",
+                        nameRu: "УСИЛИТЕЛЬ СИГНАЛА",
+                        descFn: (s) => `+${[20, 13, 8][s - 1]}% signal speed`,
                         descFnRu: (s) =>
-                            `+${[20, 13, 8][s - 1]}% скорость снарядов`,
+                            `+${[20, 13, 8][s - 1]}% скорость сигнала`,
                         apply(p, s) {
                             p.bulletSpd =
                                 (p.bulletSpd || 1) *
@@ -9526,11 +9823,11 @@
                         id: "hpCore",
                         tier: "green",
                         icon: "hp",
-                        name: "HP CORE",
-                        nameRu: "ЯДРО ЗДОРОВЬЯ",
-                        descFn: (s) => `+${[50, 35, 20][s - 1]} max HP & heal`,
+                        name: "INTEGRITY CORE",
+                        nameRu: "ЯДРО ЦЕЛОСТНОСТИ",
+                        descFn: (s) => `+${[50, 35, 20][s - 1]} max integrity and repair`,
                         descFnRu: (s) =>
-                            `+${[50, 35, 20][s - 1]} макс HP и лечение`,
+                            `+${[50, 35, 20][s - 1]} макс. целостность и ремонт`,
                         apply(p, s) {
                             const g = [50, 35, 20][s - 1];
                             p.maxHp += g;
@@ -9541,12 +9838,12 @@
                         id: "regenSkill",
                         tier: "green",
                         icon: "aura",
-                        name: "REGEN",
-                        nameRu: "РЕГЕНЕРАЦИЯ",
+                        name: "AUTO-REPAIR",
+                        nameRu: "АВТОРЕМОНТ",
                         descFn: (s) =>
-                            `+${[2, 1.3, 0.8][s - 1].toFixed(1)} HP/sec regen`,
+                            `+${[2, 1.3, 0.8][s - 1].toFixed(1)} integrity/sec repair`,
                         descFnRu: (s) =>
-                            `+${[2, 1.3, 0.8][s - 1].toFixed(1)} HP/сек регенерация`,
+                            `+${[2, 1.3, 0.8][s - 1].toFixed(1)} целостность/сек ремонт`,
                         apply(p, s) {
                             p.regenRate =
                                 (p.regenRate || 0) + [2.0, 1.3, 0.8][s - 1];
@@ -9556,9 +9853,9 @@
                         id: "armor",
                         tier: "green",
                         icon: "shield",
-                        name: "ARMOR",
-                        nameRu: "БРОНЯ",
-                        descFn: (s) => `Reduce dmg by ${[12, 8, 5][s - 1]}%`,
+                        name: "HARDENING",
+                        nameRu: "ЗАКАЛКА",
+                        descFn: (s) => `Reduce damage by ${[12, 8, 5][s - 1]}%`,
                         descFnRu: (s) =>
                             `Снижает урон на ${[12, 8, 5][s - 1]}%`,
                         apply(p, s) {
@@ -9676,6 +9973,7 @@
                         return {
                             ...u,
                             name: isRu && u.nameRu ? u.nameRu : u.name,
+                            desc: isRu && u.descRu ? u.descRu : u.desc,
                         };
                     });
                 }
@@ -9695,7 +9993,7 @@
                         objective3: "OBJECTIVE: SURVIVE SWARM ESCALATION",
                         startSub: "survive the horde",
                         lore: "SYSTEM INFECTED<br />LAST ANTIVIRUS UNIT ONLINE<br />PURGE THE SWARM",
-                        tips: "LOOP: PURGE → COLLECT DATA → BUY META UPGRADES\nWASD / JOYSTICK — MOVE\nAUTO ATTACK + ORBITALS + CHAINS",
+                        tips: "Move with WASD or guide the unit with your mouse\nAttacks trigger automatically near threats\nCollect DATA, pick upgrades, survive longer",
                         settings: "SETTINGS",
                         howto: "HOW TO PLAY",
                         back: "BACK",
@@ -9715,10 +10013,10 @@
                             "Purge enemies → Collect DATA orbs → Sync level up → choose upgrades → survive escalating waves.",
                         gControlsTitle: "🕹 Controls",
                         gControlsText:
-                            "PC: WASD / arrows — move\nHold LMB toward cursor — move to cursor\nMouse direction affects attack targeting\n\nMobile: left joystick — move",
+                            "PC: WASD / arrows — move\nMove the mouse to guide the unit\nMouse direction helps choose targets\n\nMobile: left joystick — move",
                         gEnemiesTitle: "☣ Enemy Types",
                         gEnemiesText:
-                            "Fast — quick, low HP\nTank — slow, high HP\nRanged — shoots projectiles\nSplitter — dies into 2 mini viruses\nMini-boss — appears every 60 seconds",
+                            "Fast — quick, fragile\nTank — slow, very durable\nRanged — shoots projectiles\nSplitter — splits into 2 mini viruses\nMini-boss — appears every 60 seconds",
                         gUpgradesTitle: "⬆ Upgrade Colors",
                         gUpgradesText:
                             "Red — damage\nBlue — speed / ultimate / control\nViolet — tempo / sustain\nGreen — defense / passives\nCyan — range / orbitals",
@@ -9781,7 +10079,7 @@
                         dailyChallengeLbl: "DAILY CHALLENGE",
                         dailyClose: "CLOSE",
                         secondChance: "SECOND CHANCE",
-                        reviveSub: "Watch ad to restore 50% HP and continue",
+                        reviveSub: "Watch ad to restore 50% integrity and continue",
                         metaUpgradesBtn: "⬆ ANTI-DDoS UPGRADES",
                         antiDdosDefense: "ANTI-DDoS DEFENSE",
                         btnXPLbl: "📺 AD → ×2 DATA NEXT RUN",
@@ -9798,7 +10096,7 @@
                     ru: {
                         integrity: "Целостность",
                         data: "Данные",
-                        overheat: "Оверхит",
+                        overheat: "Перегрев",
                         syncLevel: "СИНХРО УР.",
                         purged: "ОЧИЩЕНО",
                         objective1: "ЦЕЛЬ: ОЧИСТИ 25 ЦЕЛЕЙ",
@@ -9806,7 +10104,7 @@
                         objective3: "ЦЕЛЬ: ПЕРЕЖИВИ ЭСКАЛАЦИЮ РОЯ",
                         startSub: "выживи в рое",
                         lore: "СИСТЕМА ЗАРАЖЕНА<br />ПОСЛЕДНИЙ АНТИВИРУС АКТИВИРОВАН<br />ВЫЖГИ РОЙ",
-                        tips: "ЦИКЛ: УБИВАЙ → СОБИРАЙ DATA → ПОКУПАЙ МЕТА-УЛУЧШЕНИЯ\nWASD / ДЖОЙСТИК — ДВИЖЕНИЕ\nАВТОАТАКА + ОРБИТАЛЫ + ЦЕПИ",
+                        tips: "Веди героя мышью или WASD\nАтака срабатывает сама рядом с угрозами\nСобирай DATA, выбирай улучшения, живи дольше",
                         settings: "НАСТРОЙКИ",
                         howto: "КАК ИГРАТЬ",
                         back: "НАЗАД",
@@ -9826,16 +10124,16 @@
                             "Очищай врагов → собирай сферы DATA → повышай уровень → выбирай улучшения → переживай волны.",
                         gControlsTitle: "🕹 Управление",
                         gControlsText:
-                            "ПК: WASD / стрелки — движение\nУдержание ЛКМ к курсору — движение к курсору\nНаправление мыши влияет на выбор цели\n\nМобилка: левый джойстик — движение",
+                            "ПК: WASD / стрелки — движение\nВеди мышью, чтобы направлять героя\nНаправление мыши помогает выбирать цель\n\nМобилка: левый джойстик — движение",
                         gEnemiesTitle: "☣ Типы врагов",
                         gEnemiesText:
-                            "Быстрый — шустрый, мало HP\nТанк — медленный, много HP\nДальник — стреляет снарядами\nРаскольник — распадается на 2 мини-вируса\nМини-босс — появляется каждые 60 секунд",
+                            "Быстрый — шустрый, хрупкий\nТанк — медленный, очень прочный\nДальник — стреляет снарядами\nРаскольник — распадается на 2 мини-вируса\nМини-босс — появляется каждые 60 секунд",
                         gUpgradesTitle: "⬆ Цвета улучшений",
                         gUpgradesText:
                             "Красный — урон\nСиний — скорость / ульта / контроль\nФиолетовый — темп / живучесть\nЗелёный — защита / пассивки\nГолубой — радиус / орбиталы",
                         gSystemsTitle: "⚡ Боевые системы",
                         gSystemsText:
-                            "ОВЕРХИТ заполняется за убийства. При максимуме взрывает ближайших врагов. Низкая целостность включает панику. Стрик повышает XP. Пассивный щит блокирует одну смерть.",
+                            "ПЕРЕГРЕВ заполняется за убийства. При максимуме взрывает ближайших врагов. Низкая целостность включает панику. Стрик повышает XP. Пассивный щит блокирует одну смерть.",
                         settingsApplied: "НАСТРОЙКИ ПРИМЕНЕНЫ",
                         mainMenu: "⌂ ГЛАВНОЕ МЕНЮ",
                         survived: "Выжил",
@@ -9854,7 +10152,7 @@
                         wave180: "💀 3 МИН — ВЫЖИЛ",
                         wave240: "💀 4 МИН — ФИНАЛЬНАЯ СТАДИЯ",
                         wave300: "☠ 5 МИН — МАКС УГРОЗА",
-                        overheatBurst: "РАЗРЯД ОВЕРХИТА",
+                        overheatBurst: "РАЗРЯД ПЕРЕГРЕВА",
                         dataBoost: "✓ ×2 ДАННЫХ В СЛЕД. ЗАБЕГЕ",
                         buffReady: "✓ БУСТ НА СЛЕД. ЗАБЕГ",
                         classLabel: "КЛАСС",
@@ -9868,7 +10166,7 @@
                         best: "РЕКОРД",
                         bestTime: "ЛУЧШЕЕ ВРЕМЯ",
                         bestLvl: "ЛУЧШИЙ УРОВЕНЬ",
-                        loadLbl: "НАГР",
+                        loadLbl: "НАГРУЗКА",
                         ddosWave: "DDoS ВОЛНА",
                         ddosOverload: "⚠ ПЕРЕГРУЗКА СЕРВЕРА",
                         ddosHalt: "DDoS ОСТАНОВЛЕН",
@@ -9893,7 +10191,7 @@
                         dailyClose: "ЗАКРЫТЬ",
                         secondChance: "ВТОРОЙ ШАНС",
                         reviveSub:
-                            "Смотри рекламу: восстановить 50% HP и продолжить",
+                            "Смотри рекламу: восстановить 50% целостности и продолжить",
                         metaUpgradesBtn: "⬆ АНТИ-DDoS УЛУЧШЕНИЯ",
                         antiDdosDefense: "АНТИ-DDoS ЗАЩИТА",
                         btnXPLbl: "📺 РЕКЛАМА → ×2 ДАННЫХ",
@@ -9913,6 +10211,148 @@
                 function tr(k) {
                     return I18N[currentLang][k] || k;
                 }
+                function escapeHtml(value) {
+                    return String(value ?? "")
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#39;");
+                }
+                const TERM_DEFS = {
+                    en: [
+                        {
+                            re: /\b(overheat|overload)\b/gi,
+                            color: "#ff9955",
+                            tip: "Builds during combat. At max it releases a burst and resets.",
+                        },
+                        {
+                            re: /\b(damage|dmg)\b/gi,
+                            color: "#ff5570",
+                            tip: "How hard each purge signal hits.",
+                        },
+                        {
+                            re: /\b(DATA|XP|experience)\b/gi,
+                            color: "#64d8ff",
+                            tip: "Resource from glowing orbs. Fill it to sync a new level.",
+                        },
+                        {
+                            re: /\b(HP|integrity|health)\b/gi,
+                            color: "#7dff9c",
+                            tip: "Your integrity. At zero the run ends unless a shield saves you.",
+                        },
+                        {
+                            re: /\b(load|request load|DDoS)\b/gi,
+                            color: "#55e6ff",
+                            tip: "Server pressure. High load slows your purge rate and can trigger overload.",
+                        },
+                        {
+                            re: /\b(crit|critical|weak point)\b/gi,
+                            color: "#ffd85a",
+                            tip: "Chance for a stronger hit.",
+                        },
+                        {
+                            re: /\b(speed|move speed|movement speed)\b/gi,
+                            color: "#86a8ff",
+                            tip: "How fast your unit moves.",
+                        },
+                        {
+                            re: /\b(cooldown|CD|dash)\b/gi,
+                            color: "#b98cff",
+                            tip: "Cooldown means how long before the action is ready again.",
+                        },
+                        {
+                            re: /\b(range|radius|zone)\b/gi,
+                            color: "#60f0d0",
+                            tip: "The distance where this system can work.",
+                        },
+                        {
+                            re: /\b(shield|armor|repair|regen)\b/gi,
+                            color: "#8cff7a",
+                            tip: "Defensive systems that prevent or restore damage.",
+                        },
+                        {
+                            re: /\b(signal|signals|pulse|pulses|chain|orbitals?)\b/gi,
+                            color: "#7fe8ff",
+                            tip: "Automatic purge output. It fires on nearby threats without aiming.",
+                        },
+                    ],
+                    ru: [
+                        {
+                            re: /\b(DATA|XP|HP|DDoS|КД)\b/gi,
+                            color: "#64d8ff",
+                            tip: "DATA/XP заполняет уровень, HP здесь означает целостность, КД — время до готовности.",
+                        },
+                        {
+                            re: /(перегрев|перегрузк[аи]?|нагрев)/gi,
+                            color: "#ff9955",
+                            tip: "Копится в бою. На максимуме выпускает разряд и сбрасывается.",
+                        },
+                        {
+                            re: /(урон[а-я]*|удар[а-я]*)/gi,
+                            color: "#ff5570",
+                            tip: "Сколько вреда наносит очищающий сигнал.",
+                        },
+                        {
+                            re: /(данн[а-я]*|опыт[а-я]*)/gi,
+                            color: "#64d8ff",
+                            tip: "Ресурс из светящихся сфер. Заполняет синхро-уровень.",
+                        },
+                        {
+                            re: /(целостност[а-я]*|здоровь[а-я]*|прочност[а-я]*)/gi,
+                            color: "#7dff9c",
+                            tip: "Твоя живучесть. На нуле забег заканчивается, если не спасёт щит.",
+                        },
+                        {
+                            re: /(нагрузк[а-я]*|запрос[а-я]*)/gi,
+                            color: "#55e6ff",
+                            tip: "Давление на сервер. Высокая нагрузка мешает очищению.",
+                        },
+                        {
+                            re: /(крит[а-я]*|уязвимост[а-я]*)/gi,
+                            color: "#ffd85a",
+                            tip: "Шанс нанести усиленный удар по слабому месту.",
+                        },
+                        {
+                            re: /(скорост[а-я]*)/gi,
+                            color: "#86a8ff",
+                            tip: "Скорость движения или частота работы системы.",
+                        },
+                        {
+                            re: /(радиус[а-я]*|зон[а-я]*|дальност[а-я]*)/gi,
+                            color: "#60f0d0",
+                            tip: "Дистанция, на которой система может сработать.",
+                        },
+                        {
+                            re: /(щит[а-я]*|брон[а-я]*|ремонт[а-я]*|регенерац[а-я]*)/gi,
+                            color: "#8cff7a",
+                            tip: "Защитные системы: снижают урон или восстанавливают целостность.",
+                        },
+                        {
+                            re: /(сигнал[а-я]*|импульс[а-я]*|цеп[а-я]*|орбитал[а-я]*)/gi,
+                            color: "#7fe8ff",
+                            tip: "Автоматическое очищение. Работает по ближайшим угрозам без прицела.",
+                        },
+                    ],
+                };
+                function formatTermText(value) {
+                    let out = escapeHtml(value);
+                    const defs = TERM_DEFS[currentLang] || TERM_DEFS.en;
+                    const slots = [];
+                    for (const def of defs) {
+                        out = out.replace(def.re, (match) => {
+                            const idx = slots.length;
+                            slots.push(
+                                `<span class="term" style="--term-color:${def.color}" data-tip="${escapeHtml(def.tip)}">${match}</span>`,
+                            );
+                            return `@@TERM_${idx}@@`;
+                        });
+                    }
+                    return out.replace(
+                        /@@TERM_(\d+)@@/g,
+                        (_, i) => slots[Number(i)] || "",
+                    );
+                }
 
                 // ─────────────────────────────────────────────────────────────
                 // UI helpers
@@ -9924,6 +10364,24 @@
                 function hide(id) {
                     const el = $(id);
                     if (el) el.classList.remove("active");
+                }
+                function hideGameplayOnlyUi() {
+                    const po = $("pauseOverlay");
+                    if (po) po.classList.remove("active");
+                    const adBtn = $("btnAdBuff");
+                    if (adBtn) adBtn.style.display = "none";
+                    const ddosBtn = $("btnDdosHelp");
+                    if (ddosBtn) ddosBtn.style.display = "none";
+                    const dashInd = $("dashIndicator");
+                    if (dashInd) dashInd.style.display = "none";
+                    const adHud = $("adBuffHud");
+                    if (adHud) {
+                        adHud.style.transition = "none";
+                        adHud.style.opacity = "0";
+                        adHud.textContent = "";
+                    }
+                    const gameCanvas = $("gc");
+                    if (gameCanvas) gameCanvas.classList.remove("blurred");
                 }
                 function hudShow() {
                     const h = document.getElementById("hud");
@@ -9946,6 +10404,7 @@
                     }
                     const db = document.getElementById("btnDash");
                     if (db) db.style.display = "none";
+                    hideGameplayOnlyUi();
                 }
 
                 const UI = {
@@ -10225,13 +10684,19 @@
                                     : "";
                             const d = document.createElement("div");
                             d.className = "up-card";
+                            d.setAttribute(
+                                "aria-label",
+                                currentLang === "ru"
+                                    ? `Улучшение: ${o.name}. ${o.desc}`
+                                    : `Upgrade: ${o.name}. ${o.desc}`,
+                            );
                             d.style.cssText = `border-color:${col}55;box-shadow:0 10px 40px rgba(0,0,0,0.85),0 0 0 1px ${col}22`;
                             d.innerHTML = `
                                         <div class="up-tier" style="background:${col}18;color:${col};border:1px solid ${col}44">${currentLang === "ru" ? { red: "КР.", violet: "ФИО.", blue: "СИН.", cyan: "ГОЛ.", green: "ЗЕЛ." }[o.tier] || o.tier : o.tier}</div>
                                         ${stack}
                                         <div class="up-icon" style="color:${col}">${ICONS[o.icon] || o.icon}</div>
                                         <div class="up-name" style="color:${col};text-shadow:0 0 16px ${col}99">${o.name}</div>
-                                        <div class="up-desc">${o.desc}</div>`;
+                                        <div class="up-desc">${formatTermText(o.desc)}</div>`;
                             d.onmouseenter = () => {
                                 d.style.borderColor = col + "99";
                                 d.style.boxShadow = `0 22px 64px rgba(0,0,0,0.95),0 0 0 1px ${col}44,0 0 30px ${col}22`;
@@ -11011,8 +11476,8 @@
                     {
                         id: "startHp",
                         icon: "hp",
-                        title: "+20 START HP",
-                        titleRu: "+20 НАЧАЛЬНЫЙ HP",
+                        title: "+20 START INTEGRITY",
+                        titleRu: "+20 СТАРТОВАЯ ЦЕЛОСТНОСТЬ",
                         desc: "Permanent. Up to 5×.",
                         descRu: "Постоянно. До 5× стеков.",
                         baseCost: 50,
@@ -11068,10 +11533,10 @@
                     {
                         id: "startRegen",
                         icon: "hp",
-                        title: "+1 HP/s REGEN",
-                        titleRu: "+1 HP/с РЕГЕНЕРАЦИЯ",
-                        desc: "Passively restore 1 HP per second. Up to 3×.",
-                        descRu: "Пассивно восстанавливать 1 HP в секунду. До 3×.",
+                        title: "+1 INTEGRITY/s REPAIR",
+                        titleRu: "+1 ЦЕЛОСТНОСТЬ/с РЕМОНТ",
+                        desc: "Passively restore 1 integrity per second. Up to 3x.",
+                        descRu: "Пассивно восстанавливает 1 целостность в секунду. До 3x.",
                         baseCost: 55,
                         stackable: true,
                         max: 3,
@@ -11558,7 +12023,7 @@
                     show("lbScreen");
                     if (!_ysdk_ready) {
                         $("lbTable").innerHTML =
-                            `<div style="text-align:center;color:rgba(255,150,50,0.7);font-size:10px;letter-spacing:2px;padding:32px 0;">${isRu ? "ТОЛЬКО В ЯНДЕКС ИГРАХ" : "AVAILABLE ON YANDEX GAMES"}</div>`;
+                            `<div style="text-align:center;color:rgba(255,150,50,0.7);font-size:10px;letter-spacing:2px;padding:32px 0;">${isRu ? "РЕЙТИНГ НЕДОСТУПЕН ОФФЛАЙН" : "LEADERBOARD UNAVAILABLE OFFLINE"}</div>`;
                         return;
                     }
                     Ads.getLeaderboard((res) => {
@@ -11680,7 +12145,7 @@
                     ${badge}
                   </div>
                   <div class="shop-card-title">${currentLang === "ru" && item.titleRu ? item.titleRu : item.title}</div>
-                  <div class="shop-card-desc">${currentLang === "ru" && item.descRu ? item.descRu : item.desc}</div>
+                  <div class="shop-card-desc">${formatTermText(currentLang === "ru" && item.descRu ? item.descRu : item.desc)}</div>
                   ${stackBar}
                   <div class="shop-card-footer">
                     <span class="shop-card-cost ${costClass}">${costLabel}</span>
@@ -12146,8 +12611,8 @@
                         nameRu: "РАЗГОН",
                         icon: "rate",
                         col: "#00eeff",
-                        desc: "Attack rate +25%, max HP -15%",
-                        descRu: "+25% скорострельность, -15% HP",
+                        desc: "Pulse frequency +25%, max integrity -15%",
+                        descRu: "+25% частота импульсов, -15% целостность",
                         apply(p) {
                             p.atkRate =
                                 Math.round(p.atkRate * 1.25 * 100) / 100;
@@ -12157,12 +12622,12 @@
                     },
                     {
                         id: "bloodlust",
-                        name: "BLOODLUST",
-                        nameRu: "КРОВОЖАДНОСТЬ",
+                        name: "REPAIR LINK",
+                        nameRu: "РЕМОНТНЫЙ КАНАЛ",
                         icon: "leech",
                         col: "#ff2244",
-                        desc: "Life steal +7%, damage +10%",
-                        descRu: "+7% вампиризм, +10% урон",
+                        desc: "Repair on hit +7%, damage +10%",
+                        descRu: "+7% ремонт за удар, +10% урон",
                         apply(p) {
                             p.lifeSteal = (p.lifeSteal || 0) + 0.07;
                             p.dmg *= 1.1;
@@ -12186,8 +12651,8 @@
                         nameRu: "НАНО-БРОНЯ",
                         icon: "def",
                         col: "#44ff88",
-                        desc: "+60 max HP, +15 armor",
-                        descRu: "+60 макс HP, +15 брони",
+                        desc: "+60 max integrity, +15 armor",
+                        descRu: "+60 макс. целостность, +15 брони",
                         apply(p) {
                             p.maxHp += 60;
                             p.hp += 60;
@@ -12208,12 +12673,12 @@
                     },
                     {
                         id: "twinshot",
-                        name: "TWIN SHOT",
-                        nameRu: "ДВОЙНОЙ ВЫСТРЕЛ",
+                        name: "SIGNAL SPLIT",
+                        nameRu: "РАСЩЕПЛЕНИЕ СИГНАЛА",
                         icon: "dmg",
                         col: "#ff8833",
-                        desc: "Multishot +1, damage -5%",
-                        descRu: "+1 снаряд, -5% урон",
+                        desc: "+1 purge signal, damage -5%",
+                        descRu: "+1 очищающий сигнал, -5% урон",
                         apply(p) {
                             p.multishot = (p.multishot || 1) + 1;
                             p.dmg *= 0.95;
@@ -12238,32 +12703,32 @@
                         nameRu: "ЧИП РЕГЕНА",
                         icon: "hp",
                         col: "#00ff88",
-                        desc: "HP regen +4/sec",
-                        descRu: "+4 HP/сек",
+                        desc: "Integrity repair +4/sec",
+                        descRu: "+4 целостность/сек",
                         apply(p) {
                             p.regenRate = (p.regenRate || 0) + 4;
                         },
                     },
                     {
                         id: "critcore",
-                        name: "CRIT CORE",
-                        nameRu: "ЯДРО КРИТА",
+                        name: "WEAKPOINT CORE",
+                        nameRu: "ЯДРО УЯЗВИМОСТЕЙ",
                         icon: "crit",
                         col: "#fff57a",
-                        desc: "Crit chance +20%",
-                        descRu: "+20% шанс крита",
+                        desc: "Weak point chance +20%",
+                        descRu: "+20% шанс уязвимости",
                         apply(p) {
                             p.critChance = (p.critChance || 0) + 0.2;
                         },
                     },
                     {
                         id: "lifelink",
-                        name: "LIFE LINK",
-                        nameRu: "ЖИЗНЕННАЯ СВЯЗЬ",
+                        name: "BACKUP LINK",
+                        nameRu: "РЕЗЕРВНЫЙ КАНАЛ",
                         icon: "aura",
                         col: "#ffaa44",
-                        desc: "Life steal +4%, +25 max HP",
-                        descRu: "+4% вампиризм, +25 HP",
+                        desc: "Repair on hit +4%, +25 max integrity",
+                        descRu: "+4% ремонт за удар, +25 целостность",
                         apply(p) {
                             p.lifeSteal = (p.lifeSteal || 0) + 0.04;
                             p.maxHp += 25;
@@ -12309,8 +12774,8 @@
                         req: (m) => m.totalRuns >= 1,
                         reqDesc: "Complete 1 run",
                         reqDescRu: "1 забег",
-                        bonus: "+5 MAX HP",
-                        bonusRu: "+5 HP",
+                        bonus: "+5 MAX INTEGRITY",
+                        bonusRu: "+5 целостность",
                         apply(p) {
                             p.maxHp += 5;
                             p.hp = Math.min(p.hp + 5, p.maxHp);
@@ -12338,8 +12803,8 @@
                         req: (m) => m.totalRuns >= 15,
                         reqDesc: "15 total runs",
                         reqDescRu: "15 забегов",
-                        bonus: "+5% attack rate",
-                        bonusRu: "+5% скорострельность",
+                        bonus: "+5% pulse frequency",
+                        bonusRu: "+5% частота импульсов",
                         apply(p) {
                             p.atkRate =
                                 Math.round(p.atkRate * 1.05 * 100) / 100;
@@ -12353,8 +12818,8 @@
                         req: (m) => m.totalRuns >= 30,
                         reqDesc: "30 total runs",
                         reqDescRu: "30 забегов",
-                        bonus: "+15 MAX HP",
-                        bonusRu: "+15 HP",
+                        bonus: "+15 MAX INTEGRITY",
+                        bonusRu: "+15 целостность",
                         apply(p) {
                             p.maxHp += 15;
                             p.hp = Math.min(p.hp + 15, p.maxHp);
@@ -12368,8 +12833,8 @@
                         req: (m) => m.totalKills >= 1,
                         reqDesc: "Get 1 kill",
                         reqDescRu: "1 убийство",
-                        bonus: "+2 HP regen",
-                        bonusRu: "+2 HP/сек",
+                        bonus: "+2 integrity/sec repair",
+                        bonusRu: "+2 целостность/сек",
                         apply(p) {
                             p.regenRate = (p.regenRate || 0) + 2;
                         },
@@ -12396,8 +12861,8 @@
                         req: (m) => m.totalKills >= 500,
                         reqDesc: "500 total kills",
                         reqDescRu: "500 убийств",
-                        bonus: "+5% attack rate",
-                        bonusRu: "+5% скорострельность",
+                        bonus: "+5% pulse frequency",
+                        bonusRu: "+5% частота импульсов",
                         apply(p) {
                             p.atkRate =
                                 Math.round(p.atkRate * 1.05 * 100) / 100;
@@ -12425,8 +12890,8 @@
                         req: (m) => m.totalBossKills >= 1,
                         reqDesc: "Kill 1 boss",
                         reqDescRu: "1 босс",
-                        bonus: "+15 MAX HP",
-                        bonusRu: "+15 HP",
+                        bonus: "+15 MAX INTEGRITY",
+                        bonusRu: "+15 целостность",
                         apply(p) {
                             p.maxHp += 15;
                             p.hp = Math.min(p.hp + 15, p.maxHp);
@@ -12454,8 +12919,8 @@
                         req: (m) => m.totalBossKills >= 20,
                         reqDesc: "Kill 20 bosses",
                         reqDescRu: "20 боссов",
-                        bonus: "+15% attack rate",
-                        bonusRu: "+15% скорострельность",
+                        bonus: "+15% pulse frequency",
+                        bonusRu: "+15% частота импульсов",
                         apply(p) {
                             p.atkRate =
                                 Math.round(p.atkRate * 1.15 * 100) / 100;
@@ -12517,8 +12982,8 @@
                         },
                         reqDesc: "Survive 3 minutes",
                         reqDescRu: "Выжить 3 минуты",
-                        bonus: "+10 MAX HP",
-                        bonusRu: "+10 HP",
+                        bonus: "+10 MAX INTEGRITY",
+                        bonusRu: "+10 целостность",
                         apply(p) {
                             p.maxHp += 10;
                             p.hp = Math.min(p.hp + 10, p.maxHp);
@@ -12549,8 +13014,8 @@
                         req: (m) => m.boughtSkins && m.boughtSkins.length >= 3,
                         reqDesc: "Own 3 skins",
                         reqDescRu: "3 скина",
-                        bonus: "+2 HP regen",
-                        bonusRu: "+2 HP/сек",
+                        bonus: "+2 integrity/sec repair",
+                        bonusRu: "+2 целостность/сек",
                         apply(p) {
                             p.regenRate = (p.regenRate || 0) + 2;
                         },
@@ -12579,8 +13044,8 @@
                         req: (m) => m.totalRuns >= 50,
                         reqDesc: "50 total runs",
                         reqDescRu: "50 забегов",
-                        bonus: "+20 MAX HP, +5% dmg",
-                        bonusRu: "+20 HP, +5% урон",
+                        bonus: "+20 MAX INTEGRITY, +5% damage",
+                        bonusRu: "+20 целостность, +5% урон",
                         apply(p) {
                             p.maxHp += 20;
                             p.hp = Math.min(p.hp + 20, p.maxHp);
@@ -12617,8 +13082,8 @@
                         col: "#00ccff",
                         name: "OVERCLOCK",
                         nameRu: "РАЗГОН",
-                        desc: "+18% fire rate · −30% HP · −10% dmg",
-                        descRu: "+18% скорострельность · −30% HP · −10% урон",
+                        desc: "+18% pulse frequency · -30% integrity · -10% damage",
+                        descRu: "+18% частота импульсов · -30% целостность · -10% урон",
                         apply(p) {
                             p.atkRate =
                                 Math.round(p.atkRate * 1.18 * 100) / 100;
@@ -12632,8 +13097,8 @@
                         col: "#88aaff",
                         name: "IRONCLAD",
                         nameRu: "БРОНЯ",
-                        desc: "+35 MAX HP · −25% damage · −10% spd",
-                        descRu: "+35 HP · −25% урон · −10% скорость",
+                        desc: "+35 MAX INTEGRITY · -25% damage · -10% speed",
+                        descRu: "+35 целостность · -25% урон · -10% скорость",
                         apply(p) {
                             p.maxHp += 35;
                             p.hp = Math.min(p.hp + 35, p.maxHp);
@@ -12672,10 +13137,10 @@
                     {
                         id: "glasscannon",
                         col: "#ff4444",
-                        name: "GLASS CANNON",
-                        nameRu: "СТЕКЛЯННАЯ ПУШКА",
-                        desc: "×1.6 damage · 40 HP cap · no regen",
-                        descRu: "×1.6 урон · 40 HP макс · нет регенерации",
+                        name: "FRAGILE CORE",
+                        nameRu: "ХРУПКОЕ ЯДРО",
+                        desc: "x1.6 damage · 40 integrity cap · no repair",
+                        descRu: "x1.6 урон · 40 целостность макс · нет ремонта",
                         apply(p) {
                             p.dmg *= 1.6;
                             p.maxHp = 40;
@@ -12686,10 +13151,10 @@
                     {
                         id: "berserker",
                         col: "#ff6600",
-                        name: "BERSERKER",
-                        nameRu: "БЕРСЕРК",
-                        desc: "<35% HP: +35% spd, +20% dmg · −20 max HP",
-                        descRu: "<35% HP: +35% скорость, +20% урон · −20 HP",
+                        name: "EMERGENCY MODE",
+                        nameRu: "АВАРИЙНЫЙ РЕЖИМ",
+                        desc: "<35% integrity: +35% speed, +20% damage · -20 max integrity",
+                        descRu: "<35% целостности: +35% скорость, +20% урон · -20 целостность",
                         apply(p) {
                             p._mutBerserk = true;
                             p.maxHp = Math.max(15, p.maxHp - 20);
@@ -12701,8 +13166,8 @@
                         col: "#aaff00",
                         name: "PARASITE",
                         nameRu: "ПАРАЗИТ",
-                        desc: "−2 HP/sec · kills +2 HP · no natural regen",
-                        descRu: "−2 HP/сек · убийства +2 HP · нет регенерации",
+                        desc: "-2 integrity/sec · kills +2 integrity · no natural repair",
+                        descRu: "-2 целостность/сек · убийства +2 целостность · нет ремонта",
                         apply(p) {
                             p._mutParasite = true;
                             p.regenRate = 0;
@@ -12711,10 +13176,10 @@
                     {
                         id: "warhead",
                         col: "#ff2244",
-                        name: "WARHEAD",
-                        nameRu: "БОЕГОЛОВКА",
-                        desc: "+20% overheat gain · +35% ult dmg · +20% enemy HP",
-                        descRu: "+20% нагрев · +35% урон ульты · +20% HP врагов",
+                        name: "HEAT SPIKE",
+                        nameRu: "СКАЧОК ПЕРЕГРЕВА",
+                        desc: "+20% overheat charge · +35% burst damage · +20% enemy durability",
+                        descRu: "+20% заряд перегрева · +35% урон разряда · +20% прочность врагов",
                         apply(p) {
                             p.overheatGain = (p.overheatGain || 1) * 1.2;
                             p._mutWarhead = true;
@@ -12732,8 +13197,8 @@
                         col: "#ff4466",
                         name: "REPAIR KIT",
                         nameRu: "РЕМОНТ",
-                        desc: "Restore 22 HP",
-                        descRu: "Восстановить 22 HP",
+                        desc: "Restore 22 integrity",
+                        descRu: "Восстановить 22 целостности",
                         cost: 18,
                         apply(p) {
                             p.hp = Math.min(p.maxHp, p.hp + 22);
@@ -12768,8 +13233,8 @@
                         col: "#44aaff",
                         name: "OVERCLOCK",
                         nameRu: "РАЗГОН",
-                        desc: "+12% fire rate",
-                        descRu: "+12% скорострельность",
+                        desc: "+12% pulse frequency",
+                        descRu: "+12% частота импульсов",
                         cost: 30,
                         apply(p) {
                             p.atkRate =
@@ -12781,8 +13246,8 @@
                         col: "#44ff88",
                         name: "REGEN PATCH",
                         nameRu: "РЕГЕНЕРАЦИЯ",
-                        desc: "+1.5 HP regen per second",
-                        descRu: "+1.5 HP/сек регенерация",
+                        desc: "+1.5 integrity/sec repair",
+                        descRu: "+1.5 целостность/сек ремонт",
                         cost: 22,
                         apply(p) {
                             p.regenRate = (p.regenRate || 0) + 1.5;
@@ -12793,8 +13258,8 @@
                         col: "#88aaff",
                         name: "SHIELD MATRIX",
                         nameRu: "ЩИТ-МАТРИЦА",
-                        desc: "+20 MAX HP",
-                        descRu: "+20 MAX HP",
+                        desc: "+20 MAX INTEGRITY",
+                        descRu: "+20 макс. целостность",
                         cost: 24,
                         apply(p) {
                             p.maxHp += 20;
@@ -12850,8 +13315,6 @@
                     let player, enemies, parts, texts, orbs;
                     let enemyBullets = [];
                     let playerBullets = []; // снаряды игрока
-                    const MAX_ENEMY_BULLETS = 96;
-                    const MAX_PLAYER_BULLETS = 80;
                     let artifacts = new ArtifactSystem();
                     let elapsed = 0,
                         kills = 0,
@@ -13570,7 +14033,7 @@
                             card.style.borderColor = r.col;
                             card.innerHTML = `<div class="relic-icon" style="color:${r.col}">${ICONS[r.icon] || r.icon}</div>
                                 <div class="relic-name" style="color:${r.col}">${isRu ? r.nameRu : r.name}</div>
-                                <div class="relic-desc">${isRu ? r.descRu : r.desc}</div>`;
+                                <div class="relic-desc">${formatTermText(isRu ? r.descRu : r.desc)}</div>`;
                             card.onclick = () => pickRelic(r);
                             cards.appendChild(card);
                         });
@@ -13638,7 +14101,7 @@
                             card.className = "mut-card";
                             card.style.borderColor = m.col;
                             card.innerHTML = `<div class="mut-name" style="color:${m.col}">${isRu ? m.nameRu : m.name}</div>
-                              <div class="mut-desc">${isRu ? m.descRu : m.desc}</div>`;
+                              <div class="mut-desc">${formatTermText(isRu ? m.descRu : m.desc)}</div>`;
                             card.onclick = () => {
                                 pendingMutation = m;
                                 hide("mutationScreen");
@@ -13674,7 +14137,7 @@
                                 ? "rgba(255,255,255,0.15)"
                                 : item.col;
                             card.innerHTML = `<div class="mut-name" style="color:${bought ? "rgba(255,255,255,0.3)" : item.col}">${isRu ? item.nameRu : item.name}</div>
-                              <div class="mut-desc">${isRu ? item.descRu : item.desc}</div>
+                              <div class="mut-desc">${formatTermText(isRu ? item.descRu : item.desc)}</div>
                               <div class="mkt-cost">${bought ? (isRu ? "КУПЛЕНО" : "SOLD") : "▶ " + item.cost + " CR"}</div>`;
                             if (!bought)
                                 card.onclick = () => {
@@ -13722,7 +14185,7 @@
                                 applySkill(player, upg);
                                 // ── Синергии навыков ────────────────────────
                                 const sk = player.skillStacks || {};
-                                // Vampire Core: Crit + Lifesteal → +50% lifesteal
+                                // Repair Core: Weakpoint + Repair Tap -> stronger repair
                                 if (
                                     (sk.critCore || 0) >= 1 &&
                                     (sk.lifesteal || 0) >= 1 &&
@@ -13732,11 +14195,11 @@
                                     player.lifeSteal *= 1.5;
                                     UI.toast(
                                         currentLang === "ru"
-                                            ? "СИНЕРГИЯ: ВАМПИР-ЯДРО ★"
-                                            : "SYNERGY: VAMPIRE CORE ★",
+                                            ? "СИНЕРГИЯ: РЕМОНТНОЕ ЯДРО ★"
+                                            : "SYNERGY: REPAIR CORE ★",
                                     );
                                 }
-                                // Iron Berserker: Berserker + Armor → HP штраф отменяется
+                                // Armored Clock: Emergency Clock + Hardening -> offsets HP penalty
                                 if (
                                     (sk.berserker || 0) >= 1 &&
                                     (sk.armor || 0) >= 1 &&
@@ -13752,11 +14215,11 @@
                                     );
                                     UI.toast(
                                         currentLang === "ru"
-                                            ? "СИНЕРГИЯ: ЖЕЛЕЗНЫЙ БЕРСЕРК ★"
-                                            : "SYNERGY: IRON BERSERKER ★",
+                                            ? "СИНЕРГИЯ: БРОНИРОВАННЫЙ РАЗГОН ★"
+                                            : "SYNERGY: ARMORED CLOCK ★",
                                     );
                                 }
-                                // Railgun: Multishot + Piercing → piercing ×2
+                                // Phase Split: Signal Split + Phase Signal -> stronger piercing
                                 if (
                                     (sk.multishot || 0) >= 1 &&
                                     (sk.piercing || 0) >= 1 &&
@@ -13767,8 +14230,8 @@
                                         (player.piercing || 1) * 2;
                                     UI.toast(
                                         currentLang === "ru"
-                                            ? "СИНЕРГИЯ: РЕЖИМ РЕЙЛГАНА ★"
-                                            : "SYNERGY: RAILGUN MODE ★",
+                                            ? "СИНЕРГИЯ: ФАЗОВОЕ РАСЩЕПЛЕНИЕ ★"
+                                            : "SYNERGY: PHASE SPLIT ★",
                                     );
                                 }
                                 // Phase Runner: SpeedMatrix + dash active → dash CD -1.5с
@@ -13799,7 +14262,7 @@
                                             : "SYNERGY: DATA STORM ★",
                                     );
                                 }
-                                // Spread Matrix: rangeBoost + multishot → +1 shot, +10% range
+                                // Signal Spread: signalBoost + signalSplit -> +1 signal, +10% range
                                 if (
                                     (sk.rangeBoost || 0) >= 1 &&
                                     (sk.multishot || 0) >= 1 &&
@@ -13808,17 +14271,17 @@
                                     player.spreadMatrixDone = true;
                                     player.multishot =
                                         (player.multishot || 1) + 1;
-                                    player.range = (player.range || 1) * 1.1;
+                                    player.atkR *= 1.1;
                                     UI.toast(
                                         currentLang === "ru"
-                                            ? "СИНЕРГИЯ: МАТРИЦА РАЗБРОСА ★"
-                                            : "SYNERGY: SPREAD MATRIX ★",
+                                            ? "СИНЕРГИЯ: РАЗВОДКА СИГНАЛА ★"
+                                            : "SYNERGY: SIGNAL SPREAD ★",
                                     );
                                 }
                                 // Bio Regenerator: hpCore + regen → regen ×2, +20 maxHP
                                 if (
                                     (sk.hpCore || 0) >= 1 &&
-                                    (sk.regen || 0) >= 1 &&
+                                    (sk.regenSkill || 0) >= 1 &&
                                     !player.bioRegenDone
                                 ) {
                                     player.bioRegenDone = true;
@@ -13866,6 +14329,8 @@
                         GameplayAPI.stop();
                         clearTimers();
                         hudHide();
+                        const _babDie = $("btnAdBuff");
+                        if (_babDie) _babDie.style.display = "none";
                         if (!reviveUsed && _ysdk_ready) {
                             reviveUsed = true;
                             state = "revive";
@@ -14125,6 +14590,11 @@
                         lastTs = performance.now();
                         raf = requestAnimationFrame(loop);
                         GameplayAPI.start();
+                        // Brief tutorial hints for new players
+                        const _isRuHint = currentLang === "ru";
+                        setTimeout(() => UI.toast(_isRuHint ? "🕹 ДВИЖЕНИЕ: WASD / мышь / джойстик" : "🕹 MOVE: WASD / mouse / joystick"), 800);
+                        setTimeout(() => UI.toast(_isRuHint ? "⭐ СОБИРАЙ шары опыта для прокачки" : "⭐ COLLECT XP orbs to level up"), 3500);
+                        setTimeout(() => UI.toast(_isRuHint ? "💀 ЦЕЛЬ: выжить как можно дольше!" : "💀 GOAL: survive as long as possible!"), 6000);
                     }
 
                     function showDeathStatsIfNeeded() {
@@ -15531,8 +16001,8 @@
                         const s = $("reviveSub");
                         if (s)
                             s.textContent = isRu
-                                ? "Посмотри рекламу — восстанови 50% HP"
-                                : "Watch ad to restore 50% HP and continue";
+                                ? "Посмотри рекламу — восстанови 50% целостности"
+                                : "Watch ad to restore 50% integrity and continue";
                         const skip = $("btnSkipRevive");
                         if (skip)
                             skip.textContent = isRu
@@ -15578,8 +16048,8 @@
                                 ),
                                 step(
                                     2,
-                                    "Your weapons fire automatically — just dodge",
-                                    "Оружие стреляет само — просто уклоняйся",
+                                    "Purge signals fire automatically — steer and keep distance",
+                                    "Очищающие сигналы срабатывают сами — веди героя и держи дистанцию",
                                 ),
                                 step(
                                     3,
@@ -15618,9 +16088,9 @@
                                         "Рывок — 0.4с неуязвимость, КД 3с",
                                     ),
                                     row(
-                                        "LMB hold",
-                                        "Move toward cursor",
-                                        "Двигаться к курсору",
+                                        "MOUSE",
+                                        "Guide movement without holding LMB",
+                                        "Веди героя без зажатия ЛКМ",
                                     ),
                                     row("ESC / ⏸", "Pause", "Пауза"),
                                 ) +
@@ -15652,13 +16122,13 @@
                             rows(
                                 tip(
                                     "🔺",
-                                    `<b style="color:#ff8877">Fast</b> — quick, low HP, attacks in swarms`,
-                                    `<b style="color:#ff8877">Быстрый</b> — шустрый, мало HP, атакует роями`,
+                                    `<b style="color:#ff8877">Fast</b> — quick, fragile, attacks in swarms`,
+                                    `<b style="color:#ff8877">Быстрый</b> — шустрый, хрупкий, атакует роями`,
                                 ),
                                 tip(
                                     "⬡",
-                                    `<b style="color:#cc99ff">Tank</b> — slow, very high HP, hits hard`,
-                                    `<b style="color:#cc99ff">Танк</b> — медленный, много HP, бьёт сильно`,
+                                    `<b style="color:#cc99ff">Tank</b> — slow, very durable, hits hard`,
+                                    `<b style="color:#cc99ff">Танк</b> — медленный, очень прочный, бьёт сильно`,
                                 ),
                                 tip(
                                     "◆",
@@ -15672,7 +16142,7 @@
                                 ),
                                 tip(
                                     "🔫",
-                                    `<b style="color:#ff6644">Gunner</b> — fires a burst of bullets`,
+                                    `<b style="color:#ff6644">Gunner</b> — fires a burst of projectiles`,
                                     `<b style="color:#ff6644">Ганнер</b> — выпускает очередь снарядов`,
                                 ),
                                 tip(
@@ -15694,19 +16164,19 @@
                             "Elite Enemies",
                             "Элитные Враги",
                             sub(
-                                "Rare variants with a glowing name tag above their HP bar",
-                                "Редкие варианты с подсветкой имени над полоской HP",
+                                "Rare variants with a glowing name tag above their durability bar",
+                                "Редкие варианты с подсветкой имени над полоской прочности",
                             ) +
                                 rows(
                                     tip(
                                         "🛡",
-                                        `${bdg("#ff8800", "HARDENED", "ЗАКАЛЁННЫЙ")} — armor absorbs first 35% of HP. Cyan bar must be depleted first`,
-                                        `${bdg("#ff8800", "HARDENED", "ЗАКАЛЁННЫЙ")} — щит поглощает первые 35% HP. Сначала снеси голубую полосу`,
+                                        `${bdg("#ff8800", "HARDENED", "ЗАКАЛЁННЫЙ")} — armor absorbs first 35% durability. Cyan bar must be depleted first`,
+                                        `${bdg("#ff8800", "HARDENED", "ЗАКАЛЁННЫЙ")} — щит поглощает первые 35% прочности. Сначала снеси голубую полосу`,
                                     ),
                                     tip(
                                         "💢",
-                                        `${bdg("#ff2266", "ALPHA", "АЛЬФА")} — enrages at 50% HP: speed ×1.9, turns red`,
-                                        `${bdg("#ff2266", "ALPHA", "АЛЬФА")} — бешенство на 50% HP: скорость ×1.9, краснеет`,
+                                        `${bdg("#ff2266", "ALPHA", "АЛЬФА")} — enrages at half durability: speed x1.9, turns red`,
+                                        `${bdg("#ff2266", "ALPHA", "АЛЬФА")} — бешенство на половине прочности: скорость x1.9, краснеет`,
                                     ),
                                     tip(
                                         "☠",
@@ -15739,18 +16209,18 @@
                                 ),
                                 tip(
                                     "💜",
-                                    `${bdg("#cc66ff", "VIOLET", "ФИОЛЕТ")} — attack speed, lifesteal`,
-                                    `${bdg("#cc66ff", "VIOLET", "ФИОЛЕТ")} — скорость атаки, вампиризм`,
+                                    `${bdg("#cc66ff", "VIOLET", "ФИОЛЕТ")} — pulse rate, repair`,
+                                    `${bdg("#cc66ff", "VIOLET", "ФИОЛЕТ")} — частота импульсов, ремонт`,
                                 ),
                                 tip(
                                     "🟢",
-                                    `${bdg("#44cc44", "GREEN", "ЗЕЛЁНЫЙ")} — defense, HP, healing`,
-                                    `${bdg("#44cc44", "GREEN", "ЗЕЛЁНЫЙ")} — защита, HP, хилинг`,
+                                    `${bdg("#44cc44", "GREEN", "ЗЕЛЁНЫЙ")} — defense, integrity, repair`,
+                                    `${bdg("#44cc44", "GREEN", "ЗЕЛЁНЫЙ")} — защита, целостность, ремонт`,
                                 ),
                                 tip(
                                     "🩵",
-                                    `${bdg("#00eeff", "CYAN", "ГОЛУБОЙ")} — range, orbitals, chain attacks`,
-                                    `${bdg("#00eeff", "CYAN", "ГОЛУБОЙ")} — радиус, орбиталы, цепные атаки`,
+                                    `${bdg("#00eeff", "CYAN", "ГОЛУБОЙ")} — purge range, orbitals, chains`,
+                                    `${bdg("#00eeff", "CYAN", "ГОЛУБОЙ")} — радиус очистки, орбиталы, цепи`,
                                 ),
                             ),
                         );
@@ -15764,7 +16234,7 @@
                                 tip(
                                     "🔥",
                                     `<b style="color:#ff9944">OVERHEAT</b> — fills on kills. At max: explodes all nearby enemies and resets`,
-                                    `<b style="color:#ff9944">ОВЕРХИТ</b> — заполняется за убийства. На максимуме взрывает всех рядом`,
+                                    `<b style="color:#ff9944">ПЕРЕГРЕВ</b> — заполняется за убийства. На максимуме взрывает всех рядом`,
                                 ),
                                 tip(
                                     "⚡",
@@ -15778,8 +16248,8 @@
                                 ),
                                 tip(
                                     "🔴",
-                                    `<b style="color:#ff2244">PANIC</b> — below 25% HP screen turns red. Use DASH + OVERHEAT to survive`,
-                                    `<b style="color:#ff2244">ПАНИКА</b> — ниже 25% HP экран краснеет. Используй РЫВОК и ОВЕРХИТ`,
+                                    `<b style="color:#ff2244">PANIC</b> — below 25% integrity screen turns red. Use DASH + OVERHEAT to survive`,
+                                    `<b style="color:#ff2244">ПАНИКА</b> — ниже 25% целостности экран краснеет. Используй РЫВОК и ПЕРЕГРЕВ`,
                                 ),
                                 tip(
                                     "🛡",
@@ -15811,8 +16281,8 @@
                                     ),
                                     tip(
                                         "💡",
-                                        `Examples: <i>Bloodlust</i> heals on kill, <i>Twinshot</i> doubles projectiles`,
-                                        `Примеры: <i>Bloodlust</i> лечит за убийства, <i>Twinshot</i> удваивает снаряды`,
+                                        `Examples: <i>Repair Link</i> restores integrity, <i>Signal Split</i> adds purge signals`,
+                                        `Примеры: <i>Ремонтный канал</i> чинит целостность, <i>Расщепление сигнала</i> добавляет сигналы`,
                                     ),
                                 ) +
                                 sub(
@@ -15846,8 +16316,8 @@
                                 ),
                                 tip(
                                     "▶",
-                                    "Prioritize Ranged and Gunner enemies — they deal unavoidable damage from a distance",
-                                    "Целься в Дальников и Ганнеров в первую очередь — они бьют издалека",
+                                    "Stay near Ranged and Gunner enemies only long enough for auto-purge to catch them",
+                                    "Подходи к Дальникам и Ганнерам ровно настолько, чтобы автоочистка их достала",
                                 ),
                                 tip(
                                     "▶",
@@ -15889,6 +16359,7 @@
                         $("lblIntegrity").textContent = tr("integrity");
                         $("lblData").textContent = tr("data");
                         $("lblOverheat").textContent = tr("overheat");
+                        $("lblLoad").textContent = tr("loadLbl");
                         $("startSub").textContent = tr("startSub");
                         $("startLore").innerHTML = tr("lore");
                         $("tipsText").innerHTML = tr("tips").replace(
@@ -15939,6 +16410,12 @@
                                 currentLang === "ru"
                                     ? "🏆 РЕЙТИНГ"
                                     : "🏆 LEADERBOARD";
+                        const _bAdBuff = $("btnAdBuff");
+                        if (_bAdBuff)
+                            _bAdBuff.textContent =
+                                currentLang === "ru"
+                                    ? "📺 РЕКЛАМА → ×2 ОПЫТ 60с"
+                                    : "📺 AD → ×2 XP 60s";
                         $("dTimeLbl").textContent = tr("survived");
                         $("dKillsLbl").textContent = tr("purgedLbl");
                         $("dLvlLbl").textContent = tr("syncLevelLbl");
@@ -16114,10 +16591,10 @@
                                 <div class="cls-card-name" style="color:${c.color}">${clsName}</div>
                                 <div class="cls-perk-badge" style="color:${c.color}">${clsPerk}</div>
                                 <div class="cls-stats">
-                                    <span>HP</span><span class="cls-stat-val">${c.hp}</span>
-                                    <span>DMG</span><span class="cls-stat-val">${c.dmg}</span>
-                                    <span>SPD</span><span class="cls-stat-val">${c.spd}</span>
-                                    <span>RATE</span><span class="cls-stat-val">${c.rate}</span>
+                                    <span>${isRu ? "ЦЕЛ." : "INT"}</span><span class="cls-stat-val">${c.hp}</span>
+                                    <span>${isRu ? "УРОН" : "DMG"}</span><span class="cls-stat-val">${c.dmg}</span>
+                                    <span>${isRu ? "СКОР." : "SPD"}</span><span class="cls-stat-val">${c.spd}</span>
+                                    <span>${isRu ? "ЧАСТ." : "FREQ"}</span><span class="cls-stat-val">${c.rate}</span>
                                 </div>
                                 <div class="cls-perk-desc">${clsDesc}</div>
                                 <button class="cls-select-btn${isActive ? " selected" : ""}">${isActive ? tr("clsActive") : tr("clsSelect")}</button>
@@ -16364,7 +16841,7 @@
                                 card.innerHTML = `
                                   <div style="flex:1;">
                                     <div style="font-size:11px;font-weight:700;color:#00e5ff;letter-spacing:2px;">${d.title} ${lv > 0 ? `<span style="color:#ffcc44;">LV${lv}</span>` : ""}</div>
-                                    <div style="font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:1px;margin-top:3px;">${d.desc}</div>
+                                    <div style="font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:1px;margin-top:3px;">${formatTermText(d.desc)}</div>
                                     ${lv > 0 ? `<div style="font-size:9px;color:#44ff88;letter-spacing:1px;margin-top:2px;">${d.effect(lv)}</div>` : ""}
                                   </div>
                                   <button data-key="${d.key}" data-cost="${cost}"
@@ -16404,7 +16881,7 @@
                                 card.className =
                                     "dna-node " +
                                     (isUnlocked ? "unlocked" : "locked");
-                                card.innerHTML = `<div class="dna-icon" style="color:${isUnlocked ? "#44ff88" : "rgba(255,255,255,0.3)"}">${ICONS[node.icon] || node.icon}</div>
+                                card.innerHTML = `<div class="dna-icon" style="color:${isUnlocked ? "#44ff88" : "rgba(180,200,255,0.7)"}">${ICONS[node.icon] || node.icon}</div>
                                     <div class="${isUnlocked ? "dna-name" : "dna-name locked-name"}">${isRu ? node.nameRu : node.name}</div>
                                     <div class="${isUnlocked ? "dna-bonus" : "dna-req"}">${isUnlocked ? (isRu ? node.bonusRu : node.bonus) : isRu ? node.reqDescRu : node.reqDesc}</div>`;
                                 grid.appendChild(card);
@@ -16561,27 +17038,21 @@
                             Ads.showRewarded(
                                 "boost",
                                 () => {
-                                    // Rewarded: apply buff
-                                    const types = ["xp", "speed", "shield"];
-                                    adBuffType =
-                                        types[
-                                            Math.floor(
-                                                Math.random() * types.length,
-                                            )
-                                        ];
+                                    // Rewarded: always give ×2 XP for 60s (clear, obvious reward per Yandex p.4.5.1)
+                                    adBuffType = "xp";
                                     adBuffT = 60;
-                                    if (adBuffType === "speed" && player)
-                                        player.spd *= 1.5;
-                                    if (adBuffType === "shield" && player)
-                                        player.passiveShield = 1;
                                     UI.toast(
                                         currentLang === "ru"
-                                            ? "БУСТ АКТИВИРОВАН! 60с"
-                                            : "BOOST ACTIVE! 60s",
+                                            ? "×2 ОПЫТ АКТИВИРОВАН! 60с"
+                                            : "×2 XP ACTIVE! 60s",
                                     );
                                     btnAdBuff.style.display = "none";
                                     setTimeout(() => {
-                                        if (btnAdBuff)
+                                        if (
+                                            btnAdBuff &&
+                                            state === "playing" &&
+                                            _gameActive
+                                        )
                                             btnAdBuff.style.display = "block";
                                     }, 120000);
                                 },
@@ -16713,8 +17184,8 @@
                             raf = requestAnimationFrame(loop);
                             UI.toast(
                                 currentLang === "ru"
-                                    ? "ВОЗРОЖДЕНИЕ! 50% HP"
-                                    : "REVIVED! 50% HP",
+                                            ? "ВОЗРОЖДЕНИЕ! 50% ЦЕЛОСТНОСТИ"
+                                            : "REVIVED! 50% INTEGRITY",
                             );
                         });
                     $("btnSkipRevive").onclick = skipRevive;
@@ -17186,7 +17657,7 @@
                                 },
                                 {
                                     val: `+${Math.round((loc.enemyHpMul - 1) * 100)}%`,
-                                    lbl: isRu ? "HP ВРАГОВ" : "ENEMY HP",
+                                    lbl: isRu ? "ПРОЧН. ВРАГОВ" : "ENEMY DUR.",
                                     col: "#ff7766",
                                 },
                             ];
@@ -17499,12 +17970,22 @@
                 );
 
                 document.addEventListener("visibilitychange", () => {
-                    if (
-                        document.hidden &&
-                        Game.getState &&
-                        Game.getState() === "playing"
-                    ) {
-                        Game.pause();
+                    if (document.hidden) {
+                        // Pause game loop
+                        if (Game.getState && Game.getState() === "playing") {
+                            Game.pause();
+                        }
+                        // Mute Web Audio API
+                        Audio.suspend();
+                        // Pause HTML audio (menu music)
+                        const _mEl = document.getElementById("menuMusic");
+                        if (_mEl && !_mEl.paused) { _mEl._wasPlaying = true; _mEl.pause(); }
+                    } else {
+                        // Resume Web Audio API
+                        Audio.resume();
+                        // Resume HTML audio if it was playing
+                        const _mEl = document.getElementById("menuMusic");
+                        if (_mEl && _mEl._wasPlaying) { _mEl._wasPlaying = false; _mEl.play().catch(() => {}); }
                     }
                 });
 
@@ -18265,7 +18746,7 @@
             })();
         </script>
 
-        <audio id="menuMusic" loop preload="auto">
+        <audio id="menuMusic" loop preload="auto" playsinline disableremoteplayback x-webkit-airplay="deny">
             <source src="./track_music.m4a" type="audio/mp4" />
         </audio>
     </body>
