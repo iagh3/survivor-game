@@ -221,7 +221,7 @@
                shrink to 0 when content overflows (safe scroll from top) */
             .screen::before,
             .screen::after {
-                content: '';
+                content: "";
                 flex: 1 1 0;
                 min-height: 0;
             }
@@ -3491,8 +3491,7 @@
                     align-items: center !important;
                     justify-content: space-evenly !important;
                     padding: 10px 24px !important;
-                    overflow-y: auto !important;
-                    overflow-x: hidden !important;
+                    overflow: hidden !important;
                     gap: 0 !important;
                 }
                 /* No pseudo-spacers — space-evenly handles distribution */
@@ -3500,9 +3499,9 @@
                 #startScreen::after {
                     display: none !important;
                 }
-                /* Brand: fixed-width column, centered */
+                /* Brand: wide — title fills horizontal space */
                 #startBrand {
-                    width: min(400px, 88vw) !important;
+                    width: min(680px, 92vw) !important;
                     flex: 0 0 auto !important;
                     display: flex !important;
                     flex-direction: column !important;
@@ -3513,104 +3512,108 @@
                     gap: 0 !important;
                 }
                 .menu-alert {
-                    font-size: 5px !important;
-                    padding: 2px 8px !important;
-                    margin-bottom: 4px !important;
-                    gap: 6px !important;
+                    font-size: 10px !important;
+                    padding: 5px 10px !important;
+                    margin-bottom: 12px !important;
+                    gap: 12px !important;
                 }
                 .game-title {
-                    font-size: 12px !important;
-                    letter-spacing: 3px !important;
+                    font-size: 18px !important;
+                    letter-spacing: 4px !important;
                     margin-bottom: 0 !important;
                     text-align: center !important;
                     line-height: 0.85 !important;
                 }
                 .game-title span {
-                    font-size: 38px !important;
-                    line-height: 0.9 !important;
+                    font-size: 54px !important;
+                    line-height: 0.88 !important;
                     letter-spacing: 1px !important;
                 }
                 .game-sub {
                     display: none !important;
                 }
                 #startScreen .lore {
-                    font-size: 6px !important;
-                    letter-spacing: 0.5px !important;
-                    line-height: 1.5 !important;
-                    margin-top: 6px !important;
-                    opacity: 0.4 !important;
+                    font-size: 12.5px !important;
+                    letter-spacing: 0.8px !important;
+                    line-height: 1.6 !important;
+                    margin-top: 8px !important;
+                    opacity: 0.65 !important;
                     text-align: center !important;
                     display: block !important;
                 }
                 .tips {
                     display: none !important;
                 }
-                /* Actions: fixed-width column, centered */
+                /* Actions: same width as brand, but rows are constrained inside */
                 #startActions {
-                    width: min(400px, 88vw) !important;
+                    width: min(680px, 92vw) !important;
                     flex: 0 0 auto !important;
                     display: flex !important;
                     flex-direction: column !important;
-                    align-items: stretch !important;
+                    align-items: center !important;
                     padding: 0 !important;
                     background: none !important;
                     gap: 6px !important;
                     margin-top: 0 !important;
                 }
-                /* Play row: natural-sized, not stretched */
+                /* Play row */
                 .play-row {
                     flex: 0 0 auto !important;
-                    height: 48px !important;
+                    width: min(460px, 100%) !important;
+                    height: 66px !important;
                     display: flex !important;
                     flex-direction: row !important;
-                    gap: 6px !important;
+                    gap: 7px !important;
                     margin: 0 !important;
                     flex-wrap: nowrap !important;
-                    width: 100% !important;
                 }
                 #startScreen .btn-play {
                     flex: 1 !important;
                     height: 100% !important;
-                    font-size: 15px !important;
-                    letter-spacing: 5px !important;
+                    font-size: 18px !important;
+                    letter-spacing: 6px !important;
                     padding: 0 !important;
                 }
                 #startScreen .btn-www {
                     flex: 0 0 auto !important;
                     height: 100% !important;
-                    font-size: 7px !important;
-                    padding: 0 14px !important;
+                    font-size: 12px !important;
+                    padding: 0 18px !important;
                     opacity: 0.65 !important;
                     writing-mode: horizontal-tb !important;
                 }
+                /* Nav rows */
                 #startActions > .menu-row {
+                    width: min(460px, 100%) !important;
                     margin: 0 !important;
-                    gap: 6px !important;
+                    gap: 7px !important;
                     flex-wrap: nowrap !important;
-                    width: 100% !important;
                 }
                 #optionsPanel .menu-row {
+                    width: min(460px, 100%) !important;
                     margin-top: 0 !important;
-                    gap: 4px !important;
+                    gap: 5px !important;
                     flex-wrap: wrap !important;
-                    width: 100%;
                 }
                 #startScreen .btn-ghost {
-                    font-size: 7px !important;
-                    padding: 5px 8px !important;
-                    letter-spacing: 1px !important;
-                    min-height: 28px !important;
+                    font-size: 12px !important;
+                    padding: 0 8px !important;
+                    letter-spacing: 1.5px !important;
+                    min-height: 40px !important;
                     flex: 1 !important;
                 }
                 .daily-badge {
-                    font-size: 7px !important;
-                    padding: 5px 12px !important;
+                    font-size: 9px !important;
+                    padding: 13px 18px !important;
+                    width: min(460px, 100%) !important;
+                    box-sizing: border-box !important;
+                    justify-content: center !important;
                     margin-top: 0 !important;
-                    gap: 6px !important;
+                    gap: 8px !important;
                 }
                 #dailyScoreLine {
-                    font-size: 7px !important;
-                    margin-top: 2px !important;
+                    font-size: 8px !important;
+                    margin-top: 3px !important;
                 }
 
                 /* ── Death screen: compact + horizontal secondary buttons ── */
@@ -4003,11 +4006,15 @@
                 overscroll-behavior-y: contain;
                 justify-content: flex-start;
             }
-            #upgradeScreen::before, #upgradeScreen::after,
-            #relicScreen::before, #relicScreen::after,
-            #mutationScreen::before, #mutationScreen::after,
-            #merchantScreen::before, #merchantScreen::after {
-                content: '';
+            #upgradeScreen::before,
+            #upgradeScreen::after,
+            #relicScreen::before,
+            #relicScreen::after,
+            #mutationScreen::before,
+            #mutationScreen::after,
+            #merchantScreen::before,
+            #merchantScreen::after {
+                content: "";
                 flex: 1 1 0;
                 min-height: 0;
             }
@@ -4302,43 +4309,50 @@
                     padding: 7px 10px;
                 }
 
-                /* ── Start: very tight single-column for ≤420px landscape ── */
+                /* ── Start: compact single-column for ≤420px landscape ── */
                 .game-title {
-                    font-size: clamp(9px, 2vh, 13px) !important;
-                    margin-bottom: 0 !important;
+                    font-size: 14px !important;
+                    margin-bottom: 10px !important;
                 }
                 .game-title span {
-                    font-size: clamp(22px, 8vh, 34px) !important;
+                    font-size: 42px !important;
                 }
                 .menu-alert {
-                    font-size: 5px !important;
-                    padding: 2px 6px !important;
-                    margin-bottom: 4px !important;
+                    font-size: 8px !important;
+                    padding: 4px 8px !important;
+                    margin-bottom: 10px !important;
+                }
+                #startScreen .lore {
+                    font-size: 8.5px !important;
+                    line-height: 1.6 !important;
+                    margin-top: 10px !important;
+                    font-size: 8.5px !important;
+                    opacity: 0.65 !important;
                 }
                 #startActions {
-                    gap: 4px !important;
-                    margin-top: 5px !important;
+                    gap: 5px !important;
+                    margin-top: 0 !important;
                 }
                 #startScreen .btn-play {
-                    font-size: 13px !important;
-                    letter-spacing: 4px !important;
+                    font-size: 15px !important;
+                    letter-spacing: 5px !important;
                     padding: 0 !important;
                 }
                 .play-row {
-                    height: 40px !important;
+                    height: 52px !important;
                 }
                 #startScreen .btn-www {
-                    font-size: 6px !important;
-                    padding: 0 8px !important;
+                    font-size: 10px !important;
+                    padding: 0 12px !important;
                 }
                 #startScreen .btn-ghost {
-                    font-size: 6px !important;
-                    min-height: 24px !important;
-                    padding: 3px 5px !important;
+                    font-size: 10px !important;
+                    min-height: 32px !important;
+                    padding: 0 5px !important;
                 }
                 .daily-badge {
-                    font-size: 6px !important;
-                    padding: 2px 8px !important;
+                    font-size: 10px !important;
+                    padding: 9px 14px !important;
                 }
                 /* Death: tighter stat boxes ── */
                 .death-title {
@@ -5965,10 +5979,14 @@
                 // ─────────────────────────────────────────────────────────────
                 let _gameActive = false;
                 let _pQuality = 1; // particle quality scalar, updated by game loop
-                let _elapsed = 0;  // shared elapsed time (seconds), updated by game loop each frame
+                let _elapsed = 0; // shared elapsed time (seconds), updated by game loop each frame
                 // Cached gradient objects — rebuilt only on resize (saves createRadialGradient per frame)
-                let _cachedVig = null, _cachedFreezeVig = null, _cachedHpVig = null, _cachedOvVig = null;
-                let _cachedVigW = 0, _cachedVigH = 0;
+                let _cachedVig = null,
+                    _cachedFreezeVig = null,
+                    _cachedHpVig = null,
+                    _cachedOvVig = null;
+                let _cachedVigW = 0,
+                    _cachedVigH = 0;
                 // Shared logical viewport size (set by Game IIFE resize(), used by enemy draw methods)
                 let viewW = innerWidth,
                     viewH = innerHeight;
@@ -6316,8 +6334,15 @@
                         if (_ts) ctx.shadowBlur = 6;
                         let _lastSize = 0;
                         for (const t of this.pool) {
-                            const sx = t.x - cx, sy = t.y - cy;
-                            if (sx < -100 || sy < -40 || sx > viewW + 100 || sy > viewH + 40) continue;
+                            const sx = t.x - cx,
+                                sy = t.y - cy;
+                            if (
+                                sx < -100 ||
+                                sy < -40 ||
+                                sx > viewW + 100 ||
+                                sy > viewH + 40
+                            )
+                                continue;
                             ctx.globalAlpha = t.life / t.max;
                             ctx.fillStyle = t.color;
                             if (t.size !== _lastSize) {
@@ -6433,9 +6458,17 @@
                         // Build visible list once, share between two passes
                         const vis = [];
                         for (const o of this.pool) {
-                            const sx = o.x - cx, sy = o.y - cy;
-                            if (sx < -40 || sy < -40 || sx > viewW + 40 || sy > viewH + 40) continue;
-                            const pulse = 0.82 + 0.18 * Math.sin(t * 7 + o.x * 0.03);
+                            const sx = o.x - cx,
+                                sy = o.y - cy;
+                            if (
+                                sx < -40 ||
+                                sy < -40 ||
+                                sx > viewW + 40 ||
+                                sy > viewH + 40
+                            )
+                                continue;
+                            const pulse =
+                                0.82 + 0.18 * Math.sin(t * 7 + o.x * 0.03);
                             vis.push({ o, sx, sy, rr: o.r * pulse });
                         }
                         if (vis.length === 0) return;
@@ -6443,7 +6476,8 @@
                         ctx.globalAlpha = 0.92;
                         if (_pQuality >= 0.65) ctx.shadowBlur = 9;
                         for (const { o, sx, sy, rr } of vis) {
-                            if (_pQuality >= 0.65) ctx.shadowColor = o.glowCol || "#33ff66";
+                            if (_pQuality >= 0.65)
+                                ctx.shadowColor = o.glowCol || "#33ff66";
                             ctx.fillStyle = o.color || "#44ff88";
                             ctx.beginPath();
                             ctx.moveTo(sx, sy - rr);
@@ -8508,7 +8542,10 @@
                             ctx.globalAlpha = pulse * 0.5;
                             ctx.strokeStyle = this.eliteColor;
                             ctx.lineWidth = 2;
-                            if (_pQuality >= 0.65) { ctx.shadowColor = this.eliteColor; ctx.shadowBlur = 8; }
+                            if (_pQuality >= 0.65) {
+                                ctx.shadowColor = this.eliteColor;
+                                ctx.shadowBlur = 8;
+                            }
                             ctx.beginPath();
                             ctx.arc(sx, sy, this.r + 5, 0, Math.PI * 2);
                             ctx.stroke();
@@ -8578,7 +8615,10 @@
 
                         ctx.globalAlpha = alpha;
                         const _se = _pQuality >= 0.65;
-                        if (_se) { ctx.shadowBlur = flash ? 16 : 9; ctx.shadowColor = glo; }
+                        if (_se) {
+                            ctx.shadowBlur = flash ? 16 : 9;
+                            ctx.shadowColor = glo;
+                        }
                         ctx.fillStyle = col;
 
                         // Tank (base) = HEXAGON — slow, bulky look
@@ -8604,7 +8644,10 @@
 
                         // bright core dot
                         ctx.fillStyle = flash ? "#fff" : glo;
-                        if (_se) { ctx.shadowBlur = 5; ctx.shadowColor = glo; }
+                        if (_se) {
+                            ctx.shadowBlur = 5;
+                            ctx.shadowColor = glo;
+                        }
                         ctx.globalAlpha = alpha * 0.9;
                         ctx.beginPath();
                         ctx.arc(sx, sy, rr * 0.22, 0, Math.PI * 2);
@@ -8683,7 +8726,10 @@
                         const rr = this.r * scale;
 
                         ctx.globalAlpha = alpha;
-                        if (_pQuality >= 0.65) { ctx.shadowBlur = flash ? 14 : 8; ctx.shadowColor = glo; }
+                        if (_pQuality >= 0.65) {
+                            ctx.shadowBlur = flash ? 14 : 8;
+                            ctx.shadowColor = glo;
+                        }
                         ctx.fillStyle = col;
 
                         // Sharp triangle — always pointing toward player (this.angle)
@@ -8793,11 +8839,21 @@
                     }
                     draw(ctx, cx, cy) {
                         if (this.projs.length > 0) {
-                            if (_pQuality >= 0.65) { ctx.shadowBlur = 8; ctx.shadowColor = "#ff6600"; }
+                            if (_pQuality >= 0.65) {
+                                ctx.shadowBlur = 8;
+                                ctx.shadowColor = "#ff6600";
+                            }
                             ctx.fillStyle = "#ff9922";
                             for (const p of this.projs) {
-                                const psx = p.x - cx, psy = p.y - cy;
-                                if (psx < -40 || psy < -40 || psx > viewW + 40 || psy > viewH + 40) continue;
+                                const psx = p.x - cx,
+                                    psy = p.y - cy;
+                                if (
+                                    psx < -40 ||
+                                    psy < -40 ||
+                                    psx > viewW + 40 ||
+                                    psy > viewH + 40
+                                )
+                                    continue;
                                 ctx.beginPath();
                                 ctx.arc(psx, psy, 5, 0, Math.PI * 2);
                                 ctx.fill();
@@ -8805,8 +8861,15 @@
                             ctx.shadowBlur = 0;
                             ctx.fillStyle = "#ffcc66";
                             for (const p of this.projs) {
-                                const psx = p.x - cx, psy = p.y - cy;
-                                if (psx < -40 || psy < -40 || psx > viewW + 40 || psy > viewH + 40) continue;
+                                const psx = p.x - cx,
+                                    psy = p.y - cy;
+                                if (
+                                    psx < -40 ||
+                                    psy < -40 ||
+                                    psx > viewW + 40 ||
+                                    psy > viewH + 40
+                                )
+                                    continue;
                                 ctx.beginPath();
                                 ctx.arc(psx, psy, 2.5, 0, Math.PI * 2);
                                 ctx.fill();
@@ -8834,7 +8897,10 @@
                         ctx.globalAlpha = alpha;
 
                         // Diamond body — tall, precise
-                        if (_pQuality >= 0.65) { ctx.shadowBlur = flash ? 14 : 8; ctx.shadowColor = glo; }
+                        if (_pQuality >= 0.65) {
+                            ctx.shadowBlur = flash ? 14 : 8;
+                            ctx.shadowColor = glo;
+                        }
                         ctx.fillStyle = col;
                         ctx.beginPath();
                         ctx.moveTo(sx, sy - rr * 1.25); // top point
@@ -8919,8 +8985,13 @@
                             return;
                         const dying = this.deathT >= 0 && this.deathT < 0.09;
                         const rr = this.r * (dying ? 1 + this.deathT * 2.4 : 1);
-                        if (_pQuality >= 0.65) { ctx.shadowBlur = 7; ctx.shadowColor = this.flash > 0 || dying ? "#fff" : this.glow; }
-                        ctx.fillStyle = this.flash > 0 || dying ? "#fff" : this.color;
+                        if (_pQuality >= 0.65) {
+                            ctx.shadowBlur = 7;
+                            ctx.shadowColor =
+                                this.flash > 0 || dying ? "#fff" : this.glow;
+                        }
+                        ctx.fillStyle =
+                            this.flash > 0 || dying ? "#fff" : this.color;
                         ctx.beginPath();
                         for (let i = 0; i < 8; i++) {
                             const a = (i / 8) * Math.PI * 2 + this.angle * 0.2;
@@ -8936,7 +9007,8 @@
                         // Enrage визуал: красная пульсирующая аура
                         if (this.enraged) {
                             ctx.shadowBlur = 0;
-                            ctx.globalAlpha = 0.18 + 0.12 * Math.sin(_elapsed * 8);
+                            ctx.globalAlpha =
+                                0.18 + 0.12 * Math.sin(_elapsed * 8);
                             ctx.fillStyle = "#ff0000";
                             ctx.beginPath();
                             ctx.arc(sx, sy, this.r * 1.7, 0, Math.PI * 2);
@@ -9032,12 +9104,18 @@
                             this.flash > 0 || dying ? "#fff" : this.glow;
                         const rr = this.r * sc;
                         ctx.globalAlpha = al;
-                        if (_pQuality >= 0.65) { ctx.shadowBlur = 12; ctx.shadowColor = glo; }
+                        if (_pQuality >= 0.65) {
+                            ctx.shadowBlur = 12;
+                            ctx.shadowColor = glo;
+                        }
                         ctx.fillStyle = col;
                         ctx.beginPath();
                         for (let i = 0; i < 6; i++) {
                             const a = (i / 6) * Math.PI * 2 - Math.PI / 6;
-                            ctx[i ? "lineTo" : "moveTo"](sx + Math.cos(a) * rr, sy + Math.sin(a) * rr);
+                            ctx[i ? "lineTo" : "moveTo"](
+                                sx + Math.cos(a) * rr,
+                                sy + Math.sin(a) * rr,
+                            );
                         }
                         ctx.closePath();
                         ctx.fill();
@@ -9138,7 +9216,10 @@
                             this.flash > 0 || dying ? "#fff" : this.glow;
                         const rr = this.r * sc;
                         ctx.globalAlpha = al;
-                        if (_pQuality >= 0.65) { ctx.shadowBlur = this.dashing ? 16 : 9; ctx.shadowColor = glo; }
+                        if (_pQuality >= 0.65) {
+                            ctx.shadowBlur = this.dashing ? 16 : 9;
+                            ctx.shadowColor = glo;
+                        }
                         ctx.fillStyle = col;
                         ctx.beginPath();
                         ctx.moveTo(sx, sy - rr * 1.3);
@@ -9244,7 +9325,10 @@
                             this.flash > 0 || dying ? "#fff" : this.glow;
                         const rr = this.r * sc;
                         ctx.globalAlpha = al;
-                        if (_pQuality >= 0.65) { ctx.shadowBlur = 9; ctx.shadowColor = glo; }
+                        if (_pQuality >= 0.65) {
+                            ctx.shadowBlur = 9;
+                            ctx.shadowColor = glo;
+                        }
                         ctx.fillStyle = col;
                         const tip = this.angle;
                         ctx.beginPath();
@@ -9686,7 +9770,11 @@
                         )
                             return;
                         const pulse = 1 + Math.sin(_elapsed * 6) * 0.07;
-                        if (_pQuality >= 0.65) { ctx.shadowBlur = 11; ctx.shadowColor = this.flash > 0 ? "#fff" : this.glow; }
+                        if (_pQuality >= 0.65) {
+                            ctx.shadowBlur = 11;
+                            ctx.shadowColor =
+                                this.flash > 0 ? "#fff" : this.glow;
+                        }
                         ctx.fillStyle = this.flash > 0 ? "#fff" : this.color;
                         ctx.beginPath();
                         for (let i = 0; i < 8; i++) {
@@ -11857,14 +11945,25 @@
 
                         // Плоский массив (gi+1) * (rows+2) + (gj+1) вместо Map — нет аллокаций
                         const stride = rows + 2;
-                        const nodeArr = new Array((cols + 2) * stride).fill(null);
+                        const nodeArr = new Array((cols + 2) * stride).fill(
+                            null,
+                        );
                         const nodes = [];
                         for (let gi = -1; gi < cols; gi++) {
                             for (let gj = -1; gj < rows; gj++) {
-                                const wx = sGX + gi, wy = sGY + gj;
+                                const wx = sGX + gi,
+                                    wy = sGY + gj;
                                 if (_bHash(wx * 11, wy * 13) < 0.18) continue;
-                                const sx = bxG + gi * G + (_bHash(wx, wy) - 0.5) * G * 0.55;
-                                const sy = byG + gj * G + (_bHash(wx * 7 + 3, wy * 5 + 2) - 0.5) * G * 0.55;
+                                const sx =
+                                    bxG +
+                                    gi * G +
+                                    (_bHash(wx, wy) - 0.5) * G * 0.55;
+                                const sy =
+                                    byG +
+                                    gj * G +
+                                    (_bHash(wx * 7 + 3, wy * 5 + 2) - 0.5) *
+                                        G *
+                                        0.55;
                                 const node = { wx, wy, sx, sy };
                                 nodeArr[(gi + 1) * stride + (gj + 1)] = node;
                                 nodes.push(node);
@@ -11875,15 +11974,28 @@
                         ctx.beginPath();
                         for (let gi = -1; gi < cols; gi++) {
                             for (let gj = -1; gj < rows; gj++) {
-                                const wx = sGX + gi, wy = sGY + gj;
+                                const wx = sGX + gi,
+                                    wy = sGY + gj;
                                 const a = nodeArr[(gi + 1) * stride + (gj + 1)];
                                 if (!a) continue;
                                 for (const [ngi, ngj] of [
-                                    [1, 0], [0, 1], [1, 1], [-1, 1],
+                                    [1, 0],
+                                    [0, 1],
+                                    [1, 1],
+                                    [-1, 1],
                                 ]) {
-                                    const nwx = wx + ngi, nwy = wy + ngj;
-                                    if (_bHash(wx * 3 + nwx, wy * 5 + nwy) > 0.52) continue;
-                                    const b = nodeArr[(gi + ngi + 1) * stride + (gj + ngj + 1)];
+                                    const nwx = wx + ngi,
+                                        nwy = wy + ngj;
+                                    if (
+                                        _bHash(wx * 3 + nwx, wy * 5 + nwy) >
+                                        0.52
+                                    )
+                                        continue;
+                                    const b =
+                                        nodeArr[
+                                            (gi + ngi + 1) * stride +
+                                                (gj + ngj + 1)
+                                        ];
                                     if (!b) continue;
                                     ctx.moveTo(a.sx, a.sy);
                                     ctx.lineTo(b.sx, b.sy);
@@ -11904,7 +12016,8 @@
                         ctx.beginPath();
                         for (let gi = -1; gi < cols; gi++) {
                             for (let gj = -1; gj < rows; gj++) {
-                                const wx = sGX + gi, wy = sGY + gj;
+                                const wx = sGX + gi,
+                                    wy = sGY + gj;
                                 const a = nodeArr[(gi + 1) * stride + (gj + 1)];
                                 if (!a) continue;
                                 for (const [ngi, ngj] of [
@@ -11920,7 +12033,11 @@
                                         0.52
                                     )
                                         continue;
-                                    const b = nodeArr[(gi + ngi + 1) * stride + (gj + ngj + 1)];
+                                    const b =
+                                        nodeArr[
+                                            (gi + ngi + 1) * stride +
+                                                (gj + ngj + 1)
+                                        ];
                                     if (!b) continue;
                                     const pHash = _bHash(
                                         wx * 17 + nwx,
@@ -12066,19 +12183,51 @@
 
                     // Виньетка краёв — кешируется, пересоздаётся только при resize
                     if (_cachedVigW !== cw || _cachedVigH !== ch) {
-                        _cachedVig = ctx.createRadialGradient(cw/2, ch/2, cw*0.25, cw/2, ch/2, cw*0.78);
+                        _cachedVig = ctx.createRadialGradient(
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.25,
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.78,
+                        );
                         _cachedVig.addColorStop(0, "rgba(0,0,0,0)");
                         _cachedVig.addColorStop(1, "rgba(0,0,0,0.70)");
-                        _cachedFreezeVig = ctx.createRadialGradient(cw/2, ch/2, cw*0.2, cw/2, ch/2, cw*0.75);
+                        _cachedFreezeVig = ctx.createRadialGradient(
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.2,
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.75,
+                        );
                         _cachedFreezeVig.addColorStop(0, "rgba(0,0,0,0)");
-                        _cachedFreezeVig.addColorStop(1, "rgba(80,180,255,0.40)");
-                        _cachedHpVig = ctx.createRadialGradient(cw/2, ch/2, cw*0.24, cw/2, ch/2, cw*0.72);
+                        _cachedFreezeVig.addColorStop(
+                            1,
+                            "rgba(80,180,255,0.40)",
+                        );
+                        _cachedHpVig = ctx.createRadialGradient(
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.24,
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.72,
+                        );
                         _cachedHpVig.addColorStop(0, "rgba(0,0,0,0)");
                         _cachedHpVig.addColorStop(1, "rgba(255,20,30,0.60)");
-                        _cachedOvVig = ctx.createRadialGradient(cw/2, ch/2, cw*0.2, cw/2, ch/2, cw*0.7);
+                        _cachedOvVig = ctx.createRadialGradient(
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.2,
+                            cw / 2,
+                            ch / 2,
+                            cw * 0.7,
+                        );
                         _cachedOvVig.addColorStop(0, "rgba(0,0,0,0)");
                         _cachedOvVig.addColorStop(1, "rgba(255,40,40,0.22)");
-                        _cachedVigW = cw; _cachedVigH = ch;
+                        _cachedVigW = cw;
+                        _cachedVigH = ch;
                     }
                     ctx.fillStyle = _cachedVig;
                     ctx.fillRect(0, 0, cw, ch);
@@ -14390,7 +14539,10 @@
                         Audio.boss();
                         world.nextBossAt += 60;
                         // Cache boss reference to avoid enemies.find() every drawFrame
-                        _cachedBoss = enemies[enemies.length - 1] instanceof MiniBoss ? enemies[enemies.length - 1] : null;
+                        _cachedBoss =
+                            enemies[enemies.length - 1] instanceof MiniBoss
+                                ? enemies[enemies.length - 1]
+                                : null;
                     }
 
                     function spawnRequest() {
@@ -15727,8 +15879,13 @@
                                     );
                                 if (e instanceof MiniBoss) {
                                     bossesKilled += 1;
-                                    META.totalBossKills = (META.totalBossKills || 0) + 1;
-                                    if (!player.relics || player.relics.length < 4) relicPending = true;
+                                    META.totalBossKills =
+                                        (META.totalBossKills || 0) + 1;
+                                    if (
+                                        !player.relics ||
+                                        player.relics.length < 4
+                                    )
+                                        relicPending = true;
                                     if (_cachedBoss === e) _cachedBoss = null;
                                 }
                                 if (e.elitePrefix) {
@@ -16117,11 +16274,21 @@
                         // ── Рендер снарядов Gunner ─────────────────────────
                         const _shadOn = _pQuality >= 0.65;
                         if (enemyBullets.length > 0) {
-                            if (_shadOn) { ctx.shadowBlur = 7; ctx.shadowColor = "#ff8833"; }
+                            if (_shadOn) {
+                                ctx.shadowBlur = 7;
+                                ctx.shadowColor = "#ff8833";
+                            }
                             ctx.fillStyle = "#ff9933";
                             for (const b of enemyBullets) {
-                                const bsx = b.x - camX, bsy = b.y - camY;
-                                if (bsx < -20 || bsy < -20 || bsx > viewW + 20 || bsy > viewH + 20) continue;
+                                const bsx = b.x - camX,
+                                    bsy = b.y - camY;
+                                if (
+                                    bsx < -20 ||
+                                    bsy < -20 ||
+                                    bsx > viewW + 20 ||
+                                    bsy > viewH + 20
+                                )
+                                    continue;
                                 ctx.beginPath();
                                 ctx.arc(bsx, bsy, b.r, 0, Math.PI * 2);
                                 ctx.fill();
@@ -16171,11 +16338,20 @@
                         // ── Рендер снарядов игрока — 2 прохода (normal → crit) ──
                         if (playerBullets.length > 0) {
                             // Normal bullets
-                            if (_shadOn) { ctx.shadowBlur = 7; }
+                            if (_shadOn) {
+                                ctx.shadowBlur = 7;
+                            }
                             for (const b of playerBullets) {
                                 if (b.crit) continue;
-                                const bsx = b.x - camX, bsy = b.y - camY;
-                                if (bsx < -30 || bsy < -30 || bsx > viewW + 30 || bsy > viewH + 30) continue;
+                                const bsx = b.x - camX,
+                                    bsy = b.y - camY;
+                                if (
+                                    bsx < -30 ||
+                                    bsy < -30 ||
+                                    bsx > viewW + 30 ||
+                                    bsy > viewH + 30
+                                )
+                                    continue;
                                 if (_shadOn) ctx.shadowColor = b.glow;
                                 ctx.fillStyle = b.col;
                                 ctx.beginPath();
@@ -16183,11 +16359,20 @@
                                 ctx.fill();
                             }
                             // Crit bullets
-                            if (_shadOn) { ctx.shadowBlur = 13; }
+                            if (_shadOn) {
+                                ctx.shadowBlur = 13;
+                            }
                             for (const b of playerBullets) {
                                 if (!b.crit) continue;
-                                const bsx = b.x - camX, bsy = b.y - camY;
-                                if (bsx < -30 || bsy < -30 || bsx > viewW + 30 || bsy > viewH + 30) continue;
+                                const bsx = b.x - camX,
+                                    bsy = b.y - camY;
+                                if (
+                                    bsx < -30 ||
+                                    bsy < -30 ||
+                                    bsx > viewW + 30 ||
+                                    bsy > viewH + 30
+                                )
+                                    continue;
                                 if (_shadOn) ctx.shadowColor = b.glow;
                                 ctx.fillStyle = "#ffffff";
                                 ctx.beginPath();
@@ -16264,7 +16449,10 @@
                         if (player._freezeT > 0) {
                             const fp = Math.min(1, player._freezeT / 3);
                             ctx.globalAlpha = 0.45 + fp * 0.55;
-                            if (_cachedFreezeVig) { ctx.fillStyle = _cachedFreezeVig; ctx.fillRect(0, 0, viewW, viewH); }
+                            if (_cachedFreezeVig) {
+                                ctx.fillStyle = _cachedFreezeVig;
+                                ctx.fillRect(0, 0, viewW, viewH);
+                            }
                             ctx.globalAlpha = 1;
                             if (player._freezeT > 2.85) {
                                 ctx.fillStyle = `rgba(160,220,255,${((player._freezeT - 2.85) / 0.15) * 0.18})`;
@@ -16275,7 +16463,10 @@
                         if (hpRatio <= 0.25) {
                             const p = (0.25 - hpRatio) / 0.25;
                             ctx.globalAlpha = 0.33 + p * 0.67;
-                            if (_cachedHpVig) { ctx.fillStyle = _cachedHpVig; ctx.fillRect(0, 0, viewW, viewH); }
+                            if (_cachedHpVig) {
+                                ctx.fillStyle = _cachedHpVig;
+                                ctx.fillRect(0, 0, viewW, viewH);
+                            }
                             ctx.globalAlpha = 1;
                         }
                         // ── Overload vignette + screen fracture ──────────────
@@ -16285,7 +16476,10 @@
                                 (SERVER_LOAD_MAX - SERVER_LOAD_THRESHOLD);
                             // Красная виньетка — кешированная
                             ctx.globalAlpha = 0.36 + ovp * 0.64;
-                            if (_cachedOvVig) { ctx.fillStyle = _cachedOvVig; ctx.fillRect(0, 0, viewW, viewH); }
+                            if (_cachedOvVig) {
+                                ctx.fillStyle = _cachedOvVig;
+                                ctx.fillRect(0, 0, viewW, viewH);
+                            }
                             ctx.globalAlpha = 1;
 
                             // ── Трещины цифрового стекла ─────────────────────
@@ -16434,7 +16628,12 @@
                         // ── Boss HP Bar ───────────────────────────────────────────
                         {
                             // _cachedBoss is updated each loop iteration — no find() needed here
-                            const boss = _cachedBoss && !_cachedBoss.dead && _cachedBoss.deathT < 0 ? _cachedBoss : null;
+                            const boss =
+                                _cachedBoss &&
+                                !_cachedBoss.dead &&
+                                _cachedBoss.deathT < 0
+                                    ? _cachedBoss
+                                    : null;
                             if (boss) {
                                 const barW = Math.min(420, viewW * 0.5);
                                 const barH = 12;
