@@ -208,10 +208,17 @@
             #startScreen {
                 background: transparent;
                 overflow-y: auto;
-                padding: clamp(12px, 2vh, 24px) 16px;
+                padding: 0 16px;
                 box-sizing: border-box;
                 justify-content: flex-start;
-                padding-top: clamp(14px, 4vh, 44px);
+            }
+            /* Center content vertically when there's space;
+               shrinks to 0 when content overflows → scroll works naturally */
+            #startScreen::before,
+            #startScreen::after {
+                content: "";
+                flex: 1 1 0;
+                min-height: clamp(10px, 2vh, 28px);
             }
 
             /* ── TITLE GLITCH SYSTEM (JS-driven, see initMenuBg) ── */
@@ -3457,13 +3464,19 @@
                     );
                     gap: 6px;
                 }
-                /* Апгрейд карточки в ландшафте */
+                /* Апгрейд карточки в ландшафте — горизонтальный ряд */
                 .card-row {
+                    flex-direction: row !important;
+                    flex-wrap: nowrap !important;
                     gap: 6px;
+                    max-width: 98vw;
+                    align-items: stretch;
                 }
                 .up-card {
-                    padding: 8px 10px;
-                    min-height: 120px;
+                    width: clamp(110px, 28vw, 200px) !important;
+                    min-height: 0 !important;
+                    padding: 10px 10px 12px;
+                    flex-shrink: 1;
                 }
             }
 
@@ -3687,14 +3700,15 @@
                MOBILE / TABLET ADAPTIVE FIX
                ═══════════════════════════════════════════════════════ */
 
-            /* Overlay game screens: no scroll bounce.
-               Content is sized below to fit; these overlays are
-               semi-transparent so scrolling reveals the game behind. */
+            /* Overlay game screens: contain overscroll bounce but
+               still allow scrolling when content is taller than screen.
+               overflow:hidden caused cut-off in landscape. */
             #upgradeScreen,
             #relicScreen,
             #mutationScreen,
             #merchantScreen {
-                overflow: hidden;
+                overflow-y: auto;
+                overscroll-behavior-y: contain;
             }
 
             /* ── metaScreen inner wrapper: proper mobile padding ── */
@@ -3879,30 +3893,69 @@
                 }
             }
 
-            /* ── Landscape mobile: overlay screens compact ── */
+            /* ── Landscape mobile: very compact ── */
             @media (max-height: 420px) and (orientation: landscape) {
+                /* Upgrade: horizontal row, tiny cards */
+                .card-row {
+                    flex-direction: row !important;
+                    flex-wrap: nowrap !important;
+                    gap: 5px;
+                    max-width: 98vw;
+                    align-items: stretch;
+                }
                 .up-card {
+                    width: clamp(100px, 26vw, 180px) !important;
                     min-height: 0 !important;
-                    padding: 8px 10px;
+                    padding: 8px 8px 10px;
+                    flex-shrink: 1;
                 }
                 .up-icon {
-                    width: 36px;
-                    height: 36px;
+                    width: 32px;
+                    height: 32px;
                     margin-bottom: 6px;
                 }
-                .up-icon svg { width: 30px; height: 30px; }
-                .up-name { font-size: 11px; }
-                .up-desc { font-size: 9px; line-height: 1.3; }
-                .card-row { gap: 6px; }
-                .up-header { margin-bottom: 6px; padding: 6px 8px 0; }
-                .relic-card, .mut-card {
-                    padding: 7px 8px;
-                    min-width: 90px;
+                .up-icon svg {
+                    width: 28px;
+                    height: 28px;
                 }
-                .relic-icon, .mut-icon { font-size: 18px; margin-bottom: 3px; }
-                .relic-name, .mut-name { font-size: 8px; }
-                .relic-desc, .mut-desc { font-size: 7px; }
-                .dna-node { padding: 7px 10px; }
+                .up-name {
+                    font-size: 10px;
+                    margin-bottom: 3px;
+                }
+                .up-desc {
+                    font-size: 9px;
+                    line-height: 1.3;
+                }
+                .up-header {
+                    margin-bottom: 5px;
+                    padding: 5px 8px 0;
+                }
+                .up-lvl {
+                    font-size: 18px;
+                }
+                /* Relic / mutation */
+                .relic-card,
+                .mut-card {
+                    padding: 7px 8px;
+                    min-width: 88px;
+                    max-width: 28vw;
+                }
+                .relic-icon,
+                .mut-icon {
+                    font-size: 18px;
+                    margin-bottom: 3px;
+                }
+                .relic-name,
+                .mut-name {
+                    font-size: 8px;
+                }
+                .relic-desc,
+                .mut-desc {
+                    font-size: 7px;
+                }
+                .dna-node {
+                    padding: 7px 10px;
+                }
             }
         </style>
     </head>
@@ -4943,7 +4996,7 @@
                         display: flex;
                         gap: 0;
                         width: 100%;
-                        border-bottom: 1px solid rgba(255,255,255,0.08);
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
                         margin-bottom: 20px;
                     "
                 >
