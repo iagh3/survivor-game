@@ -196,7 +196,7 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                z-index: 100;
+                z-index: 120;
                 overflow: hidden;
                 overscroll-behavior: contain;
             }
@@ -982,8 +982,7 @@
             }
             /* ── UPGRADE OVERLAY ── */
             #upgradeScreen {
-                background: rgba(0, 0, 0, 0.82);
-                z-index: 80;
+                background: rgba(0, 0, 0, 0.9);
             }
 
             /* ── CANVAS BLUR ── */
@@ -1831,18 +1830,28 @@
             }
 
             /* ── DASH COOLDOWN HUD ───────────────────────────────────────── */
+            /* ── DASH BUTTON: override inline style positioning ── */
+            #btnDash {
+                right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px)) !important;
+                bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 12px)) !important;
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 10px !important;
+            }
+            /* ── DASH INDICATOR: ring overlaid on top of btnDash ── */
             #dashIndicator {
-                position: absolute;
-                bottom: 80px;
-                right: 18px;
-                width: 42px;
-                height: 42px;
+                position: fixed;
+                right: max(9px, calc(env(safe-area-inset-right, 0px) + 5px));
+                bottom: max(11px, calc(env(safe-area-inset-bottom, 0px) + 5px));
+                width: 74px;
+                height: 74px;
                 display: none;
                 pointer-events: none;
+                z-index: 111;
             }
             #dashIndicator svg {
-                width: 42px;
-                height: 42px;
+                width: 74px;
+                height: 74px;
             }
 
             /* ════════════════════════════════════════════════════════
@@ -2161,13 +2170,20 @@
                 .set-box {
                     padding: 14px 12px;
                 }
-                /* Dash */
-                #dashIndicator {
-                    width: 30px;
-                    height: 30px;
-                    bottom: 50px;
-                    right: 8px;
+                /* Dash indicator: scales proportionally with btnDash */
+                #btnDash {
+                    width: 50px !important;
+                    height: 50px !important;
+                    bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 10px)) !important;
+                    right: max(14px, calc(env(safe-area-inset-right, 0px) + 10px)) !important;
                 }
+                #dashIndicator {
+                    width: 62px;
+                    height: 62px;
+                    bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) + 4px));
+                    right: max(8px, calc(env(safe-area-inset-right, 0px) + 4px));
+                }
+                #dashIndicator svg { width: 62px; height: 62px; }
                 /* Wave/toast */
                 #waveAlert {
                     font-size: 13px;
@@ -2253,11 +2269,15 @@
                 #objectiveDisplay {
                     display: none;
                 }
-                #dashIndicator {
-                    width: 32px;
-                    height: 32px;
-                    bottom: 56px;
+                #btnDash {
+                    width: 54px !important;
+                    height: 54px !important;
                 }
+                #dashIndicator {
+                    width: 68px;
+                    height: 68px;
+                }
+                #dashIndicator svg { width: 68px; height: 68px; }
             }
 
             /* ── 768px (tablet portrait / large phones) ── */
@@ -2639,12 +2659,20 @@
                 #waveAlert {
                     font-size: 13px;
                 }
-                #dashIndicator {
-                    bottom: 8px;
-                    right: 8px;
-                    width: 28px;
-                    height: 28px;
+                /* Landscape: compact dash controls */
+                #btnDash {
+                    width: 46px !important;
+                    height: 46px !important;
+                    bottom: max(10px, calc(env(safe-area-inset-bottom, 0px) + 6px)) !important;
+                    right: max(10px, calc(env(safe-area-inset-right, 0px) + 6px)) !important;
                 }
+                #dashIndicator {
+                    width: 58px;
+                    height: 58px;
+                    bottom: max(3px, calc(env(safe-area-inset-bottom, 0px) - 1px));
+                    right: max(3px, calc(env(safe-area-inset-right, 0px) - 1px));
+                }
+                #dashIndicator svg { width: 58px; height: 58px; }
             }
 
             /* ── safe-area (notch phones) ── */
@@ -3230,7 +3258,6 @@
             /* ── Relic Screen ── */
             #relicScreen {
                 background: #090600;
-                z-index: 80;
             }
             .relic-card {
                 border-radius: 3px;
@@ -3434,9 +3461,24 @@
                RESPONSIVE — LANDSCAPE MOBILE (any height < 520px)
                ══════════════════════════════════════════════════════ */
             @media (max-height: 520px) and (orientation: landscape) {
-                .screen {
+                /* Scrollable menu screens: top-aligned */
+                #shopScreen,
+                #settingsScreen,
+                #howToScreen,
+                #metaScreen,
+                #classScreen,
+                #lbScreen,
+                #deathScreen,
+                #reviveScreen {
                     justify-content: flex-start;
                     padding-top: 8px;
+                }
+                /* Game overlays: vertically centered */
+                #upgradeScreen,
+                #relicScreen,
+                #mutationScreen,
+                #merchantScreen {
+                    justify-content: center;
                 }
                 .mut-card,
                 .mkt-card,
@@ -3493,94 +3535,133 @@
                     flex-shrink: 1;
                 }
 
-                /* ── Start screen: 2-column layout in landscape ── */
+                /* ── Start screen: 2-col layout, brand left / actions right ── */
                 #startScreen {
                     flex-direction: row !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    gap: 28px;
-                    padding: 8px 20px !important;
-                    overflow-y: hidden !important;
+                    align-items: stretch !important;
+                    justify-content: flex-start !important;
+                    gap: 0 !important;
+                    padding: 0 !important;
+                    overflow: hidden !important;
                 }
                 #startScreen::before,
                 #startScreen::after {
                     display: none !important;
                 }
+                /* Brand column: identity, left-aligned */
                 #startBrand {
-                    flex: 0 0 42%;
+                    flex: 0 0 40%;
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
+                    align-items: flex-start;
+                    justify-content: center;
+                    padding: 10px 12px 10px 18px;
+                    border-right: 1px solid rgba(255, 255, 255, 0.06);
+                    background: rgba(0, 0, 0, 0.2);
+                    box-sizing: border-box;
+                    overflow: hidden;
                 }
+                /* Actions column: controls, left-aligned */
                 #startActions {
-                    flex: 0 0 48%;
+                    flex: 1;
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
+                    align-items: stretch;
+                    justify-content: center;
+                    padding: 10px 16px 10px 14px;
+                    box-sizing: border-box;
+                    gap: 6px;
+                    overflow: hidden;
                 }
+                /* Alert: small status tag */
                 .menu-alert {
-                    font-size: 7px !important;
-                    padding: 3px 11px !important;
-                    margin-bottom: 7px !important;
+                    font-size: 6px !important;
+                    padding: 3px 8px !important;
+                    margin-bottom: 10px !important;
                     max-width: 100% !important;
                 }
+                /* Title: left-aligned, editorial feel */
                 .game-title {
-                    font-size: 22px !important;
+                    font-size: clamp(15px, 3.8vh, 22px) !important;
                     letter-spacing: 2px !important;
-                    margin-bottom: 2px !important;
+                    margin-bottom: 0 !important;
+                    text-align: left !important;
+                    line-height: 0.88 !important;
                 }
                 .game-title span {
-                    font-size: 36px !important;
+                    font-size: clamp(24px, 6vh, 34px) !important;
                     line-height: 1 !important;
                 }
                 .game-sub {
                     font-size: 7px !important;
-                    letter-spacing: 3px !important;
-                    margin-bottom: 6px !important;
-                }
-                #startScreen .lore {
-                    font-size: 8px !important;
-                    padding: 7px 12px !important;
+                    letter-spacing: 2px !important;
+                    margin-top: 4px !important;
                     margin-bottom: 0 !important;
-                    line-height: 1.4 !important;
+                    text-align: left !important;
+                    opacity: 0.65;
+                }
+                /* Lore and tips: hidden in landscape — brand column is enough */
+                #startScreen .lore {
+                    display: none !important;
                 }
                 .tips {
                     display: none !important;
                 }
+                /* Play row: play stretches to fill, www is compact beside it */
                 .play-row {
-                    margin-top: 0 !important;
+                    margin: 0 !important;
                     gap: 6px !important;
+                    flex-wrap: nowrap !important;
+                    width: 100%;
                 }
                 #startScreen .btn-play {
-                    font-size: 13px !important;
-                    padding: 8px 20px !important;
+                    font-size: 12px !important;
+                    padding: 8px 12px !important;
                     min-width: 0 !important;
                     min-height: 36px !important;
+                    flex: 1 !important;
+                    letter-spacing: 2px !important;
                 }
                 #startScreen .btn-www {
-                    font-size: 11px !important;
-                    padding: 8px 14px !important;
+                    font-size: 9px !important;
+                    padding: 8px 10px !important;
                     min-width: 0 !important;
                     min-height: 36px !important;
+                    flex-shrink: 0 !important;
+                    letter-spacing: 1px !important;
                 }
-                #startScreen .menu-row {
-                    margin-top: 5px !important;
+                /* Secondary nav row: lang + options toggle (direct child only) */
+                #startActions > .menu-row {
+                    margin: 0 !important;
                     gap: 5px !important;
+                    flex-wrap: nowrap !important;
+                    width: 100%;
+                }
+                /* Options panel inner rows: allow wrap, very compact */
+                #optionsPanel .menu-row {
+                    margin-top: 0 !important;
+                    gap: 4px !important;
+                    flex-wrap: wrap !important;
+                    width: 100%;
                 }
                 #startScreen .btn-ghost {
-                    font-size: 8px !important;
-                    padding: 6px 10px !important;
+                    font-size: 7px !important;
+                    padding: 5px 8px !important;
                     letter-spacing: 1px !important;
-                    min-height: 36px !important;
+                    min-height: 30px !important;
+                    flex: 1 !important;
                 }
+                /* Daily: compact, left-aligned */
                 .daily-badge {
-                    font-size: 8px !important;
-                    padding: 6px 12px !important;
-                    margin-top: 5px !important;
+                    font-size: 7px !important;
+                    padding: 4px 10px !important;
+                    margin-top: 0 !important;
+                    gap: 5px !important;
+                    align-self: flex-start !important;
                 }
                 #dailyScoreLine {
-                    font-size: 8px !important;
-                    margin-top: 3px !important;
+                    font-size: 7px !important;
+                    margin-top: 2px !important;
                 }
 
                 /* ── Death screen: compact + horizontal secondary buttons ── */
@@ -3692,6 +3773,41 @@
             }
 
             /* ══════════════════════════════════════════════════════
+               PORTRAIT COMPACT — tight screens / Russian longer text
+               ══════════════════════════════════════════════════════ */
+            @media (max-height: 720px) and (orientation: portrait) {
+                .menu-alert {
+                    margin-bottom: 8px !important;
+                    font-size: 7px !important;
+                    padding: 4px 12px !important;
+                }
+                .game-title {
+                    margin-bottom: clamp(4px, 0.8vh, 8px) !important;
+                }
+                .game-sub {
+                    margin-bottom: clamp(5px, 0.9vh, 10px) !important;
+                }
+                #startScreen .lore {
+                    padding: 7px 13px !important;
+                    margin-bottom: clamp(6px, 1vh, 10px) !important;
+                    line-height: 1.6 !important;
+                    font-size: 8px !important;
+                }
+                .tips {
+                    margin-top: clamp(5px, 0.8vh, 8px) !important;
+                    padding: 6px 12px !important;
+                    line-height: 1.65 !important;
+                }
+                .daily-badge {
+                    margin-top: 10px !important;
+                    padding: 6px 14px !important;
+                }
+                #dailyScoreLine {
+                    margin-top: 3px !important;
+                }
+            }
+
+            /* ══════════════════════════════════════════════════════
                RESPONSIVE — ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (< 320px)
                ══════════════════════════════════════════════════════ */
             @media (max-width: 319px) {
@@ -3720,7 +3836,6 @@
             /* ── Global Leaderboard screen ── */
             #lbScreen {
                 background: #050508;
-                z-index: 80;
             }
             .lb-row {
                 display: grid;
@@ -3922,6 +4037,17 @@
                 overscroll-behavior-y: contain;
             }
 
+            /* Death screen: scrollable in portrait when many stat chips/badges shown */
+            @media (orientation: portrait) {
+                #deathScreen {
+                    overflow-y: auto;
+                    overscroll-behavior-y: contain;
+                    justify-content: flex-start;
+                    padding-top: clamp(12px, 3vh, 24px);
+                    padding-bottom: 16px;
+                }
+            }
+
             /* ── metaScreen inner wrapper: proper mobile padding ── */
             #metaScreen > div {
                 box-sizing: border-box;
@@ -4033,6 +4159,41 @@
                 .up-stack {
                     font-size: 8px;
                     margin-bottom: 4px;
+                }
+            }
+
+            /* ── Upgrade: portrait mobile — stack cards vertically ── */
+            @media (max-width: 540px) and (orientation: portrait) {
+                .card-row {
+                    flex-direction: column !important;
+                    align-items: center;
+                    gap: 8px;
+                }
+                .up-card {
+                    width: min(320px, 86vw) !important;
+                    min-height: 0 !important;
+                    padding: 10px 14px 12px !important;
+                }
+                .up-header {
+                    margin-bottom: 8px !important;
+                    padding: 10px 12px 0 !important;
+                }
+            }
+
+            /* ── Relic / Mutation: portrait mobile — stack vertically ── */
+            @media (max-width: 540px) and (orientation: portrait) {
+                #relicCards,
+                #mutCards {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 8px;
+                }
+                .relic-card,
+                .mut-card {
+                    width: min(300px, 84vw) !important;
+                    max-width: none !important;
+                    min-width: 0 !important;
+                    flex: none !important;
                 }
             }
 
@@ -4168,21 +4329,44 @@
                     padding: 7px 10px;
                 }
 
-                /* ── Start: tighter brand in very small landscape ── */
+                /* ── Start: extra-tight brand in very small landscape ── */
                 .game-title {
-                    font-size: 19px !important;
-                    margin-bottom: 1px !important;
+                    font-size: clamp(13px, 3.2vh, 18px) !important;
+                    margin-bottom: 0 !important;
                 }
                 .game-title span {
-                    font-size: 31px !important;
+                    font-size: clamp(20px, 5vh, 28px) !important;
                 }
                 .game-sub {
-                    font-size: 7px !important;
-                    margin-bottom: 4px !important;
+                    font-size: 6px !important;
+                    margin-top: 2px !important;
                 }
-                #startScreen .lore {
-                    font-size: 7px !important;
+                .menu-alert {
+                    font-size: 5px !important;
+                    padding: 2px 6px !important;
+                    margin-bottom: 6px !important;
+                }
+                #startActions {
+                    gap: 4px !important;
+                }
+                #startScreen .btn-play {
+                    font-size: 11px !important;
+                    min-height: 32px !important;
                     padding: 6px 10px !important;
+                }
+                #startScreen .btn-www {
+                    font-size: 8px !important;
+                    min-height: 32px !important;
+                    padding: 6px 8px !important;
+                }
+                #startScreen .btn-ghost {
+                    font-size: 6px !important;
+                    min-height: 26px !important;
+                    padding: 4px 6px !important;
+                }
+                .daily-badge {
+                    font-size: 6px !important;
+                    padding: 3px 8px !important;
                 }
                 /* Death: tighter stat boxes ── */
                 .death-title {
