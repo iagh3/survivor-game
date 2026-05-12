@@ -4,15 +4,18 @@
         <meta charset="UTF-8" />
         <meta
             name="viewport"
-            content="width=device-width, initial-scale=1.0, user-scalable=no"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
         />
         <title>Mini Survivors</title>
         <script>
-            if (location.protocol === "https:") {
-                const s = document.createElement("script");
+            window._sdkLoadPromise = new Promise(function (resolve) {
+                if (location.protocol !== "https:") return resolve();
+                var s = document.createElement("script");
                 s.src = "https://yandex.ru/games/sdk/v2";
+                s.onload = resolve;
+                s.onerror = resolve;
                 document.head.appendChild(s);
-            }
+            });
         </script>
         <style>
             * {
@@ -114,25 +117,6 @@
             }
             #loadFill {
                 background: linear-gradient(90deg, #007799, #00e5ff);
-            }
-            #btnDdosHelp {
-                position: fixed;
-                bottom: 72px;
-                right: 14px;
-                padding: 7px 14px;
-                border-radius: 7px;
-                border: 1px solid rgba(0, 229, 255, 0.45);
-                background: rgba(0, 20, 35, 0.82);
-                color: #00e5ff;
-                font-family: monospace;
-                font-size: 9px;
-                font-weight: 700;
-                letter-spacing: 2px;
-                cursor: pointer;
-                z-index: 50;
-                display: none;
-                backdrop-filter: blur(4px);
-                text-shadow: 0 0 8px #00e5ff;
             }
             /* TOP-RIGHT zone: time/score */
             #hud-right {
@@ -725,17 +709,21 @@
                 opacity: 0.75;
             }
             .btn-play {
-                background: #1e0a0a;
-                color: #df9898;
+                background: #2a0808;
+                color: #f0a0a0;
                 font-size: clamp(13px, 2vw, 19px);
-                padding: clamp(11px, 1.6vh, 18px) clamp(24px, 4.5vw, 52px);
-                min-width: clamp(140px, 26vw, 230px);
-                border: 1px solid #5a1e1e;
+                padding: clamp(13px, 1.8vh, 20px) clamp(28px, 5vw, 56px);
+                min-width: clamp(150px, 28vw, 240px);
+                border: 1px solid #7a2020;
+                border-bottom: 2px solid #9a2828;
+                border-radius: 2px;
+                letter-spacing: 4px;
             }
             .btn-play:hover {
-                background: #2e1212;
-                color: #f0aaaa;
-                border-color: #8a3030;
+                background: #381010;
+                color: #fbb0b0;
+                border-color: #b03838;
+                border-bottom-color: #d04040;
             }
             .btn-ad {
                 background: rgba(0, 204, 255, 0.06);
@@ -881,6 +869,38 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
+            .btn-powered-run {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3px;
+                background: #0d1208;
+                color: #a8ff6a;
+                border: 1px solid rgba(140, 220, 60, 0.35);
+                border-bottom: 2px solid rgba(140, 220, 60, 0.55);
+                border-radius: 2px;
+                font-size: clamp(10px, 1.5vw, 13px);
+                font-weight: 900;
+                letter-spacing: 3px;
+                padding: clamp(10px, 1.5vw, 14px) clamp(20px, 4vw, 40px)
+                    clamp(9px, 1.4vw, 13px);
+                cursor: pointer;
+                transition:
+                    transform 0.12s,
+                    background 0.12s;
+                width: fit-content;
+                max-width: 360px;
+            }
+            .btn-powered-run span {
+                font-size: 8px;
+                letter-spacing: 2px;
+                color: rgba(140, 220, 60, 0.55);
+                font-weight: 400;
+            }
+            .btn-powered-run:hover {
+                background: #111a08;
+                transform: translateY(-2px);
+            }
 
             /* ── REVIVE ── */
             #reviveScreen {
@@ -960,7 +980,6 @@
                 /* Remove backdrop-filter blur — repaint cost too high on mobile GPU */
                 #btnPause,
                 .ls-lock-overlay,
-                #btnAdBuff,
                 #merchantNotif {
                     backdrop-filter: none !important;
                 }
@@ -1148,18 +1167,19 @@
             }
             .up-card {
                 background: #07090f;
-                border: 1.5px solid rgba(255, 255, 255, 0.22);
-                border-radius: 18px;
-                padding: clamp(18px, 2.5vw, 28px) clamp(14px, 2vw, 22px)
-                    clamp(16px, 2vw, 24px);
-                width: clamp(145px, 18vw, 188px);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-left-width: 3px;
+                border-radius: 2px 12px 12px 2px;
+                padding: clamp(16px, 2.2vw, 24px) clamp(16px, 2vw, 22px)
+                    clamp(14px, 1.8vw, 20px);
+                width: clamp(148px, 18vw, 192px);
                 cursor: pointer;
                 transition:
-                    transform 0.16s cubic-bezier(0.2, 0.8, 0.3, 1),
-                    border-color 0.16s,
-                    box-shadow 0.16s;
+                    transform 0.14s ease,
+                    border-color 0.14s,
+                    box-shadow 0.14s;
                 text-align: center;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.85);
+                box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.8);
                 position: relative;
                 overflow: hidden;
             }
@@ -1167,24 +1187,15 @@
                 content: "";
                 position: absolute;
                 inset: 0;
-                border-radius: 18px;
-                background: radial-gradient(
-                    circle at 50% -10%,
-                    rgba(255, 255, 255, 0.055) 0%,
-                    transparent 65%
-                );
+                border-radius: 2px 12px 12px 2px;
                 pointer-events: none;
             }
             .up-card:hover {
-                transform: translateY(-10px) scale(1.04);
-                border-color: rgba(255, 255, 255, 0.38);
-                box-shadow:
-                    0 22px 64px rgba(0, 0, 0, 0.95),
-                    0 0 0 1px rgba(255, 255, 255, 0.06);
+                transform: translateY(-8px);
             }
             .up-card:active {
-                transform: translateY(-3px) scale(0.97);
-                transition-duration: 0.07s;
+                transform: translateY(-2px);
+                transition-duration: 0.06s;
             }
             .up-tier {
                 display: inline-block;
@@ -1226,7 +1237,8 @@
             .term {
                 color: var(--term-color, #dff);
                 border-bottom: 1px dotted currentColor;
-                text-shadow: 0 0 10px color-mix(in srgb, currentColor 55%, transparent);
+                text-shadow: 0 0 10px
+                    color-mix(in srgb, currentColor 55%, transparent);
                 cursor: help;
                 white-space: nowrap;
                 position: relative;
@@ -1237,12 +1249,12 @@
                 bottom: calc(100% + 8px);
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(0,0,0,0.93);
-                border: 1px solid rgba(255,255,255,0.18);
+                background: rgba(0, 0, 0, 0.93);
+                border: 1px solid rgba(255, 255, 255, 0.18);
                 color: #e8f4ff;
                 padding: 7px 12px;
                 border-radius: 7px;
-                font-size: clamp(9px,1.1vw,11px);
+                font-size: clamp(9px, 1.1vw, 11px);
                 letter-spacing: 0.8px;
                 line-height: 1.5;
                 white-space: normal;
@@ -1251,56 +1263,7 @@
                 text-align: center;
                 z-index: 9999;
                 pointer-events: none;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            }
-
-            /* ── AD SIMULATOR ── */
-            #adSim {
-                position: absolute;
-                inset: 0;
-                background: #080c10;
-                z-index: 500;
-                display: none;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-            .ad-badge {
-                background: rgba(255, 180, 0, 0.12);
-                border: 1px solid rgba(255, 180, 0, 0.25);
-                color: rgba(255, 180, 0, 0.7);
-                font-size: 9px;
-                letter-spacing: 4px;
-                padding: 5px 14px;
-                border-radius: 3px;
-                margin-bottom: 20px;
-                text-transform: uppercase;
-            }
-            .ad-box {
-                width: 300px;
-                height: 200px;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: rgba(255, 255, 255, 0.15);
-                font-size: 12px;
-                letter-spacing: 3px;
-                margin-bottom: 20px;
-                border-radius: 4px;
-            }
-            .ad-timer {
-                font-size: 13px;
-                color: rgba(255, 255, 255, 0.3);
-                letter-spacing: 2px;
-            }
-            .ad-type-label {
-                font-size: 10px;
-                color: rgba(255, 255, 255, 0.15);
-                letter-spacing: 3px;
-                margin-bottom: 24px;
-                text-transform: uppercase;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
             }
 
             /* ── JOYSTICK ── */
@@ -1689,21 +1652,22 @@
             }
             .cls-card {
                 background: #07090f;
-                border: 1.5px solid rgba(255, 255, 255, 0.22);
-                border-radius: 18px;
-                padding: 24px 18px 20px;
+                border: 1px solid rgba(255, 255, 255, 0.16);
+                border-radius: 4px 14px 14px 14px;
+                padding: 22px 18px 18px;
                 width: 190px;
                 cursor: pointer;
                 text-align: center;
                 transition:
-                    transform 0.16s cubic-bezier(0.2, 0.8, 0.3, 1),
+                    transform 0.15s ease,
                     border-color 0.15s,
                     box-shadow 0.15s;
                 position: relative;
                 flex-shrink: 0;
+                box-shadow: 3px 6px 20px rgba(0, 0, 0, 0.7);
             }
             .cls-card:hover {
-                transform: translateY(-8px) scale(1.03);
+                transform: translateY(-6px);
             }
             .cls-card.active-class {
                 border-color: var(--cls-col, #00ccff) !important;
@@ -2547,15 +2511,6 @@
                     width: 34px;
                     height: 34px;
                 }
-                #btnAdBuff {
-                    font-size: 8px;
-                    padding: 4px 10px;
-                    top: 6px;
-                }
-                #adBuffHud {
-                    font-size: 8px;
-                    top: 6px;
-                }
             }
 
             /* ── Апгрейды: маленькие экраны ── */
@@ -2640,10 +2595,6 @@
                     min-height: 200px;
                 }
                 /* Увеличиваем области касания в HUD */
-                #btnAdBuff {
-                    min-height: 36px;
-                    padding: 8px 16px;
-                }
             }
 
             /* ── Landscape на мобайле: компактный HUD ── */
@@ -2679,35 +2630,45 @@
             @supports (padding: env(safe-area-inset-bottom)) {
                 #hud-left {
                     left: max(14px, env(safe-area-inset-left));
+                    top: max(14px, env(safe-area-inset-top));
                 }
                 #hud-right {
                     right: max(14px, env(safe-area-inset-right));
+                    top: max(14px, env(safe-area-inset-top));
+                }
+                #btnPause {
+                    top: max(10px, env(safe-area-inset-top));
                 }
                 #toast {
                     bottom: max(90px, calc(90px + env(safe-area-inset-bottom)));
                 }
                 #joystickWrap {
-                    bottom: env(safe-area-inset-bottom);
+                    bottom: max(28px, env(safe-area-inset-bottom));
+                }
+                #btnDash {
+                    bottom: max(70px, calc(70px + env(safe-area-inset-bottom)));
                 }
             }
 
             /* ── Mutation / Merchant screens ── */
             .mut-card {
-                border-radius: 12px;
-                border: 2px solid;
-                padding: 14px 16px;
+                border-radius: 8px 8px 2px 2px;
+                border: 1px solid;
+                border-top-width: 3px;
+                padding: 16px 14px 14px;
                 cursor: pointer;
                 transition:
-                    transform 0.15s,
-                    box-shadow 0.15s;
+                    transform 0.14s ease,
+                    box-shadow 0.14s;
                 min-width: 140px;
                 max-width: 190px;
                 text-align: center;
-                background: #0a0f1a;
+                background: #09060f;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
             }
             .mut-card:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 18px rgba(180, 0, 255, 0.35);
+                transform: translateY(-4px) translateX(1px);
+                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8);
             }
             .mut-icon {
                 font-size: 26px;
@@ -2726,21 +2687,23 @@
                 line-height: 1.45;
             }
             .mkt-card {
-                border-radius: 12px;
-                border: 2px solid;
-                padding: 14px 16px;
+                border-radius: 2px 2px 8px 8px;
+                border: 1px solid;
+                border-bottom-width: 3px;
+                padding: 14px 14px 16px;
                 cursor: pointer;
                 transition:
-                    transform 0.15s,
-                    box-shadow 0.15s;
+                    transform 0.14s ease,
+                    box-shadow 0.14s;
                 min-width: 140px;
                 max-width: 190px;
                 text-align: center;
-                background: #0a0f1a;
+                background: #0c0a04;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
             }
             .mkt-card:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 18px rgba(255, 170, 0, 0.35);
+                transform: translateY(-4px);
+                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8);
             }
             .mkt-card.sold-out {
                 opacity: 0.35;
@@ -3130,18 +3093,20 @@
                 display: flex;
             }
             .pause-panel {
-                background: rgba(6, 10, 22, 0.97);
-                border: 1.5px solid rgba(255, 255, 255, 0.1);
-                border-radius: 22px;
-                padding: clamp(20px, 4vh, 36px) clamp(20px, 6vw, 44px);
+                background: #060810;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-top: 2px solid rgba(255, 255, 255, 0.12);
+                border-radius: 4px 4px 12px 12px;
+                padding: clamp(18px, 3.5vh, 30px) clamp(20px, 6vw, 44px)
+                    clamp(22px, 4vh, 36px);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 14px;
-                width: clamp(240px, 80vw, 340px);
+                gap: 10px;
+                width: clamp(240px, 80vw, 320px);
                 max-width: 96vw;
                 box-sizing: border-box;
-                box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
             }
             .pause-title {
                 font-size: clamp(22px, 4vw, 32px);
@@ -3171,23 +3136,26 @@
                 border: none;
             }
             .pause-btn--resume {
-                background: linear-gradient(135deg, #00ccff, #0088ff);
-                color: #fff;
-                box-shadow: 0 0 22px rgba(0, 150, 255, 0.4);
+                background: #0a5f78;
+                color: #e0f6ff;
+                border: 1px solid #1a90b0;
+                letter-spacing: 5px;
             }
             .pause-btn--resume:hover {
-                filter: brightness(1.15);
+                background: #0d7492;
                 transform: translateY(-2px);
             }
             .pause-btn--exit {
-                background: rgba(255, 255, 255, 0.05);
-                border: 1.5px solid rgba(255, 255, 255, 0.12);
-                color: rgba(255, 255, 255, 0.5);
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.09);
+                color: rgba(255, 255, 255, 0.38);
+                font-size: clamp(9px, 1.5vw, 12px);
+                letter-spacing: 3px;
             }
             .pause-btn--exit:hover {
-                background: rgba(255, 60, 60, 0.12);
-                border-color: #ff4455;
-                color: #ff6677;
+                border-color: rgba(255, 60, 60, 0.5);
+                color: rgba(255, 90, 90, 0.8);
+                background: rgba(255, 40, 40, 0.06);
             }
             /* Кнопка паузы в HUD */
             #btnPause {
@@ -3224,37 +3192,43 @@
                 }
             }
 
-            /* Screens without explicit backgrounds */
-            #mutationScreen,
-            #merchantScreen,
+            /* Each screen has its own tinted dark background */
             #classScreen,
             #howToScreen,
             #achieveScreen,
             #lbScreen {
-                background: rgba(0, 0, 0, 0.95);
+                background: #050508;
+            }
+            #mutationScreen {
+                background: #060210;
+            }
+            #merchantScreen {
+                background: #080500;
             }
 
             /* ── Relic Screen ── */
             #relicScreen {
-                background: rgba(0, 0, 0, 0.95);
+                background: #090600;
                 z-index: 80;
             }
             .relic-card {
-                border-radius: 12px;
+                border-radius: 3px;
                 border: 2px solid;
-                padding: 16px 14px;
+                border-bottom-width: 4px;
+                padding: 20px 16px 16px;
                 cursor: pointer;
                 transition:
-                    transform 0.14s,
+                    transform 0.14s ease,
                     box-shadow 0.14s;
-                min-width: 160px;
-                max-width: 210px;
+                min-width: 170px;
+                max-width: 220px;
                 text-align: center;
-                background: #0a0f1a;
+                background: #080c14;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
             }
             .relic-card:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
+                transform: translateY(-5px);
+                box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85);
             }
             .relic-icon {
                 width: 44px;
@@ -3294,27 +3268,39 @@
                 height: 100%;
             }
 
-            /* ── DNA Nodes ── */
+            /* ── DNA Nodes — horizontal data rows ── */
+            #dnaGrid {
+                display: flex !important;
+                flex-direction: column;
+                gap: 4px !important;
+                width: 100%;
+            }
             .dna-node {
-                border-radius: 10px;
-                border: 1px solid;
-                padding: 9px 10px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                border-left: 3px solid;
+                border-top: none;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 0;
+                padding: 11px 14px;
                 font-family: "Courier New", monospace;
-                font-size: 8.5px;
+                font-size: 11px;
             }
             .dna-node.unlocked {
-                border-color: #44ff88;
-                background: #0b2016;
-                box-shadow: 0 0 10px rgba(68,255,136,0.12);
+                border-left-color: #44ff88;
+                background: #050e08;
             }
             .dna-node.locked {
-                border-color: rgba(255, 255, 255, 0.22);
-                background: #0e1520;
+                border-left-color: rgba(255, 255, 255, 0.12);
+                background: #08090d;
             }
             .dna-icon {
-                width: 28px;
-                height: 28px;
-                margin: 0 auto 5px;
+                width: 26px;
+                height: 26px;
+                margin: 0;
+                flex-shrink: 0;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -3324,23 +3310,31 @@
                 height: 100%;
             }
             .dna-name {
+                font-size: 12px;
                 font-weight: 700;
                 letter-spacing: 1px;
                 color: #44ff88;
-                margin-bottom: 3px;
+                margin-bottom: 0;
+                flex: 1;
+                min-width: 0;
             }
             .dna-name.locked-name {
-                color: rgba(255, 255, 255, 0.75);
+                color: rgba(255, 255, 255, 0.55);
             }
             .dna-bonus {
                 color: #ffcc44;
-                font-size: 7.5px;
+                font-size: 10px;
                 letter-spacing: 1px;
+                flex-shrink: 0;
+                text-align: right;
             }
             .dna-req {
-                color: rgba(200, 220, 255, 0.62);
-                font-size: 7.5px;
+                color: rgba(180, 200, 255, 0.38);
+                font-size: 10px;
                 letter-spacing: 1px;
+                flex-shrink: 0;
+                text-align: right;
+                max-width: 110px;
             }
 
             /* ══════════════════════════════════════════════════════
@@ -3501,7 +3495,7 @@
             }
             /* ── Global Leaderboard screen ── */
             #lbScreen {
-                background: rgba(0, 0, 0, 0.92);
+                background: #050508;
                 z-index: 80;
             }
             .lb-row {
@@ -3610,11 +3604,11 @@
             .up-card {
                 width: clamp(220px, 24vw, 280px);
                 min-height: 214px;
-                border-radius: 8px;
+                border-radius: 2px 14px 14px 2px;
                 padding: clamp(22px, 2.6vw, 32px) clamp(18px, 2.2vw, 26px);
             }
             .up-card::after {
-                border-radius: 8px;
+                border-radius: 2px 14px 14px 2px;
             }
             .up-tier,
             .up-stack {
@@ -3719,49 +3713,6 @@
                 </button>
             </div>
         </div>
-
-        <div
-            id="adBuffHud"
-            style="
-                position: fixed;
-                top: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                font-size: 9px;
-                letter-spacing: 2px;
-                color: #ffcc44;
-                opacity: 0;
-                transition: opacity 0.3s;
-                pointer-events: none;
-                text-shadow: 0 0 8px #ffcc44;
-                z-index: 50;
-                white-space: nowrap;
-            "
-        ></div>
-        <button
-            id="btnAdBuff"
-            style="
-                position: fixed;
-                top: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                padding: 5px 14px;
-                border-radius: 6px;
-                border: 1px solid rgba(255, 204, 68, 0.3);
-                background: rgba(0, 0, 0, 0.7);
-                color: rgba(255, 204, 68, 0.8);
-                font-family: monospace;
-                font-size: 9px;
-                letter-spacing: 2px;
-                z-index: 50;
-                display: none;
-                cursor: pointer;
-                backdrop-filter: blur(4px);
-            "
-        >
-            📺 РЕКЛАМА → ×2 ОПЫТ 60с
-        </button>
-        <button id="btnDdosHelp">📺 HALT DDoS</button>
 
         <!-- HUD -->
         <div id="hud">
@@ -4079,25 +4030,6 @@
                         class="set-slider"
                     />
                 </div>
-                <!-- Menu Music toggle -->
-                <div class="set-section">
-                    <div class="set-section-header">
-                        <span class="set-section-label" id="setMusicLbl"
-                            >Menu Music</span
-                        >
-                        <button
-                            id="btnMusicToggle"
-                            class="btn"
-                            style="
-                                font-size: 11px;
-                                padding: 4px 18px;
-                                min-width: 54px;
-                            "
-                        >
-                            ON
-                        </button>
-                    </div>
-                </div>
                 <!-- VFX Density -->
                 <div class="set-section" style="margin-bottom: 0">
                     <div class="set-section-header">
@@ -4234,18 +4166,11 @@
                 ⌂ MAIN MENU
             </button>
             <div class="death-ad-row">
-                <button class="btn btn-ad" id="btnXP">
-                    📺 AD → ×2 DATA NEXT RUN
-                </button>
-                <button class="btn btn-ad" id="btnBuff">
-                    📺 AD → START WITH BUFF
-                </button>
-                <button
-                    class="btn btn-ad"
-                    id="btnSkipWave"
-                    style="font-size: 10px"
-                >
-                    📺 AD → SKIP FIRST DDoS WAVE
+                <button class="btn btn-powered-run" id="btnPoweredRun">
+                    📺 POWERED NEXT RUN
+                    <span id="btnPoweredRunSub"
+                        >×2 DATA · BUFF · SKIP WAVE</span
+                    >
                 </button>
             </div>
         </div>
@@ -4470,14 +4395,6 @@
                     style="letter-spacing: 2px; font-size: 10px"
                 ></button>
             </div>
-        </div>
-
-        <!-- Ad Simulator -->
-        <div id="adSim">
-            <div class="ad-badge">advertisement</div>
-            <div class="ad-type-label" id="adTypeLabel">interstitial</div>
-            <div class="ad-box">[ AD PLACEHOLDER — YANDEX SDK ]</div>
-            <div class="ad-timer" id="adTimer">Closing in 5...</div>
         </div>
 
         <!-- Joystick -->
@@ -4774,7 +4691,7 @@
                 justify-content: flex-start;
                 align-items: center;
                 padding: 0;
-                background: rgba(0,0,0,0.96);
+                background: rgba(0, 0, 0, 0.96);
             "
         >
             <div
@@ -4811,13 +4728,14 @@
                         id="btnMetaTabDdos"
                         class="meta-tab meta-tab-active"
                         style="
-                            padding: 8px 18px;
-                            border-radius: 6px;
-                            border: 1px solid rgba(0, 229, 255, 0.5);
-                            background: rgba(0, 40, 70, 0.8);
+                            padding: 10px 22px;
+                            border-radius: 0;
+                            border: none;
+                            border-bottom: 3px solid #00e5ff;
+                            background: rgba(0, 40, 70, 0.7);
                             color: #00e5ff;
                             font-family: monospace;
-                            font-size: 9px;
+                            font-size: 12px;
                             font-weight: 700;
                             letter-spacing: 2px;
                             cursor: pointer;
@@ -4829,13 +4747,14 @@
                         id="btnMetaTabDna"
                         class="meta-tab"
                         style="
-                            padding: 8px 18px;
-                            border-radius: 6px;
-                            border: 1px solid rgba(68, 255, 136, 0.3);
-                            background: rgba(0, 0, 0, 0.5);
-                            color: rgba(68, 255, 136, 0.5);
+                            padding: 10px 22px;
+                            border-radius: 0;
+                            border: none;
+                            border-bottom: 3px solid transparent;
+                            background: transparent;
+                            color: rgba(68, 255, 136, 0.45);
                             font-family: monospace;
-                            font-size: 9px;
+                            font-size: 12px;
                             font-weight: 700;
                             letter-spacing: 2px;
                             cursor: pointer;
@@ -4849,11 +4768,12 @@
                     <div
                         id="metaAntiDdosLbl"
                         style="
-                            font-size: 9px;
+                            font-size: 12px;
+                            font-weight: 700;
                             letter-spacing: 4px;
-                            color: rgba(0, 229, 255, 0.5);
+                            color: rgba(0, 229, 255, 0.6);
                             text-align: center;
-                            margin-bottom: 12px;
+                            margin-bottom: 16px;
                         "
                     >
                         ANTI-DDoS DEFENSE
@@ -4867,11 +4787,12 @@
                 <div id="metaPanelDna" style="display: none">
                     <div
                         style="
-                            font-size: 9px;
+                            font-size: 12px;
+                            font-weight: 700;
                             letter-spacing: 4px;
-                            color: rgba(68, 255, 136, 0.5);
+                            color: rgba(68, 255, 136, 0.6);
                             text-align: center;
-                            margin-bottom: 12px;
+                            margin-bottom: 16px;
                         "
                     >
                         PERMANENT DNA UPGRADES
@@ -5015,15 +4936,6 @@
                     },
                 };
 
-                // Сброс мета-данных при каждой загрузке (режим без аккаунта Яндекс)
-                // Runs history и total kills НЕ сбрасываются — нужны для прогресса
-                [
-                    "mini_survivors_meta_v2",
-                    "mini_survivors_daily_best_v2",
-                    "mini_survivors_best_run_v2",
-                    "mini_surv_daily_done_v1",
-                ].forEach((k) => localStorage.removeItem(k));
-
                 const META_KEY = "mini_survivors_meta_v2";
                 const DAILY_KEY = "mini_survivors_daily_best_v2";
                 const BEST_KEY = "mini_survivors_best_run_v2";
@@ -5113,6 +5025,7 @@
                     _ysPlayer = null;
                 (async () => {
                     try {
+                        await (window._sdkLoadPromise || Promise.resolve());
                         if (typeof YaGames !== "undefined") {
                             _ysdk = await YaGames.init();
                             _ysdk_ready = true;
@@ -5163,26 +5076,7 @@
                     }
                 })();
                 function _adSim(dur, done) {
-                    const s = document.getElementById("adSim"),
-                        t = document.getElementById("adTimer");
-                    if (s) {
-                        s.style.display = "flex";
-                        let n = dur;
-                        t && (t.textContent = `Closing in ${n}...`);
-                        const iv = setInterval(() => {
-                            n--;
-                            t &&
-                                (t.textContent =
-                                    n > 0 ? `Closing in ${n}...` : "Done!");
-                            if (n <= 0) {
-                                clearInterval(iv);
-                                setTimeout(() => {
-                                    if (s) s.style.display = "none";
-                                    done?.();
-                                }, 350);
-                            }
-                        }, 1000);
-                    } else setTimeout(() => done?.(), 500);
+                    setTimeout(() => done?.(), 500);
                 }
                 // Gameplay API — tells Yandex when player is actively playing
                 const GameplayAPI = {
@@ -5232,10 +5126,12 @@
                                     },
                                     onClose: () => {
                                         _adLock = false;
+                                        GameplayAPI.start();
                                         onClose?.();
                                     },
                                     onError: () => {
                                         _adLock = false;
+                                        GameplayAPI.start();
                                         onClose?.();
                                     },
                                 },
@@ -5356,8 +5252,8 @@
                                 "ArrowUp",
                                 "ArrowDown",
                                 "ArrowLeft",
-                            "ArrowRight",
-                            "Space",
+                                "ArrowRight",
+                                "Space",
                             ].includes(e.code)
                         )
                             e.preventDefault();
@@ -5375,9 +5271,13 @@
                     });
                     addEventListener("contextmenu", (e) => e.preventDefault());
                     // Prevent browser scroll and swipe-to-refresh during gameplay
-                    document.addEventListener("touchmove", (e) => {
-                        if (_gameActive) e.preventDefault();
-                    }, { passive: false });
+                    document.addEventListener(
+                        "touchmove",
+                        (e) => {
+                            if (_gameActive) e.preventDefault();
+                        },
+                        { passive: false },
+                    );
 
                     document.addEventListener(
                         "touchstart",
@@ -5484,8 +5384,15 @@
                         dir() {
                             let dx = 0,
                                 dy = 0;
-                            const hasKey = K["KeyW"] || K["KeyS"] || K["KeyA"] || K["KeyD"] ||
-                                K["ArrowUp"] || K["ArrowDown"] || K["ArrowLeft"] || K["ArrowRight"];
+                            const hasKey =
+                                K["KeyW"] ||
+                                K["KeyS"] ||
+                                K["KeyA"] ||
+                                K["KeyD"] ||
+                                K["ArrowUp"] ||
+                                K["ArrowDown"] ||
+                                K["ArrowLeft"] ||
+                                K["ArrowRight"];
                             if (K["KeyW"] || K["ArrowUp"]) dy -= 1;
                             if (K["KeyS"] || K["ArrowDown"]) dy += 1;
                             if (K["KeyA"] || K["ArrowLeft"]) dx -= 1;
@@ -5980,8 +5887,14 @@
                         getVolume() {
                             return masterVol;
                         },
-                        suspend() { if (actx && actx.state === "running") actx.suspend().catch(() => {}); },
-                        resume() { if (actx && actx.state === "suspended") actx.resume().catch(() => {}); },
+                        suspend() {
+                            if (actx && actx.state === "running")
+                                actx.suspend().catch(() => {});
+                        },
+                        resume() {
+                            if (actx && actx.state === "suspended")
+                                actx.resume().catch(() => {});
+                        },
                         shoot() {
                             const now = performance.now();
                             if (now - lastShoot < 55) return;
@@ -6208,53 +6121,19 @@
                     };
                 })();
 
-                // ── Menu Music — Audio element wrapper ──────────────────────
-                const MenuMusic = (() => {
-                    let _enabled = true;
-                    const VOLUME = 0.1;
-
-                    function _el() {
-                        return document.getElementById("menuMusic");
-                    }
-
-                    return {
-                        start() {
-                            if (!_enabled) return;
-                            const el = _el();
-                            if (!el) return;
-                            el.volume = VOLUME;
-                            el.play().catch(() => {});
-                            // Prevent browser from creating a system media player
-                            if ("mediaSession" in navigator) {
-                                navigator.mediaSession.metadata = null;
-                                try { navigator.mediaSession.setPositionState && navigator.mediaSession.setPositionState(null); } catch(_) {}
-                            }
-                        },
-                        stop() {
-                            const el = _el();
-                            if (!el) return;
-                            el.pause();
-                            el.currentTime = 0;
-                        },
-                        setEnabled(v) {
-                            _enabled = !!v;
-                            LS.set("mini_surv_music_on", _enabled ? 1 : 0);
-                            const btn =
-                                document.getElementById("btnMusicToggle");
-                            if (btn) btn.textContent = _enabled ? "ON" : "OFF";
-                            if (_enabled) this.start();
-                            else this.stop();
-                        },
-                        isEnabled() {
-                            return _enabled;
-                        },
-                        // Legacy compat stubs
-                        setVolume() {},
-                        getVolume() {
-                            return _enabled ? VOLUME : 0;
-                        },
-                    };
-                })();
+                // ── Menu Music — removed (no HTML audio to avoid system player)
+                const MenuMusic = {
+                    start() {},
+                    stop() {},
+                    setEnabled() {},
+                    isEnabled() {
+                        return false;
+                    },
+                    setVolume() {},
+                    getVolume() {
+                        return 0;
+                    },
+                };
 
                 // ═══ СКИНЫ ПЕРСОНАЖА ═════════════════════════════════════
                 // ═══ СКИНЫ ПЕРСОНАЖА — форма + эффект орбит + шлейф ═══
@@ -6981,7 +6860,13 @@
                             if (!next) break;
                             hitTargets.add(next);
                             const signalDmg = dmg * 0.72;
-                            this.hitEnemy(next, signalDmg, parts, crit, enemies);
+                            this.hitEnemy(
+                                next,
+                                signalDmg,
+                                parts,
+                                crit,
+                                enemies,
+                            );
                             totalDmg += signalDmg;
                         }
                         if ((this.piercing || 0) > 0) {
@@ -7018,7 +6903,13 @@
                             for (const e of pierceTargets) {
                                 hitTargets.add(e);
                                 const pierceDmg = dmg * 0.55;
-                                this.hitEnemy(e, pierceDmg, parts, crit, enemies);
+                                this.hitEnemy(
+                                    e,
+                                    pierceDmg,
+                                    parts,
+                                    crit,
+                                    enemies,
+                                );
                                 totalDmg += pierceDmg;
                             }
                         }
@@ -9698,8 +9589,7 @@
                         name: "REPAIR TAP",
                         nameRu: "РЕМОНТНЫЙ ОТКАТ",
                         descFn: (s) => `Repair ${[6, 4, 3][s - 1]}% on hit`,
-                        descFnRu: (s) =>
-                            `Ремонт ${[6, 4, 3][s - 1]}% за удар`,
+                        descFnRu: (s) => `Ремонт ${[6, 4, 3][s - 1]}% за удар`,
                         apply(p, s) {
                             p.lifeSteal =
                                 (p.lifeSteal || 0) + [0.06, 0.04, 0.03][s - 1];
@@ -9711,7 +9601,8 @@
                         icon: "nova",
                         name: "HEAT ROUTER",
                         nameRu: "МАРШРУТ ПЕРЕГРЕВА",
-                        descFn: (s) => `+${[35, 22, 14][s - 1]}% overheat charge`,
+                        descFn: (s) =>
+                            `+${[35, 22, 14][s - 1]}% overheat charge`,
                         descFnRu: (s) =>
                             `+${[35, 22, 14][s - 1]}% заряд перегрева`,
                         apply(p, s) {
@@ -9769,9 +9660,9 @@
                         icon: "reach",
                         name: "PULSE CYCLE",
                         nameRu: "ЦИКЛ ИМПУЛЬСА",
-                        descFn: (s) => `Pulse cooldown -${[25, 16, 10][s - 1]}%`,
-                        descFnRu: (s) =>
-                            `КД импульса -${[25, 16, 10][s - 1]}%`,
+                        descFn: (s) =>
+                            `Pulse cooldown -${[25, 16, 10][s - 1]}%`,
+                        descFnRu: (s) => `КД импульса -${[25, 16, 10][s - 1]}%`,
                         apply(p, s) {
                             p.atkRate *= 1 + [0.25, 0.16, 0.1][s - 1];
                         },
@@ -9825,7 +9716,8 @@
                         icon: "hp",
                         name: "INTEGRITY CORE",
                         nameRu: "ЯДРО ЦЕЛОСТНОСТИ",
-                        descFn: (s) => `+${[50, 35, 20][s - 1]} max integrity and repair`,
+                        descFn: (s) =>
+                            `+${[50, 35, 20][s - 1]} max integrity and repair`,
                         descFnRu: (s) =>
                             `+${[50, 35, 20][s - 1]} макс. целостность и ремонт`,
                         apply(p, s) {
@@ -10079,12 +9971,12 @@
                         dailyChallengeLbl: "DAILY CHALLENGE",
                         dailyClose: "CLOSE",
                         secondChance: "SECOND CHANCE",
-                        reviveSub: "Watch ad to restore 50% integrity and continue",
+                        reviveSub:
+                            "Watch ad to restore 50% integrity and continue",
                         metaUpgradesBtn: "⬆ ANTI-DDoS UPGRADES",
                         antiDdosDefense: "ANTI-DDoS DEFENSE",
-                        btnXPLbl: "📺 AD → ×2 DATA NEXT RUN",
-                        btnBuffLbl: "📺 AD → START WITH BUFF",
-                        btnSkipWaveLbl: "📺 AD → SKIP FIRST DDoS WAVE",
+                        btnPoweredRunLbl: "📺 POWERED NEXT RUN",
+                        btnPoweredRunSub: "×2 DATA · BUFF · SKIP WAVE",
                         metaBack: "← BACK",
                         clsSelect: "SELECT",
                         clsActive: "✓ ACTIVE",
@@ -10092,6 +9984,16 @@
                         achieveTitle: "— ACHIEVEMENTS —",
                         achUnlocked: "UNLOCKED",
                         achLocked: "LOCKED",
+                        surgeWave: "⚠ SURGE WAVE",
+                        splitterDied: "SPLITTER BROKE APART",
+                        dailyBest: "DAILY BEST",
+                        dailyScore: "DAILY SCORE",
+                        bestOf: "BEST",
+                        syncLvl: "SYNC LVL",
+                        buffActive: "BUFF ACTIVE",
+                        dailyBadge: "DAILY CHALLENGE",
+                        comboXp: "COMBO",
+                        xpBonus: "XP",
                     },
                     ru: {
                         integrity: "Целостность",
@@ -10194,9 +10096,8 @@
                             "Смотри рекламу: восстановить 50% целостности и продолжить",
                         metaUpgradesBtn: "⬆ АНТИ-DDoS УЛУЧШЕНИЯ",
                         antiDdosDefense: "АНТИ-DDoS ЗАЩИТА",
-                        btnXPLbl: "📺 РЕКЛАМА → ×2 ДАННЫХ",
-                        btnBuffLbl: "📺 РЕКЛАМА → БУСТ НА СТАРТ",
-                        btnSkipWaveLbl: "📺 РЕКЛАМА → ПРОПУСК DDoS",
+                        btnPoweredRunLbl: "📺 УСИЛЕННЫЙ СЛЕДУЮЩИЙ ЗАБЕГ",
+                        btnPoweredRunSub: "×2 ДАННЫХ · БУСТ · ПРОПУСК ВОЛНЫ",
                         metaBack: "← НАЗАД",
                         clsSelect: "ВЫБРАТЬ",
                         clsActive: "✓ АКТИВЕН",
@@ -10204,6 +10105,16 @@
                         achieveTitle: "— ДОСТИЖЕНИЯ —",
                         achUnlocked: "ВЫПОЛНЕНО",
                         achLocked: "НЕ ВЫПОЛНЕНО",
+                        surgeWave: "⚠ ШТОРМ-ВОЛНА",
+                        splitterDied: "РАСКОЛЬНИК РАЗДЕЛИЛСЯ",
+                        dailyBest: "ЕЖЕДН. РЕКОРД",
+                        dailyScore: "СЧЁТ ЗА ДЕНЬ",
+                        bestOf: "РЕКОРД",
+                        syncLvl: "СИНХРО УР.",
+                        buffActive: "БУСТ АКТИВЕН",
+                        dailyBadge: "ЕЖЕДНЕВНЫЙ ВЫЗОВ",
+                        comboXp: "КОМБО",
+                        xpBonus: "XP",
                     },
                 };
                 let currentLang = LS.get("mini_surv_lang", "en");
@@ -10368,18 +10279,8 @@
                 function hideGameplayOnlyUi() {
                     const po = $("pauseOverlay");
                     if (po) po.classList.remove("active");
-                    const adBtn = $("btnAdBuff");
-                    if (adBtn) adBtn.style.display = "none";
-                    const ddosBtn = $("btnDdosHelp");
-                    if (ddosBtn) ddosBtn.style.display = "none";
                     const dashInd = $("dashIndicator");
                     if (dashInd) dashInd.style.display = "none";
-                    const adHud = $("adBuffHud");
-                    if (adHud) {
-                        adHud.style.transition = "none";
-                        adHud.style.opacity = "0";
-                        adHud.textContent = "";
-                    }
                     const gameCanvas = $("gc");
                     if (gameCanvas) gameCanvas.classList.remove("blurred");
                 }
@@ -10654,7 +10555,8 @@
                     },
                     showUpgrade(lvl, options, taken, onPick) {
                         const upLvl = $("upLvl");
-                        if (upLvl) upLvl.textContent = `SYNC LVL ${lvl}`;
+                        if (upLvl)
+                            upLvl.textContent = `${tr("syncLvl")} ${lvl}`;
                         const upHint = $("upHint");
                         if (upHint)
                             upHint.textContent =
@@ -13355,8 +13257,6 @@
                     let comboFlash = 0;
                     let lastThreshold = 0;
                     let surgeWindow = 0;
-                    let adBuffT = 0; // оставшееся время баффа от рекламы
-                    let adBuffType = null; // "xp" | "speed" | "shield"
                     // ── DDoS system state ─────────────────────────────────────
                     let serverLoad = 0;
                     const SERVER_LOAD_MAX = 100;
@@ -13815,7 +13715,7 @@
                                 3,
                             );
                             UI.toast(
-                                `COMBO ${player.combo} × XP +${tier * 25}%`,
+                                `${tr("comboXp")} ${player.combo} × ${tr("xpBonus")} +${tier * 25}%`,
                             );
                             Audio.comboUp(tier);
                         }
@@ -14329,8 +14229,6 @@
                         GameplayAPI.stop();
                         clearTimers();
                         hudHide();
-                        const _babDie = $("btnAdBuff");
-                        if (_babDie) _babDie.style.display = "none";
                         if (!reviveUsed && _ysdk_ready) {
                             reviveUsed = true;
                             state = "revive";
@@ -14418,9 +14316,11 @@
                         if (!prev || score > prev) {
                             dailyBest[daily] = score;
                             LS.set(DAILY_KEY, dailyBest);
-                            UI.toast(`DAILY BEST: ${score}`);
+                            UI.toast(`${tr("dailyBest")}: ${score}`);
                         } else {
-                            UI.toast(`DAILY SCORE: ${score} / BEST ${prev}`);
+                            UI.toast(
+                                `${tr("dailyScore")}: ${score} / ${tr("bestOf")} ${prev}`,
+                            );
                         }
                         UI.showDeath(
                             elapsed,
@@ -14432,9 +14332,14 @@
                             {
                                 comboBest: player.comboBest || 0,
                                 bossesKilled,
-                                location: (
-                                    getActiveLocation().name || "SERVER"
-                                ).toUpperCase(),
+                                location: (() => {
+                                    const _loc = getActiveLocation();
+                                    const _ln =
+                                        (currentLang === "ru"
+                                            ? _loc.nameRu || _loc.name
+                                            : _loc.name) || "SERVER";
+                                    return _ln.toUpperCase();
+                                })(),
                                 newAch: _runNewAch.slice(),
                                 dps:
                                     elapsed > 0
@@ -14516,7 +14421,9 @@
                             const r = UPGRADES[Math.floor(Math.random() * 3)];
                             r.apply(player);
                             player.takenUpgrades = { [r.id]: 1 };
-                            UI.toast(`BUFF: ${r.name} ACTIVE!`);
+                            UI.toast(
+                                `${tr("buffActive")}: ${currentLang === "ru" ? r.nameRu || r.name : r.name}`,
+                            );
                         }
                         if (xpCarry)
                             player.xpNeeded = Math.floor(
@@ -14547,11 +14454,9 @@
                         comboFlash = 0;
                         lastThreshold = 0;
                         surgeWindow = 0;
-                        adBuffT = 0;
                         currentBiome = 0;
                         biomeT = 0;
                         biomeFlashT = 0;
-                        adBuffType = null;
                         serverLoad = 0;
                         ddos.active = false;
                         ddos.timer = pendingSkipWave ? 120 : 60;
@@ -14583,18 +14488,39 @@
                         if (_mn) _mn.style.display = "none";
                         const bar = $("relicBar");
                         if (bar) bar.innerHTML = "";
-                        const _bab = $("btnAdBuff");
-                        if (_bab)
-                            _bab.style.display = _ysdk_ready ? "block" : "none";
                         state = "playing";
                         lastTs = performance.now();
                         raf = requestAnimationFrame(loop);
                         GameplayAPI.start();
                         // Brief tutorial hints for new players
                         const _isRuHint = currentLang === "ru";
-                        setTimeout(() => UI.toast(_isRuHint ? "🕹 ДВИЖЕНИЕ: WASD / мышь / джойстик" : "🕹 MOVE: WASD / mouse / joystick"), 800);
-                        setTimeout(() => UI.toast(_isRuHint ? "⭐ СОБИРАЙ шары опыта для прокачки" : "⭐ COLLECT XP orbs to level up"), 3500);
-                        setTimeout(() => UI.toast(_isRuHint ? "💀 ЦЕЛЬ: выжить как можно дольше!" : "💀 GOAL: survive as long as possible!"), 6000);
+                        setTimeout(
+                            () =>
+                                UI.toast(
+                                    _isRuHint
+                                        ? "🕹 ДВИЖЕНИЕ: WASD / мышь / джойстик"
+                                        : "🕹 MOVE: WASD / mouse / joystick",
+                                ),
+                            800,
+                        );
+                        setTimeout(
+                            () =>
+                                UI.toast(
+                                    _isRuHint
+                                        ? "⭐ СОБИРАЙ шары опыта для прокачки"
+                                        : "⭐ COLLECT XP orbs to level up",
+                                ),
+                            3500,
+                        );
+                        setTimeout(
+                            () =>
+                                UI.toast(
+                                    _isRuHint
+                                        ? "💀 ЦЕЛЬ: выжить как можно дольше!"
+                                        : "💀 GOAL: survive as long as possible!",
+                                ),
+                            6000,
+                        );
                     }
 
                     function showDeathStatsIfNeeded() {
@@ -14812,7 +14738,7 @@
                         if (surgeTick > surgePrevTick && elapsed > 110) {
                             surgeWindow = 4; // 4 секунды
                             Audio.surge();
-                            UI.waveAlert("⚠ SURGE WAVE");
+                            UI.waveAlert(tr("surgeWave"));
                             shakeMag = Math.max(shakeMag, 8);
                             shakeT = Math.max(shakeT, 0.18);
                             parts.emit(
@@ -15171,7 +15097,7 @@
                                         });
                                 }
                                 if (e instanceof Splitter) {
-                                    UI.toast("SPLITTER BROKE APART");
+                                    UI.toast(tr("splitterDied"));
                                     awardAchievements(player, world);
                                 }
                                 enemies.splice(i, 1);
@@ -15249,14 +15175,6 @@
                             glitchActive = false;
                             glitchTimer = 0;
                         }
-                        // DDoS help button visibility
-                        const ddosHelpBtn =
-                            document.getElementById("btnDdosHelp");
-                        if (ddosHelpBtn)
-                            ddosHelpBtn.style.display =
-                                ddos.active && state === "playing"
-                                    ? "block"
-                                    : "none";
 
                         const gain = orbs.update(
                             dt,
@@ -15272,13 +15190,7 @@
                                           0.25,
                             parts,
                         );
-                        if (
-                            gain > 0 &&
-                            player.addXP(
-                                gain * (adBuffType === "xp" ? 2 : 1),
-                                1,
-                            )
-                        ) {
+                        if (gain > 0 && player.addXP(gain, 1)) {
                             UI.waveAlert(tr("syncUp"));
                             Audio.levelUp();
                             parts.emit(
@@ -15323,34 +15235,6 @@
                             offerRelic();
                         }
 
-                        // ── Ad buff tick ──────────────────────────────────────
-                        if (adBuffT > 0) {
-                            adBuffT -= dt;
-                            const hudEl = $("adBuffHud");
-                            if (hudEl) {
-                                hudEl.style.opacity = "1";
-                                const bufName =
-                                    adBuffType === "xp"
-                                        ? currentLang === "ru"
-                                            ? "×2 ДАННЫЕ"
-                                            : "×2 XP"
-                                        : adBuffType === "speed"
-                                          ? currentLang === "ru"
-                                              ? "УСКОРЕНИЕ"
-                                              : "SPEED BOOST"
-                                          : currentLang === "ru"
-                                            ? "ЩИТ"
-                                            : "AD SHIELD";
-                                hudEl.textContent = `${bufName} ${Math.ceil(adBuffT)}s`;
-                            }
-                            if (adBuffT <= 0) {
-                                adBuffType = null;
-                                if ($("adBuffHud"))
-                                    $("adBuffHud").style.opacity = "0";
-                                if (adBuffType === "speed" && player)
-                                    player.spd /= 1.5;
-                            }
-                        }
                         // ── Enemy bullets (Gunner снаряды) ──────────────────
                         for (let i = enemyBullets.length - 1; i >= 0; i--) {
                             const b = enemyBullets[i];
@@ -16410,12 +16294,6 @@
                                 currentLang === "ru"
                                     ? "🏆 РЕЙТИНГ"
                                     : "🏆 LEADERBOARD";
-                        const _bAdBuff = $("btnAdBuff");
-                        if (_bAdBuff)
-                            _bAdBuff.textContent =
-                                currentLang === "ru"
-                                    ? "📺 РЕКЛАМА → ×2 ОПЫТ 60с"
-                                    : "📺 AD → ×2 XP 60s";
                         $("dTimeLbl").textContent = tr("survived");
                         $("dKillsLbl").textContent = tr("purgedLbl");
                         $("dLvlLbl").textContent = tr("syncLevelLbl");
@@ -16449,12 +16327,6 @@
                                 currentLang === "ru"
                                     ? "Громкость"
                                     : "Sound Volume";
-                        const musicLbl = $("setMusicLbl");
-                        if (musicLbl)
-                            musicLbl.textContent =
-                                currentLang === "ru"
-                                    ? "Музыка меню"
-                                    : "Menu Music";
                         const upLabel = $("upLabel");
                         if (upLabel)
                             upLabel.textContent =
@@ -16502,12 +16374,12 @@
                         if (_bRe) _bRe.textContent = tr("restart");
                         const _bMU = $("btnMetaUpgrades");
                         if (_bMU) _bMU.textContent = tr("metaUpgradesBtn");
-                        const _bXP = $("btnXP");
-                        if (_bXP) _bXP.textContent = tr("btnXPLbl");
-                        const _bBf = $("btnBuff");
-                        if (_bBf) _bBf.textContent = tr("btnBuffLbl");
-                        const _bSW = $("btnSkipWave");
-                        if (_bSW) _bSW.textContent = tr("btnSkipWaveLbl");
+                        const _bPR = $("btnPoweredRun");
+                        if (_bPR)
+                            _bPR.childNodes[0].textContent =
+                                tr("btnPoweredRunLbl") + " ";
+                        const _bPRS = $("btnPoweredRunSub");
+                        if (_bPRS) _bPRS.textContent = tr("btnPoweredRunSub");
 
                         // ── Revive screen ─────────────────────────
                         const _rvT = $("reviveTitle");
@@ -16542,6 +16414,29 @@
                         if (_mMB) _mMB.textContent = tr("metaBack");
                         const _mAD = $("metaAntiDdosLbl");
                         if (_mAD) _mAD.textContent = tr("antiDdosDefense");
+                        const _tabDdos = $("btnMetaTabDdos");
+                        if (_tabDdos)
+                            _tabDdos.textContent =
+                                currentLang === "ru"
+                                    ? "⚡ АНТИ-DDoS"
+                                    : "⚡ ANTI-DDoS";
+                        const _tabDna = $("btnMetaTabDna");
+                        if (_tabDna)
+                            _tabDna.textContent =
+                                currentLang === "ru"
+                                    ? "🧬 ДНК ДЕРЕВО"
+                                    : "🧬 DNA TREE";
+
+                        // ── Daily badge ───────────────────────────
+                        const _bDly = $("btnDaily");
+                        if (_bDly) {
+                            const _dot = _bDly.querySelector(".daily-dot");
+                            _bDly.innerHTML = "";
+                            if (_dot) _bDly.appendChild(_dot);
+                            _bDly.appendChild(
+                                document.createTextNode(" " + tr("dailyBadge")),
+                            );
+                        }
 
                         // ── menuAlertTxt (current visible text) ───
                         const _mAt = $("menuAlertTxt");
@@ -16762,30 +16657,30 @@
                         if (tabDdos) {
                             tabDdos.style.background =
                                 showTab === "ddos"
-                                    ? "rgba(0,40,70,0.8)"
-                                    : "rgba(0,0,0,0.5)";
+                                    ? "rgba(0,40,70,0.7)"
+                                    : "transparent";
                             tabDdos.style.color =
                                 showTab === "ddos"
                                     ? "#00e5ff"
                                     : "rgba(0,229,255,0.35)";
-                            tabDdos.style.borderColor =
+                            tabDdos.style.borderBottom =
                                 showTab === "ddos"
-                                    ? "rgba(0,229,255,0.5)"
-                                    : "rgba(0,229,255,0.15)";
+                                    ? "3px solid #00e5ff"
+                                    : "3px solid transparent";
                         }
                         if (tabDna) {
                             tabDna.style.background =
                                 showTab === "dna"
-                                    ? "rgba(0,40,20,0.8)"
-                                    : "rgba(0,0,0,0.5)";
+                                    ? "rgba(0,40,20,0.6)"
+                                    : "transparent";
                             tabDna.style.color =
                                 showTab === "dna"
                                     ? "#44ff88"
                                     : "rgba(68,255,136,0.35)";
-                            tabDna.style.borderColor =
+                            tabDna.style.borderBottom =
                                 showTab === "dna"
-                                    ? "rgba(68,255,136,0.5)"
-                                    : "rgba(68,255,136,0.15)";
+                                    ? "3px solid #44ff88"
+                                    : "3px solid transparent";
                         }
                         if (tabDdos)
                             tabDdos.onclick = () => openMetaScreen("ddos");
@@ -16837,18 +16732,18 @@
                                 const canBuy = !maxed && META.credits >= cost;
                                 const card = document.createElement("div");
                                 card.style.cssText =
-                                    "background:rgba(0,20,40,0.75);border:1px solid rgba(0,229,255,0.2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;";
+                                    "background:rgba(0,20,40,0.75);border:1px solid rgba(0,229,255,0.2);border-left:3px solid rgba(0,229,255,0.5);border-radius:0;padding:16px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;";
                                 card.innerHTML = `
                                   <div style="flex:1;">
-                                    <div style="font-size:11px;font-weight:700;color:#00e5ff;letter-spacing:2px;">${d.title} ${lv > 0 ? `<span style="color:#ffcc44;">LV${lv}</span>` : ""}</div>
-                                    <div style="font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:1px;margin-top:3px;">${formatTermText(d.desc)}</div>
-                                    ${lv > 0 ? `<div style="font-size:9px;color:#44ff88;letter-spacing:1px;margin-top:2px;">${d.effect(lv)}</div>` : ""}
+                                    <div style="font-size:14px;font-weight:700;color:#00e5ff;letter-spacing:2px;margin-bottom:4px;">${d.title} ${lv > 0 ? `<span style="color:#ffcc44;font-size:12px;">LV${lv}</span>` : ""}</div>
+                                    <div style="font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:1px;margin-top:2px;">${formatTermText(d.desc)}</div>
+                                    ${lv > 0 ? `<div style="font-size:11px;color:#44ff88;letter-spacing:1px;margin-top:5px;">▸ ${d.effect(lv)}</div>` : ""}
                                   </div>
                                   <button data-key="${d.key}" data-cost="${cost}"
-                                    style="padding:8px 14px;border-radius:7px;border:none;font-family:monospace;font-size:10px;font-weight:700;letter-spacing:1px;cursor:${canBuy ? "pointer" : "default"};
-                                    background:${canBuy ? "linear-gradient(135deg,#004466,#00aacc)" : "rgba(40,40,40,0.6)"};
-                                    color:${canBuy ? "#00e5ff" : "rgba(255,255,255,0.25)"};">
-                                    ${maxed ? tr("maxLevel") : `${isRu ? "КУПИТЬ" : "BUY"}<br><span style="font-size:8px;opacity:0.7;">${cost}◈</span>`}
+                                    style="padding:10px 16px;border-radius:0;border:none;border-left:2px solid ${canBuy ? "rgba(0,229,255,0.4)" : "rgba(255,255,255,0.1)"};font-family:monospace;font-size:12px;font-weight:700;letter-spacing:1px;cursor:${canBuy ? "pointer" : "default"};flex-shrink:0;
+                                    background:${canBuy ? "rgba(0,60,90,0.9)" : "rgba(30,30,30,0.6)"};
+                                    color:${canBuy ? "#00e5ff" : "rgba(255,255,255,0.2)"};">
+                                    ${maxed ? tr("maxLevel") : `${isRu ? "КУПИТЬ" : "BUY"}<br><span style="font-size:10px;opacity:0.65;">${cost}◈</span>`}
                                   </button>`;
                                 card.querySelector("button").onclick = () => {
                                     if (!canBuy) return;
@@ -16870,10 +16765,13 @@
                             ).length;
                             const dnaLbl =
                                 $("metaPanelDna").querySelector("div");
-                            if (dnaLbl)
+                            if (dnaLbl) {
                                 dnaLbl.textContent = isRu
                                     ? `ПОСТОЯННЫЕ DNA УЛУЧШЕНИЯ — ${unlocked}/${total}`
                                     : `PERMANENT DNA UPGRADES — ${unlocked}/${total}`;
+                                dnaLbl.style.fontSize = "12px";
+                                dnaLbl.style.fontWeight = "700";
+                            }
                             grid.innerHTML = "";
                             DNA_NODES.forEach((node) => {
                                 const isUnlocked = !!META.dna[node.id];
@@ -16979,7 +16877,7 @@
                     $("btnStart").onclick = () => {
                         gameMode = "normal";
                         hide("startScreen");
-                        showMutationScreen();
+                        doRestart();
                     };
                     $("btnWww").onclick = () => {
                         gameMode = "www";
@@ -17021,46 +16919,6 @@
                         });
                     // lsArrow wiring happens inside openLocationScreen
 
-                    const btnAdBuff = $("btnAdBuff");
-                    if (btnAdBuff) {
-                        btnAdBuff.style.display = "none";
-                        btnAdBuff.onclick = () => {
-                            if (state !== "playing") return;
-                            // Pause game loop while ad plays
-                            state = "paused";
-                            cancelAnimationFrame(raf);
-                            const resume = () => {
-                                state = "playing";
-                                lastTs = performance.now();
-                                raf = requestAnimationFrame(loop);
-                                GameplayAPI.start();
-                            };
-                            Ads.showRewarded(
-                                "boost",
-                                () => {
-                                    // Rewarded: always give ×2 XP for 60s (clear, obvious reward per Yandex p.4.5.1)
-                                    adBuffType = "xp";
-                                    adBuffT = 60;
-                                    UI.toast(
-                                        currentLang === "ru"
-                                            ? "×2 ОПЫТ АКТИВИРОВАН! 60с"
-                                            : "×2 XP ACTIVE! 60s",
-                                    );
-                                    btnAdBuff.style.display = "none";
-                                    setTimeout(() => {
-                                        if (
-                                            btnAdBuff &&
-                                            state === "playing" &&
-                                            _gameActive
-                                        )
-                                            btnAdBuff.style.display = "block";
-                                    }, 120000);
-                                },
-                                resume,
-                            ); // resume game whether rewarded or not
-                        };
-                    }
-
                     $("btnBackFromClass").onclick = () => {
                         hide("classScreen");
                         show("startScreen");
@@ -17087,25 +16945,49 @@
                         hide("settingsScreen");
                         show("startScreen");
                     };
-                    $("btnResetData") &&
-                        ($("btnResetData").onclick = () => {
-                            const msg =
-                                currentLang === "ru"
-                                    ? "Сбросить ВСЕ данные?\nКредиты, покупки, рекорды — всё будет удалено."
-                                    : "Reset ALL data?\nCredits, purchases, records — everything will be deleted.";
-                            if (!confirm(msg)) return;
-                            const keys = [
-                                META_KEY,
-                                DAILY_KEY,
-                                BEST_KEY,
-                                "mini_surv_total_kills",
-                                "mini_surv_daily_done_v1",
-                                "mini_survivors_runs_v1",
-                                "mini_surv_streak_v1",
-                            ];
-                            keys.forEach((k) => localStorage.removeItem(k));
-                            location.reload();
-                        });
+                    (function () {
+                        const btn = $("btnResetData");
+                        if (!btn) return;
+                        let _resetArmed = false,
+                            _resetTimer = null;
+                        btn.onclick = () => {
+                            if (_resetArmed) {
+                                clearTimeout(_resetTimer);
+                                _resetArmed = false;
+                                btn.textContent =
+                                    currentLang === "ru"
+                                        ? "СБРОСИТЬ ДАННЫЕ"
+                                        : "RESET ALL DATA";
+                                btn.style.background = "";
+                                const keys = [
+                                    META_KEY,
+                                    DAILY_KEY,
+                                    BEST_KEY,
+                                    "mini_surv_total_kills",
+                                    "mini_surv_daily_done_v1",
+                                    "mini_survivors_runs_v1",
+                                    "mini_surv_streak_v1",
+                                ];
+                                keys.forEach((k) => localStorage.removeItem(k));
+                                location.reload();
+                            } else {
+                                _resetArmed = true;
+                                btn.textContent =
+                                    currentLang === "ru"
+                                        ? "⚠ ЕЩЁ РАЗ ДЛЯ СБРОСА"
+                                        : "⚠ CLICK AGAIN TO CONFIRM";
+                                btn.style.background = "rgba(255,30,30,0.18)";
+                                _resetTimer = setTimeout(() => {
+                                    _resetArmed = false;
+                                    btn.textContent =
+                                        currentLang === "ru"
+                                            ? "СБРОСИТЬ ДАННЫЕ"
+                                            : "RESET ALL DATA";
+                                    btn.style.background = "";
+                                }, 3000);
+                            }
+                        };
+                    })();
                     $("btnRestart").onclick = doRestart;
                     $("btnLobby").onclick = () => {
                         _gameActive = false;
@@ -17116,14 +16998,6 @@
                             "reviveScreen",
                             "upgradeScreen",
                         ].forEach(hide);
-                        const _bab2 = $("btnAdBuff");
-                        if (_bab2) _bab2.style.display = "none";
-                        const _abh = $("adBuffHud");
-                        if (_abh) {
-                            _abh.style.transition = "none";
-                            _abh.style.opacity = "0";
-                            _abh.textContent = "";
-                        }
                         hudHide();
                         state = "menu";
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -17153,25 +17027,17 @@
                             hide("metaScreen");
                             show("deathScreen");
                         });
-                    $("btnSkipWave") &&
-                        ($("btnSkipWave").onclick = () =>
-                            Ads.showRewarded("skip_wave", () => {
+                    $("btnPoweredRun") &&
+                        ($("btnPoweredRun").onclick = () =>
+                            Ads.showRewarded("powered_run", () => {
+                                pendingXP = true;
+                                pendingBuff = true;
                                 pendingSkipWave = true;
                                 UI.toast(
                                     currentLang === "ru"
-                                        ? "✓ ПЕРВАЯ DDoS ВОЛНА ОТЛОЖЕНА"
-                                        : "✓ FIRST DDoS WAVE DELAYED",
+                                        ? "✓ УСИЛЕННЫЙ СТАРТ АКТИВИРОВАН"
+                                        : "✓ POWERED RUN ACTIVATED",
                                 );
-                            }));
-                    $("btnDdosHelp") &&
-                        ($("btnDdosHelp").onclick = () =>
-                            Ads.showRewarded("reduce_load", () => {
-                                serverLoad = Math.max(0, serverLoad * 0.5);
-                                ddos.active = false;
-                                ddos.timer = ddos.nextInterval;
-                                ddos.duration = 0;
-                                requests.reset();
-                                UI.toast(tr("ddosHalt"));
                             }));
                     $("btnRevive").onclick = () =>
                         Ads.showRewarded("revive", () => {
@@ -17184,21 +17050,11 @@
                             raf = requestAnimationFrame(loop);
                             UI.toast(
                                 currentLang === "ru"
-                                            ? "ВОЗРОЖДЕНИЕ! 50% ЦЕЛОСТНОСТИ"
-                                            : "REVIVED! 50% INTEGRITY",
+                                    ? "ВОЗРОЖДЕНИЕ! 50% ЦЕЛОСТНОСТИ"
+                                    : "REVIVED! 50% INTEGRITY",
                             );
                         });
                     $("btnSkipRevive").onclick = skipRevive;
-                    $("btnXP").onclick = () =>
-                        Ads.showRewarded("xp2", () => {
-                            pendingXP = true;
-                            UI.toast(tr("dataBoost"));
-                        });
-                    $("btnBuff").onclick = () =>
-                        Ads.showRewarded("buff", () => {
-                            pendingBuff = true;
-                            UI.toast(tr("buffReady"));
-                        });
 
                     updateSliderDisplay("setVolume", "volumeVal", 0, 100);
                     updateSliderDisplay("setShake", "shakeVal", 0, 100);
@@ -17244,7 +17100,6 @@
                                 $("deathScreen").appendChild(el);
                             })();
                         applyLanguage();
-                        UI.toast(`DAILY SEED ${world.dailyKey}`);
                     }
 
                     // ─── Экран выбора локаций ────────────────────────────────
@@ -17902,14 +17757,6 @@
                                 "settingsScreen",
                                 "achieveScreen",
                             ].forEach(hide);
-                            const _bab3 = $("btnAdBuff");
-                            if (_bab3) _bab3.style.display = "none";
-                            const _abh3 = $("adBuffHud");
-                            if (_abh3) {
-                                _abh3.style.transition = "none";
-                                _abh3.style.opacity = "0";
-                                _abh3.textContent = "";
-                            }
                             hudHide();
                             state = "menu";
                             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -17947,45 +17794,16 @@
                     Audio.setVolume(savedVol / 100);
                 })();
 
-                // Wire music ON/OFF toggle
-                (function () {
-                    const savedOn = LS.get("mini_surv_music_on", 1);
-                    const btn = document.getElementById("btnMusicToggle");
-                    MenuMusic._enabled = !!savedOn;
-                    if (btn) {
-                        btn.textContent = savedOn ? "ON" : "OFF";
-                        btn.onclick = () =>
-                            MenuMusic.setEnabled(!MenuMusic.isEnabled());
-                    }
-                })();
-
                 Game.applyLanguage();
-                // Start menu music after first user interaction (autoplay policy)
-                document.addEventListener(
-                    "pointerdown",
-                    function _firstTouch() {
-                        if (MenuMusic.isEnabled()) MenuMusic.start();
-                    },
-                    { once: true },
-                );
 
                 document.addEventListener("visibilitychange", () => {
                     if (document.hidden) {
-                        // Pause game loop
                         if (Game.getState && Game.getState() === "playing") {
                             Game.pause();
                         }
-                        // Mute Web Audio API
                         Audio.suspend();
-                        // Pause HTML audio (menu music)
-                        const _mEl = document.getElementById("menuMusic");
-                        if (_mEl && !_mEl.paused) { _mEl._wasPlaying = true; _mEl.pause(); }
                     } else {
-                        // Resume Web Audio API
                         Audio.resume();
-                        // Resume HTML audio if it was playing
-                        const _mEl = document.getElementById("menuMusic");
-                        if (_mEl && _mEl._wasPlaying) { _mEl._wasPlaying = false; _mEl.play().catch(() => {}); }
                     }
                 });
 
@@ -18745,9 +18563,5 @@
                 })();
             })();
         </script>
-
-        <audio id="menuMusic" loop preload="auto" playsinline disableremoteplayback x-webkit-airplay="deny">
-            <source src="./track_music.m4a" type="audio/mp4" />
-        </audio>
     </body>
 </html>

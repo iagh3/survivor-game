@@ -88,6 +88,7 @@ index.html
 ## Рендеринг (`drawFrame()`)
 
 Back-to-front:
+
 1. `clearRect(0, 0, viewW, viewH)`
 2. `drawBg()` — тайлы + процедурный паттерн (пропускается при `_pQuality < 0.65`)
 3. Орбы XP
@@ -102,8 +103,9 @@ Back-to-front:
 
 ```js
 // resize():
-viewW = innerWidth; viewH = innerHeight;
-canvas.width  = Math.round(innerWidth  * dpr);
+viewW = innerWidth;
+viewH = innerHeight;
+canvas.width = Math.round(innerWidth * dpr);
 canvas.height = Math.round(innerHeight * dpr);
 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 ```
@@ -113,7 +115,8 @@ ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 ### Адаптивный DPR
 
 ```js
-let _dprOverride = null, _dprSwitchCd = 0;
+let _dprOverride = null,
+    _dprSwitchCd = 0;
 // В loop(): при fpsSmooth < 25 → _dprOverride = 1, resize(); throttle 3s
 ```
 
@@ -121,11 +124,11 @@ let _dprOverride = null, _dprSwitchCd = 0;
 
 ## Производительность (`_pQuality`)
 
-| FPS | `_pQuality` | Эффект |
-|-----|------------|--------|
-| < 30 | 0.35 | drawBg skip, тени выключены |
-| 30–45 | 0.65 | Тени выключены |
-| > 45 | 1.0 | Полное качество |
+| FPS   | `_pQuality` | Эффект                      |
+| ----- | ----------- | --------------------------- |
+| < 30  | 0.35        | drawBg skip, тени выключены |
+| 30–45 | 0.65        | Тени выключены              |
+| > 45  | 1.0         | Полное качество             |
 
 `const _shadOn = _pQuality >= 0.65;` — тени пуль/частиц.  
 Туман мира: только при `_pdist > WORLD_R * 0.55 || _pQuality >= 0.65`.  
@@ -139,29 +142,29 @@ Caps: `MAX_ENEMY_BULLETS = 96`, `MAX_PLAYER_BULLETS = 80`.
 
 ```js
 // ПРАВИЛЬНО — float offset, round только при рисовании:
-const ox = ((-cx % tW) + tW) % tW;     // float, плавный скролл
-const tx = Math.round(gx * tW - ox);   // round ЗДЕСЬ
-ctx.rect(tx + 0.5, ty + 0.5, tW-1, tH-1); // +0.5 = чёткие 1px линии
+const ox = ((-cx % tW) + tW) % tW; // float, плавный скролл
+const tx = Math.round(gx * tW - ox); // round ЗДЕСЬ
+ctx.rect(tx + 0.5, ty + 0.5, tW - 1, tH - 1); // +0.5 = чёткие 1px линии
 
 // НЕПРАВИЛЬНО (создаёт 1px рывки):
-const icx = Math.round(cx);  // НЕ ДЕЛАТЬ
+const icx = Math.round(cx); // НЕ ДЕЛАТЬ
 ```
 
-| Стиль | Локация |
-|-------|---------|
-| `metal` | Server — инсет + болты |
-| `lava` | Core — трещины + мерцание |
-| `ice` | Cryo — glint |
-| `void` | Void — чередование + точки |
+| Стиль   | Локация                    |
+| ------- | -------------------------- |
+| `metal` | Server — инсет + болты     |
+| `lava`  | Core — трещины + мерцание  |
+| `ice`   | Cryo — glint               |
+| `void`  | Void — чередование + точки |
 
 ### Процедурные паттерны
 
-| Локация | Паттерн | State |
-|---------|---------|-------|
-| Server | PCB-трассы 224px + бегущие пакеты | нет |
-| Core | Клеточный автомат огня | `_fireBuf` 120×70 Float32Array |
-| Cryo | Voronoi живые кристаллы | `_voroSeeds[12]`, `_voroCache` ImageData |
-| Void | Flow field частицы | `_flowParticles[320]` |
+| Локация | Паттерн                           | State                                    |
+| ------- | --------------------------------- | ---------------------------------------- |
+| Server  | PCB-трассы 224px + бегущие пакеты | нет                                      |
+| Core    | Клеточный автомат огня            | `_fireBuf` 120×70 Float32Array           |
+| Cryo    | Voronoi живые кристаллы           | `_voroSeeds[12]`, `_voroCache` ImageData |
+| Void    | Flow field частицы                | `_flowParticles[320]`                    |
 
 ---
 
@@ -169,12 +172,12 @@ const icx = Math.round(cx);  // НЕ ДЕЛАТЬ
 
 ### 4 локации
 
-| ID | Разблокировка | HP врагов | SPD врагов | XP | Кредиты | Хазард |
-|----|--------------|-----------|------------|-----|---------|--------|
-| `server` | Сразу | ×1.0 | ×1.0 | ×1.0 | ×1.0 | нет |
-| `core` | Выжить 3 мин | ×1.25 | ×1.15 | ×1.3 | ×1.25 | огонь 15с |
-| `cryo` | Level 10 | ×1.5 | ×0.75 | ×1.5 | ×1.4 | заморозка 20с |
-| `void` | 200 убийств | ×1.8 | ×1.3 | ×2.0 | ×1.8 | нет |
+| ID       | Разблокировка | HP врагов | SPD врагов | XP   | Кредиты | Хазард        |
+| -------- | ------------- | --------- | ---------- | ---- | ------- | ------------- |
+| `server` | Сразу         | ×1.0      | ×1.0       | ×1.0 | ×1.0    | нет           |
+| `core`   | Выжить 3 мин  | ×1.25     | ×1.15      | ×1.3 | ×1.25   | огонь 15с     |
+| `cryo`   | Level 10      | ×1.5      | ×0.75      | ×1.5 | ×1.4    | заморозка 20с |
+| `void`   | 200 убийств   | ×1.8      | ×1.3       | ×2.0 | ×1.8    | нет           |
 
 ---
 
@@ -182,18 +185,21 @@ const icx = Math.round(cx);  // НЕ ДЕЛАТЬ
 
 Спавнятся через `spawnEnemy()` с `elitePrefix`. Поведение вешается в том же месте:
 
-| Prefix | Поле | Поведение |
-|--------|------|-----------|
-| `HARDENED` | `_armorShield` | Поглощает ~35% HP как щит (cyan-полоса над HP) |
-| `ALPHA` | `_willEnrage` | На 50% HP: скорость ×1.9, цвет → `#ff4400` |
-| `OVERCLOCKED` | `_poisonOnDeath` | При смерти: токсичная лужа r=55, 5с, 10 дмг/с |
-| `CORRUPTED` | `_spectralCd` | Телепортируется к игроку каждые 3.5–6с |
+| Prefix        | Поле             | Поведение                                      |
+| ------------- | ---------------- | ---------------------------------------------- |
+| `HARDENED`    | `_armorShield`   | Поглощает ~35% HP как щит (cyan-полоса над HP) |
+| `ALPHA`       | `_willEnrage`    | На 50% HP: скорость ×1.9, цвет → `#ff4400`     |
+| `OVERCLOCKED` | `_poisonOnDeath` | При смерти: токсичная лужа r=55, 5с, 10 дмг/с  |
+| `CORRUPTED`   | `_spectralCd`    | Телепортируется к игроку каждые 3.5–6с         |
 
 **Токсичные лужи**: `toxicPuddles[]` state var. Урон через накопитель `tp._dmgAcc` — без него `Math.round(10*dt) = 0`.
 
 ```js
 tp._dmgAcc = (tp._dmgAcc || 0) + 10 * dt;
-if (tp._dmgAcc >= 1) { player.damage(Math.floor(tp._dmgAcc), false); tp._dmgAcc -= Math.floor(tp._dmgAcc); }
+if (tp._dmgAcc >= 1) {
+    player.damage(Math.floor(tp._dmgAcc), false);
+    tp._dmgAcc -= Math.floor(tp._dmgAcc);
+}
 ```
 
 ---
@@ -222,12 +228,12 @@ if (tp._dmgAcc >= 1) { player.damage(Math.floor(tp._dmgAcc), false); tp._dmgAcc 
 
 ## Классы и ультиматы (`triggerUltimate()`)
 
-| Класс | Ульт | Радиус / Эффект |
-|-------|------|-----------------|
-| `antivirus` | Chain Nova | До 10 врагов в 320px, dmg × 2.8 |
-| `firewall` | Iron Bunker | 3с iframes + аура 180px, dmg × 2.5 |
-| `scanner` | Phase Burst | 5 целей в 320px + AoE 80px вокруг каждой |
-| `hacktivist` | Critical Mass | Следующие 5 атак: крит × 4 |
+| Класс        | Ульт          | Радиус / Эффект                          |
+| ------------ | ------------- | ---------------------------------------- |
+| `antivirus`  | Chain Nova    | До 10 врагов в 320px, dmg × 2.8          |
+| `firewall`   | Iron Bunker   | 3с iframes + аура 180px, dmg × 2.5       |
+| `scanner`    | Phase Burst   | 5 целей в 320px + AoE 80px вокруг каждой |
+| `hacktivist` | Critical Mass | Следующие 5 атак: крит × 4               |
 
 Визуальное кольцо: `(1 - ultVfx) * 320` — совпадает с реальным радиусом.
 
@@ -240,7 +246,9 @@ if (tp._dmgAcc >= 1) { player.damage(Math.floor(tp._dmgAcc), false); tp._dmgAcc 
 **Soft homing**: пока цель жива (`deathT < 0`), снаряд плавно корректирует направление (steer 14×dt).
 
 ```js
-if (b.targetId && b.targetId.deathT < 0) { /* steer toward target */ }
+if (b.targetId && b.targetId.deathT < 0) {
+    /* steer toward target */
+}
 ```
 
 ---
@@ -248,15 +256,21 @@ if (b.targetId && b.targetId.deathT < 0) { /* steer toward target */ }
 ## HUD
 
 ```css
-#hud { opacity: 0; pointer-events: none; }
-#hud.hud-visible { opacity: 1; pointer-events: auto; }
+#hud {
+    opacity: 0;
+    pointer-events: none;
+}
+#hud.hud-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
 ```
 
-| Событие | Вызов |
-|---------|-------|
-| `init()` | `hudHide()` |
+| Событие       | Вызов       |
+| ------------- | ----------- |
+| `init()`      | `hudHide()` |
 | `doRestart()` | `hudShow()` |
-| `onDie()` | `hudHide()` |
+| `onDie()`     | `hudHide()` |
 
 `#hudCredits`, `#hudCombo` — статические в `#hud`.  
 `#adBuffHud`, `#btnAdBuff` — `position:fixed` в `<body>`, **не в `#hud`**.  
@@ -267,8 +281,17 @@ if (b.targetId && b.targetId.deathT < 0) { /* steer toward target */ }
 ## Пауза
 
 ```js
-function openPause()  { GameplayAPI.stop(); state = "paused"; cancelAnimationFrame(raf); }
-function closePause() { state = "playing"; lastTs = performance.now(); raf = rAF(loop); GameplayAPI.start(); }
+function openPause() {
+    GameplayAPI.stop();
+    state = "paused";
+    cancelAnimationFrame(raf);
+}
+function closePause() {
+    state = "playing";
+    lastTs = performance.now();
+    raf = rAF(loop);
+    GameplayAPI.start();
+}
 ```
 
 ESC → toggle. `#pauseOverlay`: `position:fixed; z-index:500`.
@@ -278,19 +301,23 @@ ESC → toggle. `#pauseOverlay`: `position:fixed; z-index:500`.
 ## Audio
 
 ### Музыка меню (HTML Audio)
+
 ```js
 const MenuMusic = (() => {
-    const VOLUME = 0.08;  // тихий фон
+    const VOLUME = 0.08; // тихий фон
     // HTML: <audio id="menuMusic" loop><source src="./track_music.m4a" type="audio/mp4"></audio>
 })();
 ```
+
 Кнопка ON/OFF в настройках (`#btnMusicToggle`). Состояние в localStorage.
 
 ### Звуковые эффекты (Web Audio API)
+
 ```js
 actx._master = actx.createGain();
 Audio.setVolume(0..1);
 ```
+
 Слайдер `#setVolume` в настройках. **Никогда** не вызывать Audio в `drawFrame()`.
 
 ---
@@ -298,11 +325,11 @@ Audio.setVolume(0..1);
 ## Яндекс SDK
 
 ```js
-GameplayAPI.start()  // при старте игры, возобновлении паузы
-GameplayAPI.stop()   // при смерти, паузе, показе рекламы
-Ads.showInterstitial(done)           // fullscreen, каждая 2-я смерть
-Ads.showRewarded(type, onRew, onClose) // revive / boost / xp / skip_wave
-Ads.submitScore(score)               // лидерборд "miniSurvivorsMain"
+GameplayAPI.start(); // при старте игры, возобновлении паузы
+GameplayAPI.stop(); // при смерти, паузе, показе рекламы
+Ads.showInterstitial(done); // fullscreen, каждая 2-я смерть
+Ads.showRewarded(type, onRew, onClose); // revive / boost / xp / skip_wave
+Ads.submitScore(score); // лидерборд "miniSurvivorsMain"
 ```
 
 `_adLock = false` **и в `onClose`, и в `onError`** — обязательно.  
@@ -314,15 +341,15 @@ Fallback: `_adSim(dur, cb)` — для локальной разработки.
 
 ## Локализация
 
-| Система | EN поля | RU поля |
-|---------|---------|---------|
-| SKILLS | `name`, `descFn` | `nameRu`, `descFnRu` |
-| SHOP_ITEMS | `title`, `desc` | `titleRu`, `descRu` |
-| UPGRADES | `name` | `nameRu` |
-| LOCATIONS | `name`, `envDescEn`, `unlockDescEn` | `nameRu`, `envDescRu`, `unlockDescRu` |
-| SKINS | `name` | `nameRu` |
-| RELICS | `name`, `desc` | `nameRu`, `descRu` |
-| DNA_NODES | `name`, `bonus` | `nameRu`, `bonusRu` |
+| Система    | EN поля                             | RU поля                               |
+| ---------- | ----------------------------------- | ------------------------------------- |
+| SKILLS     | `name`, `descFn`                    | `nameRu`, `descFnRu`                  |
+| SHOP_ITEMS | `title`, `desc`                     | `titleRu`, `descRu`                   |
+| UPGRADES   | `name`                              | `nameRu`                              |
+| LOCATIONS  | `name`, `envDescEn`, `unlockDescEn` | `nameRu`, `envDescRu`, `unlockDescRu` |
+| SKINS      | `name`                              | `nameRu`                              |
+| RELICS     | `name`, `desc`                      | `nameRu`, `descRu`                    |
+| DNA_NODES  | `name`, `bonus`                     | `nameRu`, `bonusRu`                   |
 
 `applyLanguage()` сначала синхронизирует `currentLang = _currentLang`, затем применяет переводы.  
 Вызов снаружи: `Game.applyLanguage()`.
@@ -331,29 +358,29 @@ Fallback: `_adSim(dur, cb)` — для локальной разработки.
 
 ## История критических багов
 
-| # | Баг | Исправление |
-|---|-----|------------|
-| 1 | Дублирующий `<script>` | Удалён |
-| 2 | `class Enemy {` потеря при str_replace | Восстановлено вручную |
-| 3 | `let artifacts` не объявлен | Добавлен в state vars |
-| 4 | Камера смещена при DPR | `viewW/viewH` вместо `canvas.width/2` |
-| 5 | Overheat убивал всех | `dmg × 3.5` с distance falloff |
-| 6 | `world.elapsed` не существует | Заменено на closure `elapsed` |
-| 7 | Skin canvas не рендерился | Заменено на inline SVG |
-| 8 | `#btnAdBuff` не кликался | Перемещён в `<body>` как `position:fixed` |
-| 9 | Магазин на EN при RU | Добавлены `titleRu/descRu` поля |
-| 10 | Возрождение не возобновляло игру | Явный `hide("reviveScreen")` в callback |
-| 11 | `applyLanguage` не найдена снаружи | Экспортирована из Game IIFE |
-| 12 | HUD видно на всех экранах | `hudShow/hudHide`, CSS `opacity:0` default |
-| 13 | Нижняя плашка на экране локаций | `#dailyText/#creditText` удалены |
-| 14 | Рывки фона при движении | Float `ox/oy`, `Math.round` только при draw |
-| 15 | `#dailyModal` кнопки не работали | HTML перемещён до `<script>` |
-| 16 | Ult ring 260px ≠ kill range 320px | Ring: `(1 - ultVfx) * 320` |
-| 17 | Пули летели мимо движущихся врагов | Soft homing к живой цели |
-| 18 | Яд не наносил урон | `Math.round(10*dt)=0` → накопитель `_dmgAcc` |
-| 19 | `btnAdBuff` давал бафф без рекламы | Обёрнут в `Ads.showRewarded` с паузой loop |
-| 20 | Язык не читался из SDK | `_ysdk.environment.i18n.lang` → `_currentLang` |
-| 21 | M4A неверный MIME тип | `audio/mpeg` → `audio/mp4` |
+| #   | Баг                                    | Исправление                                    |
+| --- | -------------------------------------- | ---------------------------------------------- |
+| 1   | Дублирующий `<script>`                 | Удалён                                         |
+| 2   | `class Enemy {` потеря при str_replace | Восстановлено вручную                          |
+| 3   | `let artifacts` не объявлен            | Добавлен в state vars                          |
+| 4   | Камера смещена при DPR                 | `viewW/viewH` вместо `canvas.width/2`          |
+| 5   | Overheat убивал всех                   | `dmg × 3.5` с distance falloff                 |
+| 6   | `world.elapsed` не существует          | Заменено на closure `elapsed`                  |
+| 7   | Skin canvas не рендерился              | Заменено на inline SVG                         |
+| 8   | `#btnAdBuff` не кликался               | Перемещён в `<body>` как `position:fixed`      |
+| 9   | Магазин на EN при RU                   | Добавлены `titleRu/descRu` поля                |
+| 10  | Возрождение не возобновляло игру       | Явный `hide("reviveScreen")` в callback        |
+| 11  | `applyLanguage` не найдена снаружи     | Экспортирована из Game IIFE                    |
+| 12  | HUD видно на всех экранах              | `hudShow/hudHide`, CSS `opacity:0` default     |
+| 13  | Нижняя плашка на экране локаций        | `#dailyText/#creditText` удалены               |
+| 14  | Рывки фона при движении                | Float `ox/oy`, `Math.round` только при draw    |
+| 15  | `#dailyModal` кнопки не работали       | HTML перемещён до `<script>`                   |
+| 16  | Ult ring 260px ≠ kill range 320px      | Ring: `(1 - ultVfx) * 320`                     |
+| 17  | Пули летели мимо движущихся врагов     | Soft homing к живой цели                       |
+| 18  | Яд не наносил урон                     | `Math.round(10*dt)=0` → накопитель `_dmgAcc`   |
+| 19  | `btnAdBuff` давал бафф без рекламы     | Обёрнут в `Ads.showRewarded` с паузой loop     |
+| 20  | Язык не читался из SDK                 | `_ysdk.environment.i18n.lang` → `_currentLang` |
+| 21  | M4A неверный MIME тип                  | `audio/mpeg` → `audio/mp4`                     |
 
 ---
 
@@ -396,4 +423,145 @@ Fallback: `_adSim(dur, cb)` — для локальной разработки.
 - [ ] Elite OVERCLOCKED: лужа при смерти, наносит урон игроку
 - [ ] Relic screen: появляется после босса, 3 карточки, выбор применяется
 - [ ] DNA таб в метамагазине: узлы с правильным статусом
-- [ ] `doRestart()` сбрасывает: enemies, playerBullets, enemyBullets, artifacts, toxicPuddles, relicPending, relicBar, surgeWindow, adBuffT, isPaused, fpsSmooth, _dprOverride
+- [ ] `doRestart()` сбрасывает: enemies, playerBullets, enemyBullets, artifacts, toxicPuddles, relicPending, relicBar, surgeWindow, adBuffT, isPaused, fpsSmooth, \_dprOverride
+
+---
+
+## UI/UX DESIGN CONTROL (CRITICAL — ANTI AI STYLE)
+
+### Общий принцип
+
+Любые изменения UI, HUD, экранов, кнопок, карточек, эффектов и визуального стиля
+должны выглядеть как результат ручного дизайна, а НЕ как AI-generated шаблон.
+
+---
+
+### Перед любыми визуальными изменениями ОБЯЗАТЕЛЬНО:
+
+1. Кратко описать:
+
+    - выбранный стиль;
+    - визуальную идею;
+    - почему это не выглядит как шаблонный AI UI.
+
+2. Указать:
+
+    - какие типичные AI-паттерны ты избегаешь.
+
+3. Только после этого менять HTML/CSS/Canvas.
+
+---
+
+### Жёсткий запрет (ANTI-AI)
+
+НЕЛЬЗЯ использовать:
+
+- одинаковые карточки (upgrade / shop / relic / dna)
+- одинаковые кнопки без приоритета
+- “плиточный UI” как из UI kit
+- чрезмерные border-radius везде
+- blur / glass / glow как основной стиль
+- неон без геймплейной причины
+- стерильный “perfect clean UI”
+- одинаковые отступы везде (нет ритма)
+- симметрию ради симметрии
+- generic “modern gradient UI”
+
+Если результат похож на шаблон — ПЕРЕДЕЛАТЬ.
+
+---
+
+### Обязательные требования
+
+#### 1. Иерархия
+
+- главный элемент должен доминировать
+- второстепенные элементы визуально слабее
+- нельзя делать всё одинаково важным
+
+#### 2. Ритм
+
+- отступы НЕ одинаковые
+- блоки имеют разный визуальный вес
+- интерфейс “дышит”, но не пустой
+
+#### 3. Характер
+
+- интерфейс должен иметь настроение
+- допустима лёгкая “грубость” или “игровая резкость”
+- избегать стерильности
+
+#### 4. Контраст
+
+- текст читается мгновенно
+- важные кнопки выделены
+- UI не теряется на фоне игры
+
+---
+
+### Специфично для Mini Survivor
+
+#### HUD
+
+- компактный
+- не отвлекает
+- не декоративный
+
+#### Upgrade / Relic / Shop
+
+- карточки НЕ одинаковые
+- есть различие:
+    - размер
+    - акценты
+    - визуальный вес
+- главный выбор должен бросаться в глаза
+
+#### Кнопки
+
+- primary action выделен
+- secondary — тише
+- не делать все кнопки одинаковыми
+
+#### Экраны
+
+- каждый экран имеет свою визуальную идею
+- нельзя копировать layout между экранами без изменений
+
+---
+
+### Canvas (игровой визуал)
+
+НЕЛЬЗЯ:
+
+- перегружать эффектами
+- использовать glow как основной инструмент
+- делать “визуальный шум”
+
+МОЖНО:
+
+- короткие читаемые эффекты
+- чёткие силуэты
+- функциональный визуал
+
+---
+
+### Самопроверка (ОБЯЗАТЕЛЬНО)
+
+Перед финалом изменений:
+
+- Это выглядит как шаблон?
+- Есть ли характер?
+- Есть ли визуальная иерархия?
+- Есть ли различие между элементами?
+- Это читается за <1 секунды?
+- UI помогает игре, а не мешает?
+
+Если хотя бы один ответ “нет” → переделать.
+
+---
+
+### Приоритет
+
+Геймплей > читаемость > иерархия > стиль > эффекты
+
+Никогда не жертвовать читаемостью ради визуала.
