@@ -75,11 +75,22 @@
                     transparent 100%
                 );
             }
-            /* TOP-LEFT zone: bars */
-            #hud-left {
+            /* TOP zone: flex row — bars | pause | time, no overlap possible */
+            #hud-top {
                 position: absolute;
-                top: 14px;
-                left: 14px;
+                top: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                align-items: flex-start;
+                padding: 10px 14px 0;
+                pointer-events: none;
+                gap: 0;
+            }
+            #hud-left {
+                position: static;
+                flex: 0 0 auto;
+                pointer-events: auto;
             }
             .bar-wrap {
                 display: flex;
@@ -120,12 +131,13 @@
             #loadFill {
                 background: linear-gradient(90deg, #007799, #00e5ff);
             }
-            /* TOP-RIGHT zone: time/score */
+            /* RIGHT zone: time/score */
             #hud-right {
-                position: absolute;
-                top: 14px;
-                right: 14px;
+                position: static;
                 text-align: right;
+                flex: 0 0 auto;
+                margin-left: auto;
+                pointer-events: auto;
             }
             #lvlDisplay {
                 font-size: clamp(9px, 1.2vw, 13px);
@@ -1829,29 +1841,31 @@
                 }
             }
 
-            /* ── DASH COOLDOWN HUD ───────────────────────────────────────── */
-            /* ── DASH BUTTON: override inline style positioning ── */
+            /* ── DASH BUTTON ────────────────────────────────────────────────── */
             #btnDash {
-                right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px)) !important;
-                bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 12px)) !important;
+                right: max(
+                    16px,
+                    calc(env(safe-area-inset-right, 0px) + 12px)
+                ) !important;
+                bottom: max(
+                    18px,
+                    calc(env(safe-area-inset-bottom, 0px) + 12px)
+                ) !important;
                 width: 60px !important;
                 height: 60px !important;
                 font-size: 10px !important;
+                overflow: visible !important;
             }
-            /* ── DASH INDICATOR: ring overlaid on top of btnDash ── */
+            /* Ring is a child of btnDash → always perfectly centered, no dual positioning */
             #dashIndicator {
-                position: fixed;
-                right: max(9px, calc(env(safe-area-inset-right, 0px) + 5px));
-                bottom: max(11px, calc(env(safe-area-inset-bottom, 0px) + 5px));
-                width: 74px;
-                height: 74px;
-                display: none;
+                position: absolute;
+                inset: -7px;
                 pointer-events: none;
-                z-index: 111;
+                display: none;
             }
             #dashIndicator svg {
-                width: 74px;
-                height: 74px;
+                width: 100%;
+                height: 100%;
             }
 
             /* ════════════════════════════════════════════════════════
@@ -2078,14 +2092,9 @@
                     padding: 6px 12px;
                     margin-top: 8px;
                 }
-                /* HUD */
-                #hud-left {
-                    top: 8px;
-                    left: 8px;
-                }
-                #hud-right {
-                    top: 8px;
-                    right: 8px;
+                /* HUD: compact top bar on very small screens */
+                #hud-top {
+                    padding: 6px 8px 0;
                 }
                 .bar-lbl {
                     width: 36px;
@@ -2170,20 +2179,19 @@
                 .set-box {
                     padding: 14px 12px;
                 }
-                /* Dash indicator: scales proportionally with btnDash */
+                /* Dash: compact on narrow phones */
                 #btnDash {
                     width: 50px !important;
                     height: 50px !important;
-                    bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 10px)) !important;
-                    right: max(14px, calc(env(safe-area-inset-right, 0px) + 10px)) !important;
+                    bottom: max(
+                        14px,
+                        calc(env(safe-area-inset-bottom, 0px) + 10px)
+                    ) !important;
+                    right: max(
+                        14px,
+                        calc(env(safe-area-inset-right, 0px) + 10px)
+                    ) !important;
                 }
-                #dashIndicator {
-                    width: 62px;
-                    height: 62px;
-                    bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) + 4px));
-                    right: max(8px, calc(env(safe-area-inset-right, 0px) + 4px));
-                }
-                #dashIndicator svg { width: 62px; height: 62px; }
                 /* Wave/toast */
                 #waveAlert {
                     font-size: 13px;
@@ -2273,11 +2281,6 @@
                     width: 54px !important;
                     height: 54px !important;
                 }
-                #dashIndicator {
-                    width: 68px;
-                    height: 68px;
-                }
-                #dashIndicator svg { width: 68px; height: 68px; }
             }
 
             /* ── 768px (tablet portrait / large phones) ── */
@@ -2342,10 +2345,6 @@
                 #objectiveDisplay {
                     font-size: 8px;
                     letter-spacing: 1px;
-                }
-                #dashIndicator {
-                    bottom: 70px;
-                    right: 12px;
                 }
             }
 
@@ -2506,19 +2505,8 @@
                 .set-box {
                     width: min(500px, 90vw);
                 }
-                #hud-left {
-                    top: 18px;
-                    left: 22px;
-                }
-                #hud-right {
-                    top: 18px;
-                    right: 22px;
-                }
-                #dashIndicator {
-                    width: 48px;
-                    height: 48px;
-                    bottom: 90px;
-                    right: 22px;
+                #hud-top {
+                    padding: 14px 22px 0;
                 }
                 .guide-box {
                     width: min(640px, 92vw);
@@ -2530,13 +2518,8 @@
 
             /* ── HUD: все экраны ── */
             @media (max-width: 600px) {
-                #hud-left {
-                    top: 8px;
-                    left: 10px;
-                }
-                #hud-right {
-                    top: 8px;
-                    right: 10px;
+                #hud-top {
+                    padding: 7px 10px 0;
                 }
                 .bar-wrap {
                     margin-bottom: 4px;
@@ -2545,12 +2528,6 @@
                 #hudCredits,
                 #hudCombo {
                     font-size: 8px;
-                }
-                #dashIndicator {
-                    bottom: 58px;
-                    right: 10px;
-                    width: 34px;
-                    height: 34px;
                 }
             }
 
@@ -2663,30 +2640,23 @@
                 #btnDash {
                     width: 46px !important;
                     height: 46px !important;
-                    bottom: max(10px, calc(env(safe-area-inset-bottom, 0px) + 6px)) !important;
-                    right: max(10px, calc(env(safe-area-inset-right, 0px) + 6px)) !important;
+                    bottom: max(
+                        10px,
+                        calc(env(safe-area-inset-bottom, 0px) + 6px)
+                    ) !important;
+                    right: max(
+                        10px,
+                        calc(env(safe-area-inset-right, 0px) + 6px)
+                    ) !important;
                 }
-                #dashIndicator {
-                    width: 58px;
-                    height: 58px;
-                    bottom: max(3px, calc(env(safe-area-inset-bottom, 0px) - 1px));
-                    right: max(3px, calc(env(safe-area-inset-right, 0px) - 1px));
-                }
-                #dashIndicator svg { width: 58px; height: 58px; }
             }
 
             /* ── safe-area (notch phones) ── */
             @supports (padding: env(safe-area-inset-bottom)) {
-                #hud-left {
-                    left: max(14px, env(safe-area-inset-left));
-                    top: max(14px, env(safe-area-inset-top));
-                }
-                #hud-right {
-                    right: max(14px, env(safe-area-inset-right));
-                    top: max(14px, env(safe-area-inset-top));
-                }
-                #btnPause {
-                    top: max(10px, env(safe-area-inset-top));
+                #hud-top {
+                    padding-top: max(10px, env(safe-area-inset-top));
+                    padding-left: max(14px, env(safe-area-inset-left));
+                    padding-right: max(14px, env(safe-area-inset-right));
                 }
                 #toast {
                     bottom: max(90px, calc(90px + env(safe-area-inset-bottom)));
@@ -3206,39 +3176,31 @@
                 color: rgba(255, 90, 90, 0.8);
                 background: rgba(255, 40, 40, 0.06);
             }
-            /* Кнопка паузы в HUD */
+            /* Кнопка паузы: flex child in #hud-top, always between bars and time */
             #btnPause {
-                position: absolute;
-                top: 12px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.5);
+                position: static;
+                transform: none;
+                background: rgba(0, 0, 0, 0.45);
                 border: 1px solid rgba(255, 255, 255, 0.12);
                 border-radius: 8px;
                 color: rgba(255, 255, 255, 0.55);
-                font-size: 16px;
-                width: 36px;
-                height: 30px;
+                font-size: 15px;
+                width: 34px;
+                height: 28px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                pointer-events: all;
+                pointer-events: auto;
+                flex: 0 0 auto;
+                align-self: flex-start;
+                margin: 0 auto;
                 transition: all 0.15s;
                 z-index: 60;
-                backdrop-filter: blur(4px);
             }
             #btnPause:hover {
                 background: rgba(255, 255, 255, 0.12);
                 color: #fff;
-            }
-            @media (max-width: 600px) {
-                #btnPause {
-                    top: 6px;
-                    width: 32px;
-                    height: 26px;
-                    font-size: 14px;
-                }
             }
 
             /* Each screen has its own tinted dark background */
@@ -3548,29 +3510,30 @@
                 #startScreen::after {
                     display: none !important;
                 }
-                /* Brand column: identity, left-aligned */
+                /* Brand column: identity, dominant left panel */
                 #startBrand {
-                    flex: 0 0 40%;
+                    flex: 0 0 38%;
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
                     justify-content: center;
-                    padding: 10px 12px 10px 18px;
-                    border-right: 1px solid rgba(255, 255, 255, 0.06);
-                    background: rgba(0, 0, 0, 0.2);
+                    padding: 12px 14px 12px 20px;
+                    border-right: 1px solid rgba(255, 255, 255, 0.08);
+                    background: rgba(0, 0, 0, 0.25);
                     box-sizing: border-box;
                     overflow: hidden;
+                    gap: 2px;
                 }
-                /* Actions column: controls, left-aligned */
+                /* Actions column: buttons distributed across full height */
                 #startActions {
                     flex: 1;
                     display: flex;
                     flex-direction: column;
                     align-items: stretch;
-                    justify-content: center;
-                    padding: 10px 16px 10px 14px;
+                    justify-content: space-evenly;
+                    padding: 8px 16px 8px 14px;
                     box-sizing: border-box;
-                    gap: 6px;
+                    gap: 4px;
                     overflow: hidden;
                 }
                 /* Alert: small status tag */
@@ -3580,29 +3543,37 @@
                     margin-bottom: 10px !important;
                     max-width: 100% !important;
                 }
-                /* Title: left-aligned, editorial feel */
+                /* Title: left-aligned, dominant in brand column */
                 .game-title {
-                    font-size: clamp(15px, 3.8vh, 22px) !important;
+                    font-size: clamp(17px, 4.5vh, 26px) !important;
                     letter-spacing: 2px !important;
                     margin-bottom: 0 !important;
                     text-align: left !important;
                     line-height: 0.88 !important;
                 }
                 .game-title span {
-                    font-size: clamp(24px, 6vh, 34px) !important;
+                    font-size: clamp(30px, 8.5vh, 50px) !important;
                     line-height: 1 !important;
                 }
                 .game-sub {
                     font-size: 7px !important;
                     letter-spacing: 2px !important;
-                    margin-top: 4px !important;
+                    margin-top: 5px !important;
                     margin-bottom: 0 !important;
                     text-align: left !important;
-                    opacity: 0.65;
+                    opacity: 0.6;
                 }
-                /* Lore and tips: hidden in landscape — brand column is enough */
+                /* Lore: compact but visible in landscape — adds substance to brand column */
                 #startScreen .lore {
-                    display: none !important;
+                    display: block !important;
+                    font-size: 7.5px !important;
+                    line-height: 1.55 !important;
+                    padding: 6px 10px !important;
+                    margin-top: 8px !important;
+                    margin-bottom: 0 !important;
+                    border-left: 2px solid rgba(0, 200, 255, 0.25) !important;
+                    background: rgba(0, 200, 255, 0.04) !important;
+                    border-radius: 0 4px 4px 0 !important;
                 }
                 .tips {
                     display: none !important;
@@ -3873,13 +3844,8 @@
             }
 
             /* ── Readability pass: larger, less machine-like UI ── */
-            #hud-left {
-                top: 18px;
-                left: 18px;
-            }
-            #hud-right {
-                top: 18px;
-                right: 18px;
+            #hud-top {
+                padding: 14px 18px 0;
             }
             .bar-wrap {
                 gap: 10px;
@@ -3906,7 +3872,6 @@
                 font-size: clamp(11px, 1.15vw, 14px);
             }
             #btnPause {
-                top: 14px;
                 width: 44px;
                 height: 38px;
                 font-size: 19px;
@@ -3992,13 +3957,8 @@
                 font-size: 11px;
             }
             @media (max-width: 640px) {
-                #hud-left {
-                    top: 10px;
-                    left: 10px;
-                }
-                #hud-right {
-                    top: 10px;
-                    right: 10px;
+                #hud-top {
+                    padding: 8px 10px 0;
                 }
                 .bar-lbl {
                     width: 100px;
@@ -4009,7 +3969,6 @@
                     width: 112px;
                 }
                 #btnPause {
-                    top: 8px;
                     width: 38px;
                     height: 32px;
                 }
@@ -4037,15 +3996,13 @@
                 overscroll-behavior-y: contain;
             }
 
-            /* Death screen: scrollable in portrait when many stat chips/badges shown */
-            @media (orientation: portrait) {
-                #deathScreen {
-                    overflow-y: auto;
-                    overscroll-behavior-y: contain;
-                    justify-content: flex-start;
-                    padding-top: clamp(12px, 3vh, 24px);
-                    padding-bottom: 16px;
-                }
+            /* Death screen: always scrollable, top-aligned with breathing padding */
+            #deathScreen {
+                overflow-y: auto;
+                overscroll-behavior-y: contain;
+                justify-content: flex-start;
+                padding-top: clamp(16px, 3.5vh, 36px);
+                padding-bottom: 20px;
             }
 
             /* ── metaScreen inner wrapper: proper mobile padding ── */
@@ -4459,59 +4416,63 @@
 
         <!-- HUD -->
         <div id="hud">
-            <div id="hud-left">
-                <div class="bar-wrap">
-                    <span class="bar-lbl" id="lblIntegrity">Integrity</span>
-                    <div class="bar-bg">
+            <!-- Top zone: bars | pause | time — flex row, guaranteed no overlap -->
+            <div id="hud-top">
+                <div id="hud-left">
+                    <div class="bar-wrap">
+                        <span class="bar-lbl" id="lblIntegrity">Integrity</span>
+                        <div class="bar-bg">
+                            <div
+                                class="bar-fill"
+                                id="hpFill"
+                                style="width: 100%"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="bar-wrap">
+                        <span class="bar-lbl" id="lblData">XP</span>
+                        <div class="bar-bg">
+                            <div
+                                class="bar-fill"
+                                id="xpFill"
+                                style="width: 0%"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="bar-wrap">
+                        <span class="bar-lbl" id="lblOverheat">Overheat</span>
+                        <div class="bar-bg">
+                            <div
+                                class="bar-fill"
+                                id="overFill"
+                                style="width: 0%"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="bar-wrap">
+                        <span class="bar-lbl" id="lblLoad">Load</span>
                         <div
-                            class="bar-fill"
-                            id="hpFill"
-                            style="width: 100%"
-                        ></div>
+                            class="bar-bg"
+                            id="loadBarWrap"
+                            style="border-color: rgba(0, 229, 255, 0.3)"
+                        >
+                            <div
+                                class="bar-fill"
+                                id="loadFill"
+                                style="width: 0%"
+                            ></div>
+                        </div>
                     </div>
                 </div>
-                <div class="bar-wrap">
-                    <span class="bar-lbl" id="lblData">XP</span>
-                    <div class="bar-bg">
-                        <div
-                            class="bar-fill"
-                            id="xpFill"
-                            style="width: 0%"
-                        ></div>
-                    </div>
-                </div>
-                <div class="bar-wrap">
-                    <span class="bar-lbl" id="lblOverheat">Overheat</span>
-                    <div class="bar-bg">
-                        <div
-                            class="bar-fill"
-                            id="overFill"
-                            style="width: 0%"
-                        ></div>
-                    </div>
-                </div>
-                <div class="bar-wrap">
-                    <span class="bar-lbl" id="lblLoad">Load</span>
-                    <div
-                        class="bar-bg"
-                        id="loadBarWrap"
-                        style="border-color: rgba(0, 229, 255, 0.3)"
-                    >
-                        <div
-                            class="bar-fill"
-                            id="loadFill"
-                            style="width: 0%"
-                        ></div>
-                    </div>
+                <button id="btnPause">⏸</button>
+                <div id="hud-right">
+                    <div id="timeDisplay">0:00</div>
+                    <div id="lvlDisplay">SYNC LVL 1</div>
+                    <div id="killDisplay">☠ 0</div>
+                    <div id="objectiveDisplay"></div>
                 </div>
             </div>
-            <button id="btnPause">⏸</button>
-            <div id="hud-right">
-                <div id="timeDisplay">0:00</div>
-                <div id="lvlDisplay">SYNC LVL 1</div>
-                <div id="killDisplay">☠ 0</div>
-                <div id="objectiveDisplay"></div>
-            </div>
+            <!-- end #hud-top -->
             <!-- Динамические HUD-элементы (перемещены из doRestart) -->
             <div
                 id="hudCredits"
@@ -4864,7 +4825,15 @@
             ></div>
             <button class="btn btn-play" id="btnRestart">▶ RESTART</button>
             <!-- Secondary actions: grouped for horizontal layout in landscape -->
-            <div id="deathBtns" style="display:flex; flex-direction:column; align-items:center; gap:0;">
+            <div
+                id="deathBtns"
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0;
+                "
+            >
                 <button
                     id="btnMetaUpgrades"
                     style="
@@ -5147,7 +5116,7 @@
         <div id="joystickWrap">
             <div id="jBase"><div id="jThumb"></div></div>
         </div>
-        <!-- Mobile Dash Button -->
+        <!-- Mobile Dash Button — cooldown ring is a child, always perfectly aligned -->
         <button
             id="btnDash"
             style="
@@ -5170,11 +5139,37 @@
                 touch-action: none;
                 user-select: none;
                 -webkit-user-select: none;
+                overflow: visible;
                 transition:
                     background 0.1s,
                     border-color 0.1s;
             "
-        ></button>
+        >
+            <!-- Cooldown ring: always centered on button, no separate positioning needed -->
+            <div id="dashIndicator">
+                <svg viewBox="0 0 42 42" fill="none">
+                    <circle
+                        cx="21"
+                        cy="21"
+                        r="17"
+                        stroke="rgba(140,255,122,0.18)"
+                        stroke-width="3"
+                    />
+                    <circle
+                        id="dashArc"
+                        cx="21"
+                        cy="21"
+                        r="17"
+                        stroke="#8cff7a"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-dasharray="107"
+                        stroke-dashoffset="0"
+                        transform="rotate(-90 21 21)"
+                    />
+                </svg>
+            </div>
+        </button>
 
         <div id="waveAlert"></div>
         <div id="toast"></div>
@@ -5185,32 +5180,6 @@
             <div class="cls-sub">choose your combat protocol</div>
             <div class="cls-grid" id="clsGrid"></div>
             <button class="cls-back-btn" id="btnBackFromClass">← BACK</button>
-        </div>
-
-        <!-- Dash indicator (Scanner HUD) -->
-        <div id="dashIndicator">
-            <svg viewBox="0 0 42 42" fill="none">
-                <circle
-                    cx="21"
-                    cy="21"
-                    r="17"
-                    stroke="rgba(140,255,122,0.18)"
-                    stroke-width="3"
-                />
-                <circle
-                    id="dashArc"
-                    cx="21"
-                    cy="21"
-                    r="17"
-                    stroke="#8cff7a"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-dasharray="107"
-                    stroke-dashoffset="0"
-                    transform="rotate(-90 21 21)"
-                />
-                <circle cx="21" cy="21" r="6" fill="#8cff7a" opacity="0.9" />
-            </svg>
         </div>
 
         <!-- inject script удалён: создавал второй canvas и конфликтующий loop() -->
@@ -5878,14 +5847,20 @@
                                     onClose: () => {
                                         _adLock = false;
                                         // п. 4.4/4.5: only resume GameplayAPI if game is actually playing
-                                        if (typeof Game !== "undefined" && Game.getState?.() === "playing") {
+                                        if (
+                                            typeof Game !== "undefined" &&
+                                            Game.getState?.() === "playing"
+                                        ) {
                                             GameplayAPI.start();
                                         }
                                         onClose?.();
                                     },
                                     onError: () => {
                                         _adLock = false;
-                                        if (typeof Game !== "undefined" && Game.getState?.() === "playing") {
+                                        if (
+                                            typeof Game !== "undefined" &&
+                                            Game.getState?.() === "playing"
+                                        ) {
                                             GameplayAPI.start();
                                         }
                                         onClose?.();
@@ -5980,10 +5955,23 @@
                     viewH = innerHeight;
                 // Shared language state — accessible to both Game IIFE and menu BG IIFE
                 // п. 2.14: detect language from browser before SDK async init completes
-                const _navLangRaw = (navigator.language || navigator.userLanguage || "en").substring(0, 2).toLowerCase();
-                let _currentLang = ["ru", "uk", "be", "kk"].includes(_navLangRaw) ? "ru" : "en";
+                const _navLangRaw = (
+                    navigator.language ||
+                    navigator.userLanguage ||
+                    "en"
+                )
+                    .substring(0, 2)
+                    .toLowerCase();
+                let _currentLang = ["ru", "uk", "be", "kk"].includes(
+                    _navLangRaw,
+                )
+                    ? "ru"
+                    : "en";
                 // Override with saved preference if exists (SDK will re-override async when ready)
-                { const _saved = LS.get("mini_surv_lang", null); if (_saved) _currentLang = _saved; }
+                {
+                    const _saved = LS.get("mini_surv_lang", null);
+                    if (_saved) _currentLang = _saved;
+                }
                 const MAX_ENEMY_BULLETS = 96;
                 const MAX_PLAYER_BULLETS = 80;
 
@@ -6031,11 +6019,17 @@
                     });
                     addEventListener("contextmenu", (e) => e.preventDefault());
                     // п. 1.6.1.8: prevent canvas long-press context menu on iOS/Android
-                    document.querySelectorAll("canvas").forEach(c => {
-                        c.addEventListener("contextmenu", e => e.preventDefault());
-                        c.addEventListener("touchstart", e => {
-                            if (e.target === c) e.preventDefault();
-                        }, { passive: false });
+                    document.querySelectorAll("canvas").forEach((c) => {
+                        c.addEventListener("contextmenu", (e) =>
+                            e.preventDefault(),
+                        );
+                        c.addEventListener(
+                            "touchstart",
+                            (e) => {
+                                if (e.target === c) e.preventDefault();
+                            },
+                            { passive: false },
+                        );
                     });
                     // п. 1.10.2: block browser scroll/swipe-to-refresh; allow scroll inside overflow:auto containers
                     document.addEventListener(
@@ -6043,8 +6037,13 @@
                         (e) => {
                             let el = e.target;
                             while (el && el !== document.documentElement) {
-                                const ov = window.getComputedStyle(el).overflowY;
-                                if ((ov === "auto" || ov === "scroll") && el.scrollHeight > el.clientHeight) return;
+                                const ov =
+                                    window.getComputedStyle(el).overflowY;
+                                if (
+                                    (ov === "auto" || ov === "scroll") &&
+                                    el.scrollHeight > el.clientHeight
+                                )
+                                    return;
                                 el = el.parentElement;
                             }
                             e.preventDefault();
