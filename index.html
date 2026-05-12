@@ -26,6 +26,8 @@
                 -webkit-touch-callout: none;
                 user-select: none;
                 -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
             }
             html {
                 overflow: hidden;
@@ -195,10 +197,8 @@
                 align-items: center;
                 justify-content: center;
                 z-index: 100;
-                overflow-y: auto;
-                overflow-x: hidden;
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior: none;
+                overflow: hidden;
+                overscroll-behavior: contain;
             }
             .screen.active {
                 display: flex;
@@ -207,18 +207,17 @@
             /* ── START ── */
             #startScreen {
                 background: transparent;
-                overflow-y: auto;
+                overflow: hidden;
                 padding: 0 16px;
                 box-sizing: border-box;
-                justify-content: flex-start;
+                justify-content: center;
             }
-            /* Center content vertically when there's space;
-               shrinks to 0 when content overflows → scroll works naturally */
             #startScreen::before,
             #startScreen::after {
                 content: "";
                 flex: 1 1 0;
-                min-height: clamp(10px, 2vh, 28px);
+                min-height: 0;
+                max-height: 24px;
             }
             /* Portrait default: brand and actions are stacked flex columns */
             #startBrand,
@@ -5694,12 +5693,17 @@
                                     },
                                     onClose: () => {
                                         _adLock = false;
-                                        GameplayAPI.start();
+                                        // п. 4.4/4.5: only resume GameplayAPI if game is actually playing
+                                        if (typeof Game !== "undefined" && Game.getState?.() === "playing") {
+                                            GameplayAPI.start();
+                                        }
                                         onClose?.();
                                     },
                                     onError: () => {
                                         _adLock = false;
-                                        GameplayAPI.start();
+                                        if (typeof Game !== "undefined" && Game.getState?.() === "playing") {
+                                            GameplayAPI.start();
+                                        }
                                         onClose?.();
                                     },
                                 },
@@ -5791,7 +5795,11 @@
                 let viewW = innerWidth,
                     viewH = innerHeight;
                 // Shared language state — accessible to both Game IIFE and menu BG IIFE
-                let _currentLang = "en";
+                // п. 2.14: detect language from browser before SDK async init completes
+                const _navLangRaw = (navigator.language || navigator.userLanguage || "en").substring(0, 2).toLowerCase();
+                let _currentLang = ["ru", "uk", "be", "kk"].includes(_navLangRaw) ? "ru" : "en";
+                // Override with saved preference if exists (SDK will re-override async when ready)
+                { const _saved = LS.get("mini_surv_lang", null); if (_saved) _currentLang = _saved; }
                 const MAX_ENEMY_BULLETS = 96;
                 const MAX_PLAYER_BULLETS = 80;
 
@@ -5838,11 +5846,24 @@
                         if (e.button === 0) hold = false;
                     });
                     addEventListener("contextmenu", (e) => e.preventDefault());
-                    // Prevent browser scroll and swipe-to-refresh during gameplay
+                    // п. 1.6.1.8: prevent canvas long-press context menu on iOS/Android
+                    document.querySelectorAll("canvas").forEach(c => {
+                        c.addEventListener("contextmenu", e => e.preventDefault());
+                        c.addEventListener("touchstart", e => {
+                            if (e.target === c) e.preventDefault();
+                        }, { passive: false });
+                    });
+                    // п. 1.10.2: block browser scroll/swipe-to-refresh; allow scroll inside overflow:auto containers
                     document.addEventListener(
                         "touchmove",
                         (e) => {
-                            if (_gameActive) e.preventDefault();
+                            let el = e.target;
+                            while (el && el !== document.documentElement) {
+                                const ov = window.getComputedStyle(el).overflowY;
+                                if ((ov === "auto" || ov === "scroll") && el.scrollHeight > el.clientHeight) return;
+                                el = el.parentElement;
+                            }
+                            e.preventDefault();
                         },
                         { passive: false },
                     );
@@ -10685,7 +10706,7 @@
                         xpBonus: "XP",
                     },
                 };
-                let currentLang = LS.get("mini_surv_lang", "en");
+                let currentLang = LS.get("mini_surv_lang", _currentLang); // use navigator-detected lang as default
                 _currentLang = currentLang; // sync outer-scope for menu BG IIFE
                 function tr(k) {
                     return I18N[currentLang][k] || k;
