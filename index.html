@@ -3478,6 +3478,164 @@
                     padding: 10px 10px 12px;
                     flex-shrink: 1;
                 }
+
+                /* ── Start screen: landscape — compress everything ── */
+                #startScreen {
+                    padding-top: 5px !important;
+                }
+                #startScreen::before,
+                #startScreen::after {
+                    display: none !important;
+                }
+                .menu-alert {
+                    font-size: 6px !important;
+                    padding: 3px 10px !important;
+                    margin-bottom: 5px !important;
+                }
+                .game-title {
+                    font-size: 20px !important;
+                    letter-spacing: 2px !important;
+                    margin-bottom: 1px !important;
+                }
+                .game-title span {
+                    font-size: 30px !important;
+                    line-height: 1.1 !important;
+                }
+                .game-sub {
+                    font-size: 6px !important;
+                    letter-spacing: 3px !important;
+                    margin-bottom: 4px !important;
+                }
+                #startScreen .lore {
+                    font-size: 7px !important;
+                    padding: 5px 10px !important;
+                    margin-bottom: 5px !important;
+                    line-height: 1.3 !important;
+                }
+                .tips {
+                    display: none !important;
+                }
+                .play-row {
+                    margin-top: 0 !important;
+                    gap: 6px !important;
+                }
+                #startScreen .btn-play {
+                    font-size: 12px !important;
+                    padding: 9px 18px !important;
+                    min-width: 0 !important;
+                }
+                #startScreen .btn-www {
+                    font-size: 10px !important;
+                    padding: 9px 12px !important;
+                }
+                #startScreen .menu-row {
+                    margin-top: 4px !important;
+                    gap: 4px !important;
+                }
+                #startScreen .btn-ghost {
+                    font-size: 7px !important;
+                    padding: 5px 8px !important;
+                    letter-spacing: 1px !important;
+                    min-height: 28px !important;
+                }
+                .daily-badge {
+                    font-size: 7px !important;
+                    padding: 5px 10px !important;
+                    margin-top: 4px !important;
+                }
+                #dailyScoreLine {
+                    font-size: 7px !important;
+                    margin-top: 2px !important;
+                }
+
+                /* ── Death screen: landscape — compress for height ── */
+                .death-title {
+                    font-size: 28px !important;
+                    margin-bottom: 6px !important;
+                    letter-spacing: 3px !important;
+                }
+                .stats-row {
+                    gap: 6px !important;
+                    margin-bottom: 5px !important;
+                    flex-wrap: nowrap !important;
+                }
+                .stat-box {
+                    padding: 5px 8px !important;
+                    min-width: 44px !important;
+                }
+                .stat-val {
+                    font-size: 15px !important;
+                }
+                .stat-lbl {
+                    font-size: 6px !important;
+                    margin-top: 1px !important;
+                    letter-spacing: 2px !important;
+                }
+                .death-run-extra {
+                    margin-bottom: 3px !important;
+                    gap: 3px 5px !important;
+                    font-size: 8px !important;
+                }
+                .death-run-chip {
+                    padding: 3px 5px !important;
+                    font-size: 8px !important;
+                }
+                #deathNewAchs {
+                    margin: 2px auto !important;
+                }
+                #btnRestart {
+                    font-size: 12px !important;
+                    padding: 8px 18px !important;
+                    margin-top: 5px !important;
+                }
+                #btnMetaUpgrades {
+                    font-size: 9px !important;
+                    padding: 6px 14px !important;
+                    margin-top: 4px !important;
+                }
+                #btnLeaderboard {
+                    font-size: 9px !important;
+                    padding: 6px 14px !important;
+                    margin-top: 4px !important;
+                }
+                #btnLobby {
+                    font-size: 9px !important;
+                    padding: 5px 14px !important;
+                    margin-top: 4px !important;
+                }
+                .death-ad-row {
+                    margin-top: 3px !important;
+                }
+                .btn-powered-run {
+                    font-size: 9px !important;
+                    padding: 5px 12px !important;
+                }
+
+                /* ── Revive screen: landscape — compact ── */
+                .revive-title {
+                    font-size: 24px !important;
+                    letter-spacing: 3px !important;
+                    margin-bottom: 5px !important;
+                }
+                .revive-sub {
+                    font-size: 8px !important;
+                    letter-spacing: 2px !important;
+                    margin-bottom: 8px !important;
+                }
+                .revive-cd {
+                    font-size: 34px !important;
+                    min-height: 38px !important;
+                    margin-bottom: 10px !important;
+                }
+                #btnRevive {
+                    font-size: 12px !important;
+                    padding: 10px 22px !important;
+                }
+                #btnSkipRevive {
+                    font-size: 9px !important;
+                    padding: 5px 14px !important;
+                    margin-top: 5px !important;
+                }
             }
 
             /* ══════════════════════════════════════════════════════
@@ -3955,6 +4113,101 @@
                 }
                 .dna-node {
                     padding: 7px 10px;
+                }
+
+                /* ── Start screen: very compact for tiny landscape ── */
+                .game-title {
+                    font-size: 17px !important;
+                    margin-bottom: 0 !important;
+                }
+                .game-title span {
+                    font-size: 26px !important;
+                }
+                .game-sub {
+                    font-size: 6px !important;
+                    margin-bottom: 3px !important;
+                }
+                #startScreen .lore {
+                    font-size: 6px !important;
+                    padding: 4px 8px !important;
+                    margin-bottom: 4px !important;
+                }
+                #startScreen .btn-play {
+                    font-size: 11px !important;
+                    padding: 7px 14px !important;
+                }
+                #startScreen .btn-www {
+                    font-size: 9px !important;
+                    padding: 7px 10px !important;
+                }
+                #startScreen .btn-ghost {
+                    font-size: 6px !important;
+                    padding: 4px 7px !important;
+                    min-height: 24px !important;
+                }
+                .daily-badge {
+                    font-size: 6px !important;
+                    padding: 4px 8px !important;
+                    margin-top: 3px !important;
+                }
+                #dailyScoreLine {
+                    font-size: 6px !important;
+                }
+
+                /* ── Death screen: ultra compact ── */
+                .death-title {
+                    font-size: 24px !important;
+                    margin-bottom: 5px !important;
+                }
+                .stat-box {
+                    padding: 4px 6px !important;
+                    min-width: 38px !important;
+                }
+                .stat-val {
+                    font-size: 13px !important;
+                }
+                .stat-lbl {
+                    font-size: 5px !important;
+                }
+                #btnRestart {
+                    font-size: 11px !important;
+                    padding: 7px 16px !important;
+                    margin-top: 4px !important;
+                }
+                #btnMetaUpgrades,
+                #btnLeaderboard,
+                #btnLobby {
+                    font-size: 8px !important;
+                    padding: 5px 12px !important;
+                    margin-top: 3px !important;
+                }
+                .btn-powered-run {
+                    font-size: 8px !important;
+                    padding: 4px 10px !important;
+                }
+
+                /* ── Revive screen: ultra compact ── */
+                .revive-title {
+                    font-size: 20px !important;
+                    margin-bottom: 4px !important;
+                }
+                .revive-sub {
+                    font-size: 7px !important;
+                    margin-bottom: 6px !important;
+                }
+                .revive-cd {
+                    font-size: 30px !important;
+                    min-height: 32px !important;
+                    margin-bottom: 8px !important;
+                }
+                #btnRevive {
+                    font-size: 11px !important;
+                    padding: 8px 18px !important;
+                }
+                #btnSkipRevive {
+                    font-size: 8px !important;
+                    padding: 4px 12px !important;
+                    margin-top: 4px !important;
                 }
             }
         </style>
