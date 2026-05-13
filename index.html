@@ -8,6 +8,29 @@
         />
         <title>Mini Survivors</title>
         <script>
+            function fixMobileLandscapeGlitch() {
+                if (
+                    window.innerHeight <= 440 &&
+                    window.innerWidth > window.innerHeight
+                ) {
+                    // Находим реальную высоту видимой зоны в пикселях
+                    const activeHeight = window.innerHeight;
+                    // Принудительно задаем ее тегу body в обход багов браузера
+                    document.body.style.height = activeHeight + "px";
+                    document.documentElement.style.height = activeHeight + "px";
+                } else {
+                    document.body.style.height = "";
+                    document.documentElement.style.height = "";
+                }
+            }
+
+            // Отслеживаем смену ориентации и изменение размеров из-за появления/скрытия плашки
+            window.addEventListener("resize", fixMobileLandscapeGlitch);
+            window.addEventListener("orientationchange", () => {
+                setTimeout(fixMobileLandscapeGlitch, 200); // Небольшая задержка, чтобы Яндекс успел перерисовать интерфейс
+            });
+            fixMobileLandscapeGlitch();
+
             window._sdkLoadPromise = new Promise(function (resolve) {
                 if (location.protocol !== "https:") return resolve();
                 var s = document.createElement("script");
@@ -4595,6 +4618,149 @@
                 font-size: 7px !important;
                 margin-bottom: 0 !important;
                 text-align: center !important;
+            }
+
+            /* 1. Добавляем контейнеры всех остальных экранов в жесткие рамки высоты */
+            .card-row,
+    #relicCards,
+    #mutCards,
+    .merchant-row, /* или ваш класс контейнера в магазине */
+    #merchantScreen .card-row {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: center !important;
+                align-items: stretch !important;
+                gap: 8px !important;
+                width: 100% !important;
+                height: 60vh !important;
+                max-height: 200px !important;
+                min-height: 0 !important;
+                flex: 0 1 auto !important;
+            }
+
+            /* 2. Применяем правила сжатия к карточкам реликвий, мутаций и товаров */
+            .up-card,
+            .relic-card,
+            .mut-card,
+            .merchant-card {
+                box-sizing: border-box !important;
+                padding: 12px 10px !important;
+                margin: 0 !important;
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
+                min-height: 0 !important;
+                max-height: 100% !important;
+
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                overflow: hidden !important;
+            }
+
+            /* 3. Унифицируем сжатие иконок для всех типов карточек */
+            .up-icon,
+            .relic-icon,
+            .mut-icon,
+            .merchant-icon {
+                width: 28px !important;
+                height: 28px !important;
+                margin: 0 auto !important;
+                flex-shrink: 0 !important;
+            }
+            .up-icon svg,
+            .relic-icon svg,
+            .mut-icon svg,
+            .merchant-icon svg {
+                width: 24px !important;
+                height: 24px !important;
+            }
+
+            /* 4. Унифицируем текстовые блоки (названия) */
+            .up-name,
+            .relic-name,
+            .mut-name,
+            .merchant-name {
+                font-size: 11px !important;
+                margin-top: 4px !important;
+                margin-bottom: 2px !important;
+                line-height: 1.1 !important;
+                white-space: nowrap !important;
+                text-overflow: ellipsis !important;
+                overflow: hidden !important;
+                text-align: center !important;
+                width: 100% !important;
+            }
+
+            /* 5. Унифицируем текстовые блоки (описания) с автопереносом */
+            .up-desc,
+            .relic-desc,
+            .mut-desc,
+            .merchant-desc {
+                font-size: 9px !important;
+                line-height: 1.3 !important;
+                margin: 4px 0 0 0 !important;
+                text-align: center !important;
+                width: 100% !important;
+                display: block !important;
+                flex-grow: 1 !important;
+                white-space: normal !important;
+                word-wrap: break-word !important;
+            }
+
+            /* Жестко фиксируем саму страницу и запрещаем ей скроллиться мимо плашек */
+            html,
+            body {
+                overflow: hidden !important;
+                height: 100dvh !important;
+                max-height: 100dvh !important;
+                position: fixed !important;
+                width: 100vw !important;
+            }
+
+            /* Применяем сжатие ко ВСЕМ экранам игры (добавьте сюда ID экрана выбора класса, например #classScreen) */
+            #upgradeScreen,
+            #relicScreen,
+            #mutationScreen,
+            #merchantScreen,
+            #classScreen,
+            #startScreen,
+            #deathScreen {
+                box-sizing: border-box !important;
+                height: 100dvh !important;
+                max-height: 100dvh !important;
+                overflow: hidden !important;
+
+                /* display: flex !important; */
+                flex-direction: column !important;
+                /* Центрируем содержимое в оставшемся узком окне над панелью */
+                justify-content: center !important;
+                align-items: center !important;
+
+                /* Отступ снизу динамически увеличиваем, чтобы вытолкнуть карточки выше плашки Яндекса */
+                padding-bottom: calc(
+                    env(safe-area-inset-bottom, 0px) + 20px
+                ) !important;
+            }
+
+            /* Ужимаем заголовки экранов (например, SELECT CLASS) */
+            #classScreen h1,
+            .screen-title,
+            h2 {
+                font-size: clamp(14px, 4vh, 22px) !important;
+                margin-top: 0 !important;
+                margin-bottom: 8px !important;
+                letter-spacing: 2px !important;
+            }
+
+            /* Контейнер для больших карточек выбора класса/протокола */
+            .class-row,
+            #classCards {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 12px !important;
+                height: 55vh !important; /* Даем им еще меньше места по высоте */
+                max-height: 180px !important;
             }
         </style>
     </head>
