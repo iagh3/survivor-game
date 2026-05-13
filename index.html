@@ -8,34 +8,77 @@
         />
         <title>Mini Survivors</title>
         <script>
-            // Full screen mobile
+            // Глобальные переменные для элементов интерфейса
             const promptEl = document.getElementById("fullscreenPrompt");
             const btnEl = document.getElementById("goFullscreenBtn");
 
             function checkOrientationAndBars() {
-                // Если элемент не найден в DOM, выходим из функции, чтобы избежать других ошибок
                 if (!promptEl) return;
 
                 const isLandscape = window.innerWidth > window.innerHeight;
 
-                // Проверяем, активен ли уже полноэкранный режим в браузере
+                // Проверяем нативный браузерный Fullscreen
                 const isFullscreen =
                     document.fullscreenElement ||
                     document.webkitFullscreenElement ||
                     document.mozFullScreenElement ||
                     document.msFullscreenElement;
 
-                // Если телефон перевернули горизонтально, но полноэкранный режим не включен
-                if (isLandscape && !isFullscreen) {
+                // Если это ландшафт, принудительно адаптируем размеры контейнеров под доступное Яндексом окно
+                if (isLandscape) {
+                    const availableHeight = window.innerHeight;
+
+                    // Передаем точную высоту в пикселях тегам, минуя баги расчета 100vh/100dvh
+                    document.body.style.setProperty(
+                        "height",
+                        availableHeight + "px",
+                        "important",
+                    );
+                    document.documentElement.style.setProperty(
+                        "height",
+                        availableHeight + "px",
+                        "important",
+                    );
+
+                    // Корректируем размеры всех игровых экранов под физически доступное место
+                    const screens = [
+                        "upgradeScreen",
+                        "relicScreen",
+                        "mutationScreen",
+                        "merchantScreen",
+                        "classScreen",
+                    ];
+                    screens.forEach((id) => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.style.setProperty(
+                                "height",
+                                availableHeight + "px",
+                                "important",
+                            );
+                            el.style.setProperty(
+                                "max-height",
+                                availableHeight + "px",
+                                "important",
+                            );
+                        }
+                    });
+                } else {
+                    // Сбрасываем стили для портретного режима
+                    document.body.style.height = "";
+                    document.documentElement.style.height = "";
+                }
+
+                // Показываем плашку оптимизации только если браузер позволяет скрывать панели, но режим еще не активен
+                if (isLandscape && !isFullscreen && !window.ysdk) {
                     promptEl.style.display = "flex";
                 } else {
                     promptEl.style.display = "none";
                 }
             }
 
-            // Функция запроса полноэкранного режима с интеграцией Яндекс SDK
             function launchFullscreen() {
-                // 1. Пытаемся вызвать полноэкранный режим через встроенный Yandex SDK
+                // Вызов через Яндекс SDK
                 if (
                     window.ysdk &&
                     window.ysdk.screen &&
@@ -43,42 +86,30 @@
                 ) {
                     try {
                         window.ysdk.screen.fullscreen.request();
-                    } catch (e) {
-                        console.log(
-                            "SDK fullscreen error, trying fallback:",
-                            e,
-                        );
-                    }
+                    } catch (e) {}
                 }
 
-                // 2. Универсальный запасной вариант (браузерный Fullscreen API)
+                // Браузерный вызов
                 const element = document.documentElement;
                 if (element.requestFullscreen) {
                     element.requestFullscreen();
                 } else if (element.webkitRequestFullscreen) {
                     element.webkitRequestFullscreen();
-                } else if (element.mozRequestFullScreen) {
-                    element.mozRequestFullScreen();
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen();
                 }
 
-                // Скрываем окно оптимизации после попытки перевода на полный экран
                 if (promptEl) promptEl.style.display = "none";
+
+                // Спустя мгновение еще раз пересчитываем доступные экраны
+                setTimeout(checkOrientationAndBars, 150);
             }
 
-            // Привязываем запуск к кнопке, если она существует
-            if (btnEl) {
-                btnEl.addEventListener("click", launchFullscreen);
-            }
+            if (btnEl) btnEl.addEventListener("click", launchFullscreen);
 
-            // Следим за изменениями экрана и поворотами (БЕЗ fixMobileLandscapeGlitch)
             window.addEventListener("resize", checkOrientationAndBars);
             window.addEventListener("orientationchange", () => {
-                setTimeout(checkOrientationAndBars, 300);
+                setTimeout(checkOrientationAndBars, 250);
             });
 
-            // Проверяем состояние при первой загрузке страницы
             document.addEventListener(
                 "DOMContentLoaded",
                 checkOrientationAndBars,
