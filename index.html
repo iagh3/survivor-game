@@ -219,7 +219,7 @@
                 display: flex;
             }
             /* Centering spacers: grow when content fits (centers it),
-               shrink to 0 when content overflows (safe scroll from top) */
+                                shrink to 0 when content overflows (safe scroll from top) */
             .screen::before,
             .screen::after {
                 content: "";
@@ -1883,8 +1883,8 @@
             }
 
             /* ════════════════════════════════════════════════════════
-               SKINS SECTION
-            ════════════════════════════════════════════════════════ */
+                                SKINS SECTION
+                             ════════════════════════════════════════════════════════ */
             .skins-section {
                 width: 100%;
                 max-width: 720px;
@@ -2020,8 +2020,8 @@
             }
 
             /* ════════════════════════════════════════════════════════
-               SHOP CLOSE BUTTON — внизу
-            ════════════════════════════════════════════════════════ */
+                                SHOP CLOSE BUTTON — внизу
+                             ════════════════════════════════════════════════════════ */
             .shop-close-bar {
                 width: 100%;
                 display: flex;
@@ -2031,8 +2031,8 @@
             }
 
             /* ════════════════════════════════════════════════════════
-               LEADERBOARD
-            ════════════════════════════════════════════════════════ */
+                                LEADERBOARD
+                             ════════════════════════════════════════════════════════ */
             .lb-sec {
                 width: 100%;
                 max-width: 660px;
@@ -2041,10 +2041,10 @@
             }
 
             /* ════════════════════════════════════════════════════════
-               ПОЛНАЯ АДАПТИВНОСТЬ 320 → 1920px
-               Затрагивает: HUD, все экраны, магазин, апгрейды,
-               класс-экран, настройки, смерть, джойстик
-            ════════════════════════════════════════════════════════ */
+                                ПОЛНАЯ АДАПТИВНОСТЬ 320 → 1920px
+                                Затрагивает: HUD, все экраны, магазин, апгрейды,
+                                класс-экран, настройки, смерть, джойстик
+                             ════════════════════════════════════════════════════════ */
 
             /* ── 320px (very small phones) ── */
             @media (max-width: 360px) {
@@ -3336,8 +3336,8 @@
             }
 
             /* ══════════════════════════════════════════════════════
-               PERFORMANCE & ADAPTIVE QUALITY
-               ══════════════════════════════════════════════════════ */
+                                PERFORMANCE & ADAPTIVE QUALITY
+                                ══════════════════════════════════════════════════════ */
 
             /* Disable non-essential animations on reduced-motion */
             @media (prefers-reduced-motion: reduce) {
@@ -3371,8 +3371,8 @@
             }
 
             /* ══════════════════════════════════════════════════════
-               RESPONSIVE — CARD GRIDS (mutations / merchant / relic)
-               ══════════════════════════════════════════════════════ */
+                                RESPONSIVE — CARD GRIDS (mutations / merchant / relic)
+                                ══════════════════════════════════════════════════════ */
             #mutCards,
             #mktCards,
             #relicCards {
@@ -3395,8 +3395,8 @@
             }
 
             /* ══════════════════════════════════════════════════════
-               RESPONSIVE — UPGRADE CARDS
-               ══════════════════════════════════════════════════════ */
+                                RESPONSIVE — UPGRADE CARDS
+                                ══════════════════════════════════════════════════════ */
             .up-card {
                 flex: 1 1 auto;
                 min-width: 0;
@@ -3408,8 +3408,8 @@
             }
 
             /* ══════════════════════════════════════════════════════
-               RESPONSIVE — LANDSCAPE MOBILE (any height < 520px)
-               ══════════════════════════════════════════════════════ */
+                                RESPONSIVE — LANDSCAPE MOBILE (any height < 520px)
+                                ══════════════════════════════════════════════════════ */
             @media (max-height: 520px) and (orientation: landscape) {
                 /* Kill centering spacers — all screens top-align in landscape */
                 .screen::before,
@@ -3731,8 +3731,8 @@
             }
 
             /* ══════════════════════════════════════════════════════
-               PORTRAIT COMPACT — tight screens / Russian longer text
-               ══════════════════════════════════════════════════════ */
+                                PORTRAIT COMPACT — tight screens / Russian longer text
+                                ══════════════════════════════════════════════════════ */
             @media (max-height: 720px) and (orientation: portrait) {
                 .menu-alert {
                     margin-bottom: 7px !important;
@@ -3795,8 +3795,8 @@
             }
 
             /* ══════════════════════════════════════════════════════
-               RESPONSIVE — ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (< 320px)
-               ══════════════════════════════════════════════════════ */
+                                RESPONSIVE — ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (< 320px)
+                                ══════════════════════════════════════════════════════ */
             @media (max-width: 319px) {
                 .mut-card,
                 .mkt-card,
@@ -3811,8 +3811,8 @@
             }
 
             /* ══════════════════════════════════════════════════════
-               SAFE AREA — universal padding for all screens
-               ══════════════════════════════════════════════════════ */
+                                SAFE AREA — universal padding for all screens
+                                ══════════════════════════════════════════════════════ */
             @supports (padding: env(safe-area-inset-bottom)) {
                 .screen.active {
                     padding-left: max(0px, env(safe-area-inset-left));
@@ -3998,19 +3998,19 @@
             }
 
             /* ═══════════════════════════════════════════════════════
-               MOBILE / TABLET ADAPTIVE FIX
-               ═══════════════════════════════════════════════════════ */
+                                MOBILE / TABLET ADAPTIVE FIX
+                                ═══════════════════════════════════════════════════════ */
 
             /* Overlay game screens: flex-start prevents the justify-center scroll trap.
-               When justify-content:center overflows, top content is permanently unreachable.
-               Spacer pseudo-elements center content when it fits, collapse to 0 on overflow. */
+                                When justify-content:center overflows, top content is permanently unreachable.
+                                Spacer pseudo-elements center content when it fits, collapse to 0 on overflow. */
             #upgradeScreen,
             #relicScreen,
             #mutationScreen,
             #merchantScreen {
                 overflow-y: auto;
                 overscroll-behavior-y: contain;
-                justify-content: flex-start;
+                justify-content: center;
             }
             #upgradeScreen::before,
             #upgradeScreen::after,
@@ -4458,6 +4458,143 @@
                     min-height: 32px !important;
                     margin-top: 5px !important;
                 }
+            }
+
+            /* ═══════════════════════════════════════════════════════
+                        LANDSCAPE MOBILE FIX (БЕЗОПАСНОЕ СЖАТИЕ)
+                    ═══════════════════════════════════════════════════════ */
+            @media (orientation: landscape) and (max-height: 440px) {
+                /* 1. Фиксируем экраны строго в рамках видимой зоны */
+                #upgradeScreen,
+                #relicScreen,
+                #mutationScreen,
+                #merchantScreen {
+                    box-sizing: border-box !important;
+                    height: 100dvh !important;
+                    max-height: 100dvh !important;
+                    overflow: hidden !important; /* Запрещаем общий скролл экрана */
+
+                    /* display: flex !important; */
+                    flex-direction: column !important;
+                    justify-content: center !important; /* Центрируем всю панель по вертикали */
+                    align-items: center !important;
+
+                    /* Безопасные отступы со всех сторон экрана */
+                    padding-top: env(safe-area-inset-top, 5px) !important;
+                    padding-bottom: calc(
+                        env(safe-area-inset-bottom, 0px) + 8px
+                    ) !important;
+                    padding-left: calc(
+                        env(safe-area-inset-left, 0px) + 12px
+                    ) !important;
+                    padding-right: calc(
+                        env(safe-area-inset-right, 0px) + 12px
+                    ) !important;
+                }
+
+                /* Убираем псевдоэлементы-распорки, которые ломали флекс-поведение */
+                #upgradeScreen::before,
+                #upgradeScreen::after,
+                #relicScreen::before,
+                #relicScreen::after,
+                #mutationScreen::before,
+                #mutationScreen::after,
+                #merchantScreen::before,
+                #merchantScreen::after {
+                    display: none !important;
+                }
+
+                /* 2. Компактная шапка */
+                .up-header {
+                    padding: 0 !important;
+                    margin-top: 2px !important;
+                    margin-bottom: 6px !important;
+                    flex: 0 0 auto !important; /* Запрещаем шапке менять размер */
+                }
+                .up-lvl {
+                    font-size: 16px !important;
+                    margin: 0 !important;
+                }
+
+                /* 3. Строка с карточками: жестко ограничиваем высоту */
+                .card-row {
+                    display: flex !important;
+                    flex-direction: row !important;
+                    justify-content: center !important;
+                    align-items: stretch !important;
+                    gap: 16px !important;
+                    margin-top: 30px;
+                    width: 100% !important;
+                    /* height: 60vh !important; */
+                    max-height: 200px !important;
+                    min-height: 0 !important;
+                    flex: 0 1 auto !important;
+                }
+
+                /* 4. Сжатие карточек без деформации структуры */
+                .up-card {
+                    box-sizing: border-box !important;
+                    padding: 30px 10px !important; /* Увеличиваем вертикальный padding для баланса */
+                    margin: 0 !important;
+                    flex: 1 1 0 !important;
+                    min-width: 0 !important;
+                    min-height: 0 !important;
+                    max-height: 100% !important;
+
+                    display: flex !important;
+                    flex-direction: column !important;
+                    /* ИЗМЕНЕНО: Равномерно распределяем элементы по вертикали внутри карточки */
+                    justify-content: space-between !important;
+                    align-items: center !important; /* Центрируем всё по горизонтали внутри карточки */
+                    overflow: hidden !important;
+                }
+
+                /* 5. Элементы внутри карточки */
+                .up-icon {
+                    width: 28px !important; /* Чуть увеличили для читаемости */
+                    height: 28px !important;
+                    margin: 0 auto !important; /* Убрали лишний отступ снизу */
+                    flex-shrink: 0 !important; /* Запрещаем иконке сжиматься в ноль */
+                }
+                .up-icon svg {
+                    width: 24px !important;
+                    height: 24px !important;
+                }
+
+                /* НОВЫЙ БЛОК: Группируем текстовую часть для правильного отцентрированного выравнивания */
+                .up-name,
+                .up-desc {
+                    text-align: center !important; /* Центрируем текст внутри карточки */
+                    width: 100% !important;
+                }
+
+                .up-name {
+                    font-size: 11px !important;
+                    margin-top: 4px !important;
+                    margin-bottom: 2px !important;
+                    line-height: 1.1 !important;
+                    white-space: nowrap !important;
+                    text-overflow: ellipsis !important;
+                    overflow: hidden !important;
+                }
+                .up-desc {
+                    font-size: 12px !important;
+                    line-height: 1.3 !important;
+                    margin: 4px 0 0 0 !important;
+                    text-align: center !important;
+                    width: 100% !important;
+                    display: block !important;
+                    /* flex-grow: 0 !important; */
+                    white-space: normal !important;
+                    word-wrap: break-word !important;
+                }
+            }
+
+            .up-tier,
+            .up-stack {
+                font-size: 7px !important;
+                margin-bottom: 0 !important;
+                text-align: center !important;
             }
         </style>
     </head>
