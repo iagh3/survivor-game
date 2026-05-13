@@ -3410,6 +3410,11 @@
                RESPONSIVE — LANDSCAPE MOBILE (any height < 520px)
                ══════════════════════════════════════════════════════ */
             @media (max-height: 520px) and (orientation: landscape) {
+                /* Kill centering spacers — all screens top-align in landscape */
+                .screen::before,
+                .screen::after {
+                    display: none !important;
+                }
                 /* Scrollable menu screens: top-aligned */
                 #shopScreen,
                 #settingsScreen,
@@ -4309,51 +4314,92 @@
                     padding: 7px 10px;
                 }
 
-                /* ── Start: compact single-column for ≤420px landscape ── */
-                .game-title {
-                    font-size: 13px !important;
-                    margin-bottom: 7px !important;
+                /* ── Start: 2-column layout for ≤420px landscape ── */
+                #startScreen {
+                    flex-direction: row !important;
+                    align-items: center !important;
+                    justify-content: space-between !important;
+                    padding: 8px 20px !important;
+                    overflow: hidden !important;
+                    gap: 0 !important;
                 }
-                .game-title span {
-                    font-size: 42px !important;
+                #startScreen::before,
+                #startScreen::after {
+                    display: none !important;
+                }
+                #startBrand {
+                    flex: 0 0 52% !important;
+                    align-items: flex-start !important;
+                    justify-content: center !important;
+                    gap: 0 !important;
+                    padding: 0 !important;
+                    border: none !important;
+                    background: none !important;
                 }
                 .menu-alert {
                     font-size: 7px !important;
                     padding: 3px 8px !important;
-                    margin-bottom: 8px !important;
+                    margin-bottom: 6px !important;
+                    max-width: 100% !important;
+                }
+                .game-title {
+                    font-size: 11px !important;
+                    line-height: 0.85 !important;
+                    margin-bottom: 4px !important;
+                    text-align: left !important;
+                }
+                .game-title span {
+                    font-size: 36px !important;
                 }
                 #startScreen .lore {
-                    font-size: 8px !important;
-                    line-height: 1.5 !important;
-                    margin-top: 7px !important;
+                    font-size: 7px !important;
+                    line-height: 1.45 !important;
+                    margin-top: 5px !important;
                     margin-bottom: 0 !important;
-                    opacity: 0.65 !important;
+                    opacity: 0.7 !important;
+                    text-align: left !important;
                     display: block !important;
                 }
                 #startActions {
+                    flex: 0 0 44% !important;
+                    align-items: stretch !important;
+                    justify-content: center !important;
                     gap: 5px !important;
                     margin-top: 0 !important;
+                    padding: 0 !important;
+                }
+                #startActions > .menu-row {
+                    width: 100% !important;
+                    gap: 5px !important;
+                    margin: 0 !important;
                 }
                 #startScreen .btn-play {
-                    font-size: 15px !important;
-                    letter-spacing: 5px !important;
+                    font-size: 13px !important;
+                    letter-spacing: 4px !important;
                     padding: 0 !important;
                 }
                 .play-row {
-                    height: 52px !important;
+                    height: 50px !important;
+                    width: 100% !important;
                 }
                 #startScreen .btn-www {
-                    font-size: 9px !important;
-                    padding: 0 12px !important;
+                    font-size: 8px !important;
+                    padding: 0 8px !important;
                 }
                 #startScreen .btn-ghost {
-                    font-size: 9px !important;
-                    min-height: 32px !important;
-                    padding: 0 5px !important;
+                    font-size: 8px !important;
+                    min-height: 30px !important;
+                    padding: 0 4px !important;
+                    flex: 1 !important;
                 }
                 .daily-badge {
-                    font-size: 9px !important;
-                    padding: 8px 14px !important;
+                    font-size: 8px !important;
+                    padding: 7px 10px !important;
+                    width: 100% !important;
+                    box-sizing: border-box !important;
+                    justify-content: center !important;
+                    display: flex !important;
+                    margin-top: 0 !important;
                 }
                 /* Death: tighter stat boxes ── */
                 .death-title {
