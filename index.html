@@ -38,6 +38,67 @@
             });
             fixMobileLandscapeGlitch();
 
+            // Full screen mobile
+            const promptEl = document.getElementById("fullscreenPrompt");
+            const btnEl = document.getElementById("goFullscreenBtn");
+
+            function checkOrientationAndBars() {
+                const isLandscape = window.innerWidth > window.innerHeight;
+
+                // Проверяем, активен ли уже полноэкранный режим в браузере
+                const isFullscreen =
+                    document.fullscreenElement ||
+                    document.webkitFullscreenElement ||
+                    document.mozFullScreenElement ||
+                    document.msFullscreenElement;
+
+                // Если телефон перевернули горизонтально, но полноэкранный режим не включен
+                if (isLandscape && !isFullscreen) {
+                    promptEl.style.display = "flex";
+                } else {
+                    promptEl.style.display = "none";
+                }
+            }
+
+            // Функция запроса полноэкранного режима у браузера
+            function launchFullscreen() {
+                const element = document.documentElement;
+
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) {
+                    /* Safari / iOS / Яндекс на iOS */
+                    element.webkitRequestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    /* Firefox */
+                    element.mozRequestFullScreen();
+                } else if (element.msRequestFullscreen) {
+                    /* IE/Edge */
+                    element.msRequestFullscreen();
+                }
+
+                // Скрываем окно сразу после клика
+                promptEl.style.display = "none";
+            }
+
+            // Привязываем запуск к кнопке
+            btnEl.addEventListener("click", launchFullscreen);
+
+            // Следим за изменениями экрана и поворотами
+            window.addEventListener("resize", checkOrientationAndBars);
+            window.addEventListener("orientationchange", () => {
+                setTimeout(checkOrientationAndBars, 300); // Небольшая задержка для корректного считывания размеров
+            });
+
+            // Проверяем состояние при первой загрузке страницы
+            document.addEventListener(
+                "DOMContentLoaded",
+                checkOrientationAndBars,
+            );
+            checkOrientationAndBars();
+
+            // Full screen mobile
+
             window._sdkLoadPromise = new Promise(function (resolve) {
                 if (location.protocol !== "https:") return resolve();
                 var s = document.createElement("script");
@@ -4773,6 +4834,7 @@
     </head>
     <body>
         <canvas id="gc"></canvas>
+
         <!-- Pause Overlay -->
         <div id="pauseOverlay">
             <div class="pause-panel">
@@ -6005,6 +6067,75 @@
                 </button>
                 <div class="ls-dots" id="lsDots"></div>
             </div>
+        </div>
+
+        <!-- Full screen mobile -->
+        <div
+            id="fullscreenPrompt"
+            style="
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100dvh;
+                background: #0a0a12;
+                z-index: 99999;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                font-family: monospace;
+                box-sizing: border-box;
+                padding: 20px;
+                border: 2px solid #00e5ff;
+                box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.2);
+            "
+        >
+            <div
+                style="
+                    color: #00e5ff;
+                    font-size: clamp(16px, 4vw, 24px);
+                    text-transform: uppercase;
+                    letter-spacing: 3px;
+                    margin-bottom: 10px;
+                    text-align: center;
+                    text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+                "
+            >
+                Оптимизация экрана
+            </div>
+            <div
+                style="
+                    color: #ff3d00;
+                    font-size: clamp(11px, 2.5vw, 14px);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    margin-bottom: 25px;
+                    text-align: center;
+                "
+            >
+                Переверните устройство и активируйте полноэкранный режим
+            </div>
+            <button
+                id="goFullscreenBtn"
+                style="
+                    padding: 12px 28px;
+                    background: transparent;
+                    border: 1px solid #00e5ff;
+                    color: #00e5ff;
+                    font-family: monospace;
+                    font-size: 14px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    cursor: pointer;
+                    box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+                    transition: all 0.2s ease;
+                    outline: none;
+                "
+            >
+                Инициализировать
+            </button>
         </div>
 
         <script>
