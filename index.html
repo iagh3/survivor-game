@@ -33,23 +33,37 @@
                 }
             }
 
-            // Функция запроса полноэкранного режима у браузера
+            // Функция запроса полноэкранного режима с интеграцией Яндекс SDK
             function launchFullscreen() {
-                const element = document.documentElement;
+                // 1. Пытаемся вызвать полноэкранный режим через встроенный Yandex SDK
+                if (
+                    window.ysdk &&
+                    window.ysdk.screen &&
+                    window.ysdk.screen.fullscreen
+                ) {
+                    try {
+                        window.ysdk.screen.fullscreen.request();
+                    } catch (e) {
+                        console.log(
+                            "SDK fullscreen error, trying fallback:",
+                            e,
+                        );
+                    }
+                }
 
+                // 2. Универсальный запасной вариант (браузерный Fullscreen API)
+                const element = document.documentElement;
                 if (element.requestFullscreen) {
                     element.requestFullscreen();
                 } else if (element.webkitRequestFullscreen) {
-                    /* Safari / iOS / Яндекс на iOS */
                     element.webkitRequestFullscreen();
                 } else if (element.mozRequestFullScreen) {
-                    /* Firefox */
                     element.mozRequestFullScreen();
                 } else if (element.msRequestFullscreen) {
-                    /* IE/Edge */
                     element.msRequestFullscreen();
                 }
 
+                // Скрываем окно оптимизации после попытки перевода на полный экран
                 if (promptEl) promptEl.style.display = "none";
             }
 
