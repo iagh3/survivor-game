@@ -8,21 +8,28 @@
         />
         <title>Mini Survivors</title>
         <script>
-            function fixMobileLandscapeGlitch() {
+            function hideBrowserBars() {
                 if (
-                    window.innerHeight <= 440 &&
-                    window.innerWidth > window.innerHeight
+                    window.innerWidth > window.innerHeight &&
+                    window.innerHeight <= 440
                 ) {
-                    // Находим реальную высоту видимой зоны в пикселях
-                    const activeHeight = window.innerHeight;
-                    // Принудительно задаем ее тегу body в обход багов браузера
-                    document.body.style.height = activeHeight + "px";
-                    document.documentElement.style.height = activeHeight + "px";
-                } else {
-                    document.body.style.height = "";
-                    document.documentElement.style.height = "";
+                    // Искусственно увеличиваем высоту body, чтобы появилось место для микро-скролла
+                    document.body.style.height =
+                        window.innerHeight + 100 + "px";
+
+                    setTimeout(() => {
+                        // Прокручиваем страницу на 1 пиксель вниз — это триггерит скрытие панели в Chrome/Яндексе
+                        window.scrollTo(0, 1);
+
+                        // Возвращаем документу нормальную высоту viewport
+                        document.body.style.height = window.innerHeight + "px";
+                    }, 300);
                 }
             }
+
+            // Запускаем при повороте экрана
+            window.addEventListener("orientationchange", hideBrowserBars);
+            window.addEventListener("resize", hideBrowserBars);
 
             // Отслеживаем смену ориентации и изменение размеров из-за появления/скрытия плашки
             window.addEventListener("resize", fixMobileLandscapeGlitch);
