@@ -8,41 +8,14 @@
         />
         <title>Mini Survivors</title>
         <script>
-            function hideBrowserBars() {
-                if (
-                    window.innerWidth > window.innerHeight &&
-                    window.innerHeight <= 440
-                ) {
-                    // Искусственно увеличиваем высоту body, чтобы появилось место для микро-скролла
-                    document.body.style.height =
-                        window.innerHeight + 100 + "px";
-
-                    setTimeout(() => {
-                        // Прокручиваем страницу на 1 пиксель вниз — это триггерит скрытие панели в Chrome/Яндексе
-                        window.scrollTo(0, 1);
-
-                        // Возвращаем документу нормальную высоту viewport
-                        document.body.style.height = window.innerHeight + "px";
-                    }, 300);
-                }
-            }
-
-            // Запускаем при повороте экрана
-            window.addEventListener("orientationchange", hideBrowserBars);
-            window.addEventListener("resize", hideBrowserBars);
-
-            // Отслеживаем смену ориентации и изменение размеров из-за появления/скрытия плашки
-            window.addEventListener("resize", fixMobileLandscapeGlitch);
-            window.addEventListener("orientationchange", () => {
-                setTimeout(fixMobileLandscapeGlitch, 200); // Небольшая задержка, чтобы Яндекс успел перерисовать интерфейс
-            });
-            fixMobileLandscapeGlitch();
-
             // Full screen mobile
             const promptEl = document.getElementById("fullscreenPrompt");
             const btnEl = document.getElementById("goFullscreenBtn");
 
             function checkOrientationAndBars() {
+                // Если элемент не найден в DOM, выходим из функции, чтобы избежать других ошибок
+                if (!promptEl) return;
+
                 const isLandscape = window.innerWidth > window.innerHeight;
 
                 // Проверяем, активен ли уже полноэкранный режим в браузере
@@ -77,17 +50,18 @@
                     element.msRequestFullscreen();
                 }
 
-                // Скрываем окно сразу после клика
-                promptEl.style.display = "none";
+                if (promptEl) promptEl.style.display = "none";
             }
 
-            // Привязываем запуск к кнопке
-            btnEl.addEventListener("click", launchFullscreen);
+            // Привязываем запуск к кнопке, если она существует
+            if (btnEl) {
+                btnEl.addEventListener("click", launchFullscreen);
+            }
 
-            // Следим за изменениями экрана и поворотами
+            // Следим за изменениями экрана и поворотами (БЕЗ fixMobileLandscapeGlitch)
             window.addEventListener("resize", checkOrientationAndBars);
             window.addEventListener("orientationchange", () => {
-                setTimeout(checkOrientationAndBars, 300); // Небольшая задержка для корректного считывания размеров
+                setTimeout(checkOrientationAndBars, 300);
             });
 
             // Проверяем состояние при первой загрузке страницы
@@ -97,7 +71,7 @@
             );
             checkOrientationAndBars();
 
-            // Full screen mobile
+            // Full screen mobile Конец
 
             window._sdkLoadPromise = new Promise(function (resolve) {
                 if (location.protocol !== "https:") return resolve();
